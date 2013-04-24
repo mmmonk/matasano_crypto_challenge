@@ -1,11 +1,16 @@
 #!/usr/bin/env python
 
-txt = "Burning 'em, if you ain't quick and nimble\nI go crazy when I hear a cymbal"
-key = "ICE"
+def mcxor(key,msg):
 
-keys = key*((len(txt)/len(key))+1)
-keys = keys[:len(txt)]
+  keys = key*((len(msg)/len(key))+1)
+  keys = keys[:len(msg)]
 
-enc = [ chr(ord(c1)^ord(c2)) for (c1,c2) in zip(keys,txt) ]
+  return "".join([ chr(ord(c1)^ord(c2)) for (c1,c2) in zip(keys,msg) ]).encode('hex')
 
-print "".join(enc).encode('hex')
+
+if __name__ == "__main__":
+
+  txt = "Burning 'em, if you ain't quick and nimble\nI go crazy when I hear a cymbal"
+  key = "ICE"
+
+  print mcxor(key,txt)
