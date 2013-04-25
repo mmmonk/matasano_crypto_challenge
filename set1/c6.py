@@ -2,7 +2,6 @@
 
 import urllib
 import base64
-import c5
 import c3
 
 def findkeylen(ct,keylen,blocks=5): # calculates Hamming distance for few blocks for the same keylength
@@ -43,3 +42,4 @@ for kl in sorted(key_len , key = key_len.get):
   if not '\x00' in key:
     print str((kl,key))
     break
+
