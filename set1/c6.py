@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 
-import urllib
 import base64
 import c3
 
@@ -23,7 +22,7 @@ def reorderblk(ct,keylen):
         blks[j].append(txt[j])
   return blks
 
-ct = base64.b64decode(urllib.URLopener().open("https://gist.github.com/tqbf/3132752/raw/cecdb818e3ee4f5dda6f0847bfd90a83edb87e73/gistfile1.txt").read())
+ct = base64.b64decode(open("c6.txt").read())
 
 key_len = dict()
 for kl in range(2,40):
