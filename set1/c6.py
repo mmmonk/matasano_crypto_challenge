@@ -2,35 +2,44 @@
 
 import urllib
 import base64
-import itertools
 import c5
 import c3
 
-def ch2bin(c):
-  return bin(ord(c)).replace("0b","").zfill(8)
+def findkeylen(ct,keylen,blocks=5): # calculates Hamming distance for few blocks for the same keylength
+  return sum(hd(ct[i:i+keylen],ct[i+keylen:i+keylen*2])/float(keylen) for i in range(0,keylen*blocks,keylen))/blocks
 
-def hd(s1, s2):
-  assert len(s1) == len(s2)
-  sumall = 0
-  for cs1, cs2 in zip(s1, s2):
-    sumall += sum(c1 != c2 for c1, c2 in zip(ch2bin(cs1), ch2bin(cs2)))
-  return sumall
+def ch2bin(s): # changing chars to bits
+  return "".join([ bin(ord(c)).replace("0b","").zfill(8) for c in s ])
 
-chars = ''.join([chr(c) for c in range(0,256)])
+def hd(s1, s2): # calculations for the Hamming distance
+  return sum(c1 != c2 for c1, c2 in zip(ch2bin(s1), ch2bin(s2)))
+
+def reorderblk(ct,keylen):
+  blks = [ list() for i in range(keylen) ]
+
+  for i in range(0,len(ct),keylen):
+    if i+keylen < len(ct):
+      txt = ct[i:i+keylen]
+      for j in range(keylen):
+        blks[j].append(txt[j])
+  return blks
+
 ct = base64.b64decode(urllib.URLopener().open("https://gist.github.com/tqbf/3132752/raw/cecdb818e3ee4f5dda6f0847bfd90a83edb87e73/gistfile1.txt").read())
 
-possible_key = dict()
-for kl in range(2,64):
-  a = list()
-  for keyc in itertools.product(chars,repeat=kl):
-    a.append(c5.mcxor(''.join(keyc),ct))
-    if len(a) > 4:
-      for i in range(1,5):
-        possible_key[kl] = possible_key.get(kl,0)+hd(a[0],a[i])/float(kl)
-      possible_key[kl] /= 4
-      break
+key_len = dict()
+for kl in range(2,40):
+  key_len[kl] = findkeylen(ct,kl)
 
-for k in possible_key:
-  print str(k)+" "+str(possible_key[k])
+for kl in sorted(key_len , key = key_len.get):
+  sxor = reorderblk(ct,kl)
+  key = ""
+  for i in range(kl):
+    txt = c3.fcxor("".join(sxor[i]))
+    if txt != None:
+      key += chr(txt[0])
+    else:
+      key += chr(0)
 
-#print hd("this is a test","wokka wokka!!!")
+  if not '\x00' in key:
+    print str((kl,key))
+    break
