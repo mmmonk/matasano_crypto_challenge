@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-def pkcs7pad(s,blksize=8):
+def pkcs7pad(s,blksize=16):
   missing = abs(len(s) - (len(s)/blksize+1) * blksize)
   return s+(chr(missing)*missing)
 

@@ -9,8 +9,9 @@ def findecb(cte,blksize=16):
     if a[c] > 1:
       return cte
 
-for l in open("c8.txt").readlines():
-  ct = findecb(l.rstrip())
-  if ct != None:
-    print ct
+if __name__ == "__main__":
+  for l in open("c8.txt").readlines():
+    ct = findecb(l.rstrip())
+    if ct != None:
+      print ct
 
