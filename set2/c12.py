@@ -14,7 +14,18 @@ YnkK"
 
   return AES.new(key,AES.MODE_ECB).encrypt(c10.pkcs7pad(s))
 
+def findecb(cte,blksize=16):
+  ct = cte.decode('hex')
+  a = dict()
+  for i in range(0,len(ct),blksize):
+    c = ct[i:i+blksize]
+    a[c] = a.get(c,0) + 1
+    if a[c] > 1:
+      return cte
+
 if __name__ == "__main__":
+  import sys
+
   # getting random key
   key = open("/dev/urandom").read(16)
 
@@ -27,5 +38,28 @@ if __name__ == "__main__":
       break
     blksize += 1
 
-  print blksize
+  print "block size: "+str(blksize)
 
+  if findecb(c.encode('hex'),blksize) == None:
+    sys.exit(0)
+
+  print "this is ECB mode"
+
+  enclen = len(encryption_oracle("a",key))
+
+  output = ""
+  nextblock = "A"*blksize
+  for x in range(0,enclen,blksize):
+    attack = nextblock
+    nextblock = ""
+    for i in range(blksize):
+      attack = attack[1:]
+      encryptedblk = encryption_oracle(attack,key)[x:x+blksize]
+      for c in range(256):
+        s = attack + nextblock + chr(c)
+        if encryption_oracle(s,key)[:blksize] == encryptedblk:
+          nextblock += chr(c)
+          break
+
+    output += nextblock
+  print "seceret msg:\n"+output
