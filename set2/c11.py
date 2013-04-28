@@ -12,13 +12,22 @@ def encryption_oracle(s):
 
   s = str(prefix)+str(s)+str(suffix)
   if random.randint(0,1) == 1:
-    print "ECB"
+    print "CBC"
     return c10.cbcencrypt(s,open("/dev/urandom").read(16),key)
   else:
-    print "CBC"
+    print "ECB"
     return AES.new(key,AES.MODE_ECB).encrypt(c10.pkcs7pad(s))
 
-if __name__ == "__main__":
-  import c8
 
-  print c8.findecb(encryption_oracle("0"*128).encode('hex'))
+def findecb(cte,blksize=16):
+  ct = cte.decode('hex')
+  a = dict()
+  for i in range(0,len(ct),blksize):
+    c = ct[i:i+blksize]
+    a[c] = a.get(c,0) + 1
+    if a[c] > 1:
+      return cte
+
+if __name__ == "__main__":
+
+  print findecb(encryption_oracle("0"*128).encode('hex'))
