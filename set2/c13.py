@@ -32,5 +32,8 @@ if __name__ == "__main__":
   key = open("/dev/urandom").read(16)
 
   encprofile = encrypt(profile_for("test@test.company"),key)
-
-  print mkobj(decrypt(encprofile,key))
+  hexe = encprofile.encode('hex')
+  for i in range(0,len(hexe),32):
+    print hexe[i:i+32],
+  print ""
+  print "\noutput:\n"+mkobj(decrypt(encprofile,key))
