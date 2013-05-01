@@ -28,12 +28,14 @@ def decrypt(s,key):
 
 if __name__ == "__main__":
 
+  import sys
+
   # random key
   key = open("/dev/urandom").read(16)
 
-  encprofile = encrypt(profile_for("test@test.company"),key)
-  hexe = encprofile.encode('hex')
-  for i in range(0,len(hexe),32):
-    print hexe[i:i+32],
-  print ""
-  print "\noutput:\n"+mkobj(decrypt(encprofile,key))
+  out1 = encrypt(profile_for("A"*10+"admin"),key)
+  out2 = encrypt(profile_for("testuser@some.not.that.domain"),key)
+  out3 = encrypt(profile_for("A"*32),key)
+  test = out2[:48]+out1[16:32]+out3[48:]
+
+  print mkobj(decrypt(test,key).encode('string_escape'))
