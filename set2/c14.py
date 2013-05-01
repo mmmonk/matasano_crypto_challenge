@@ -61,34 +61,30 @@ if __name__ == "__main__":
 
   enclen = len(encryption_oracle("a", key, prefix)) - offset
 
+  # calculation of where our data starts inside the block
   offstr = 0
   for i in range(1,blksize*4):
-    s = "a"*i
-    if encryption_oracle(s, key, prefix)[offset+blksize] == encryption_oracle(s, key, prefix)[offset+(blksize*2)]:
+    s = 'A'*i
+    if encryption_oracle(s, key, prefix)[offset+blksize:offset+blksize*2] == encryption_oracle(s, key, prefix)[offset+(blksize*2):offset+blksize*3]:
       offstr = i-(blksize*2)
-      print str(i-(blksize*2))
       break
 
-  if offstr == blksize:
-    offstr = 0
-  else:
-    offset += blksize
+  print "ourdata offset inside the block: "+str(offstr)
 
-  print "ourdata offset in the block: "+str(offstr)
-
-  output = ""
-  nextblock = "A"*offstr+"A"*blksize
+  # decoding the data
+  out = ""
+  nxtblk = "A"*blksize
   for x in range(0,enclen,blksize):
-    attack = "A"*offstr+nextblock
-    nextblock = ""
+    attack = "A"*offstr+nxtblk
+    nxtblk = ""
     for i in range(blksize):
       attack = attack[1:]
-      encryptedblk = encryption_oracle(attack, key, prefix)[offset+x:offset+x+blksize]
+      encblk = encryption_oracle(attack, key, prefix)[offset+x+blksize:offset+x+blksize*2]
       for c in range(256):
-        s = attack + nextblock + chr(c)
-        if encryption_oracle(s, key, prefix)[offset:offset+blksize] == encryptedblk:
-          nextblock += chr(c)
+        s = attack + nxtblk + chr(c)
+        if encryption_oracle(s, key, prefix)[offset+blksize:offset+blksize*2] == encblk:
+          nxtblk += chr(c)
           break
 
-    output += nextblock
-  print "seceret msg:\n"+output
+    out += nxtblk
+  print "seceret msg:\n"+out
