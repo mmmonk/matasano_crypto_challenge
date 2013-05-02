@@ -62,4 +62,4 @@ if __name__ == "__main__":
           break
 
     output += nextblock
-  print "seceret msg:\n"+output
+  print "secret msg:\n"+output

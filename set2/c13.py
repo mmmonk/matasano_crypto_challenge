@@ -35,7 +35,7 @@ if __name__ == "__main__":
 
   out1 = encrypt(profile_for("A"*10+"admin"),key) # this gives me block with "admin....."
   out2 = encrypt(profile_for("testuser@some.not.that.domain"),key) # this gives me the username and "role=" and the end of the block
-  out3 = encrypt(profile_for("A"*32),key) # this is to make sure that we have correct paddinig and all vars have values
+  out3 = encrypt(profile_for("A"*32),key) # this is to make sure that we have correct padding and all vars have values
   test = out2[:48]+out1[16:32]+out3[48:] # putting this all together
 
   print mkobj(decrypt(test,key))

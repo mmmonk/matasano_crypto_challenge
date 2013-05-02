@@ -42,7 +42,6 @@ def cbcdecrypt(s,iv,key,blksize=16):
     iv = s[i:i+blksize]
 
   return pkcs7chk(out)
-  #return out
 
 if __name__ == "__main__":
   import base64

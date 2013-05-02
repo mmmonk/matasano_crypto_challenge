@@ -87,4 +87,4 @@ if __name__ == "__main__":
           break
 
     out += nxtblk
-  print "seceret msg:\n"+out
+  print "secret msg:\n"+out

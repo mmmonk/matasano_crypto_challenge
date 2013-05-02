@@ -1,5 +1,23 @@
 #!/usr/bin/env python
 
+'''
+You're relying on the fact that in CBC mode, a 1-bit error in a
+ciphertext block:
+
+* Completely scrambles the block the error occurs in
+
+* Produces the identical 1-bit error (/edit) in the next ciphertext
+ block.
+
+Before you implement this attack, answer this question: why does CBC
+mode have this property?
+
+----
+Because the next plaintext block is XORed with the encrypted output from
+the previous block (or IV if we try to encrypt
+
+'''
+
 from Crypto.Cipher import AES
 
 def pkcs7pad(s,blksize=16):
@@ -19,7 +37,6 @@ def cbcencrypt(s,iv,key,blksize=16):
 
   assert len(iv) == blksize, 'IV is not equal to blocksize'
   a = AES.new(key,AES.MODE_ECB)
-  iv = list(iv)
   s = pkcs7pad(s,blksize)
   out = ""
 
@@ -33,7 +50,6 @@ def cbcdecrypt(s,iv,key,blksize=16):
 
   assert len(iv) == blksize, 'IV is not equal to blocksize'
   a = AES.new(key,AES.MODE_ECB)
-  iv = list(iv)
   out = ""
 
   for i in range(0,len(s),blksize):
@@ -42,12 +58,37 @@ def cbcdecrypt(s,iv,key,blksize=16):
     iv = s[i:i+blksize]
 
   return pkcs7chk(out)
-  #return out
+
+def myinput(s,iv,key):
+  s = s.replace(";","\;").replace("=","\=")
+  prefix = "comment1=cooking%20MCs;userdata="
+  suffix = ";comment2=%20like%20a%20pound%20of%20bacon"
+
+  return cbcencrypt(prefix+s+suffix,iv,key)
+
+def checkadmin(s,iv,key):
+  if ";admin=true;" in cbcdecrypt(s,iv,key):
+    return True
+  return False
 
 if __name__ == "__main__":
-  import base64
-  import urllib
 
-  txt = base64.b64decode(urllib.URLopener().open("https://gist.github.com/tqbf/3132976/raw/f0802a5bc9ffa2a69cd92c981438399d4ce1b8e4/gistfile1.txt").read())
-  print cbcdecrypt(txt,"\x00"*16,"YELLOW SUBMARINE")
+  iv = open("/dev/urandom").read(16)
+  key = open("/dev/urandom").read(16)
+
+  '''
+  we move the ":admin<true" to the beginning of the next block
+  we chose the ":" and "<" to be just one bit different then
+  our targets ";" and "=" what is left is to modify the corresponding
+  characters in previous block (the encoding is one to one, one plain text byte
+  corresponds to one ciphertext byte) by XORing them with 1.
+  '''
+  enc = myinput("a"*16+":admin<true",iv,key) # our input
+  test1 = chr(ord(enc[32])^1)+enc[33:38]+chr(ord(enc[38])^1)+enc[39:48] # XORing by one two characters
+  test = enc[:32]+test1+enc[48:] # recreating the ciphertext
+
+  if checkadmin(test,iv,key) == True: # keeping fingers crossed
+    print "we did good ;)"
+  else:
+    print ":("
 

@@ -12,10 +12,8 @@ def encryption_oracle(s):
 
   s = str(prefix)+str(s)+str(suffix)
   if random.randint(0,1) == 1:
-    print "CBC"
     return c10.cbcencrypt(s,open("/dev/urandom").read(16),key)
   else:
-    print "ECB"
     return AES.new(key,AES.MODE_ECB).encrypt(c10.pkcs7pad(s))
 
 
@@ -30,4 +28,8 @@ def findecb(cte,blksize=16):
 
 if __name__ == "__main__":
 
-  print findecb(encryption_oracle("0"*128).encode('hex'))
+  out = findecb(encryption_oracle("0"*128).encode('hex'))
+  if out != None:
+    print "ECB"
+  else:
+    print "CBC"
