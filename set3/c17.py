@@ -6,12 +6,13 @@ import base64
 
 class cc17:
 
-  def __init__(self):
-    self.key = open("/dev/urandom").read(16)
+  def __init__(self,blksize=16):
+    self.blksize = blksize
+    self.key = open("/dev/urandom").read(self.blksize)
 
   def fun1 (self):
 
-    iv = open("/dev/urandom").read(16)
+    iv = open("/dev/urandom").read(self.blksize)
 
     msgs = "MDAwMDAwTm93IHRoYXQgdGhlIHBhcnR5IGlzIGp1bXBpbmc=\n\
 MDAwMDAxV2l0aCB0aGUgYmFzcyBraWNrZWQgaW4gYW5kIHRoZSBWZWdhJ3MgYXJlIHB1bXBpbic=\n\
@@ -24,7 +25,8 @@ MDAwMDA3SSdtIG9uIGEgcm9sbCwgaXQncyB0aW1lIHRvIGdvIHNvbG8=\n\
 MDAwMDA4b2xsaW4nIGluIG15IGZpdmUgcG9pbnQgb2g=\n\
 MDAwMDA5aXRoIG15IHJhZy10b3AgZG93biBzbyBteSBoYWlyIGNhbiBibG93"
 
-    return (iv,c10.cbcencrypt(random.choice(msgs.split("\n")),iv,self.key))
+    #return (iv,c10.cbcencrypt(random.choice(msgs.split("\n")),iv,self.key))
+    return (iv,c10.cbcencrypt("marek",iv,self.key))
 
   def fun2(self,iv,s):
 
@@ -36,6 +38,30 @@ MDAwMDA5aXRoIG15IHJhZy10b3AgZG93biBzbyBteSBoYWlyIGNhbiBibG93"
 
 if __name__ == "__main__":
 
-  c17 = cc17()
-  a = c17.fun1() # 0 - iv, 1 - encrypted msg
-  print c17.fun2(a[0],a[1])
+  blksize = 16
+
+  c17 = cc17(blksize)
+  (iv,ct) = c17.fun1()
+
+  ct = list(ct)
+
+  ablk = ["\x00"] * blksize
+
+  # first block
+  for i in reversed(range(0,blksize)):
+    pad = blksize-i
+    print str(i)+" "+str(pad)
+    if pad > 1:
+      for j in range(i+1,blksize):
+        ablk[j] = chr(ord(ablk[j])^(pad-1)^pad)
+
+    for c in range(0,256):
+      ablk[i] = chr(c)
+      if c17.fun2(ablk,"".join(ct[:blksize])):
+        print str(i)+" "+str(pad)+" "+str(c)
+        break
+
+  out = [ chr(ord(c)^16) for c in ablk ]
+  print "".join(out).encode("string_escape")
+
+  #print c17.fun2(a[0],a[1])
