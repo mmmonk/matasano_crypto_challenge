@@ -34,16 +34,17 @@ MDAwMDA5aXRoIG15IHJhZy10b3AgZG93biBzbyBteSBoYWlyIGNhbiBibG93"
     except:
       return False
 
-def padding_oracle_attack(oracfunc, pblk, blk, blksize=16):
+def padding_oracle_attack(oracfunc, pblk, blk):
   '''
   based on http://www.skullsecurity.org/blog/2013/padding-oracle-attacks-in-depth
 
   oracfunc - function that provides the oracle
-  iv       - IV
   pblk     - previous block to the attacked one
   blk      - the block we want to decrypt
-  blksize  - block size
   '''
+
+  blksize = len(pblk)
+  assert len(pblk) == len(blk), "blocks now equal length"
 
   # index at which we start - the last character
   idx = blksize - 1
@@ -65,7 +66,7 @@ def padding_oracle_attack(oracfunc, pblk, blk, blksize=16):
 
       if oracfunc("".join(ablk) + blk):
 
-        if idx == 0:
+        if idx == 0: # last char in this block
           idx -= 1
           break
 
@@ -99,7 +100,7 @@ if __name__ == "__main__":
   c17 = cc17(blksize)
   (iv,ct) = c17.fun1() # iv is only needed to decode the first block
 
-  txt = padding_oracle_attack(c17.fun2,iv,ct[:blksize],blksize)
+  txt = padding_oracle_attack(c17.fun2,iv,ct[:blksize])
   for x in range(blksize,len(ct),blksize):
-    txt += padding_oracle_attack(c17.fun2,ct[x-blksize:x],ct[x:x+blksize],blksize)
+    txt += padding_oracle_attack(c17.fun2,ct[x-blksize:x],ct[x:x+blksize])
   print txt
