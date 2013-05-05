@@ -52,9 +52,6 @@ def padding_oracle_attack(oracfunc, pblk, blk):
   # start value for the padding
   pad = 1
 
-  # last used index
-  lidx = 0
-
   # this is the "attack" block
   ablk = ["\x00"] * blksize
 
@@ -98,9 +95,11 @@ if __name__ == "__main__":
   blksize = 16
 
   c17 = cc17(blksize)
-  (iv,ct) = c17.fun1() # iv is only needed to decode the first block
+  (iv,ct) = c17.fun1()
 
+  # iv is only needed to decode the first block
   txt = padding_oracle_attack(c17.fun2,iv,ct[:blksize])
   for x in range(blksize,len(ct),blksize):
     txt += padding_oracle_attack(c17.fun2,ct[x-blksize:x],ct[x:x+blksize])
+
   print txt
