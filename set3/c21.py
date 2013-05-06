@@ -37,15 +37,14 @@ class MT19937:
     if self.idx == 0:
       self.generate_numbers()
 
-    y = self.mt[self.idx]
-    y ^= (y >> 11)
-    y ^= ((y << 7)  & 0x9d2c5680)
+    y  = self.mt[self.idx]
+    y ^=  (y >> 11)
+    y ^= ((y << 7 ) & 0x9d2c5680)
     y ^= ((y << 15) & 0xefc60000)
-    y ^= (y >> 18)
+    y ^=  (y >> 18)
 
     self.idx = (self.idx + 1) % 624
     return y
-
 
 if __name__ == "__main__":
 
