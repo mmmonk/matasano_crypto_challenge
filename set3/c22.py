@@ -14,6 +14,7 @@ print "rng : "+str(v)
 print "seed: "+str(ts)
 
 pseeds = list()
+
 ts1 = int(time.time())
 for x in range(ts1-3600,ts1):
   rng2 = c21.MT19937(x)
@@ -21,4 +22,3 @@ for x in range(ts1-3600,ts1):
     pseeds.append(x)
 
 print pseeds
-
