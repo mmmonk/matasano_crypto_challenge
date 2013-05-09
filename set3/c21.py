@@ -12,7 +12,6 @@ class MT19937:
     '''
     if not given the seed is int(time.time())
     '''
-
     self.mt = list()
     self.idx = 0
     self.mt = range(0,624)
@@ -57,6 +56,6 @@ class MT19937:
 
 if __name__ == "__main__":
 
-  test = MT19937()
+  test = MT19937(0)
   for i in range(30):
     print test.extract_number()
