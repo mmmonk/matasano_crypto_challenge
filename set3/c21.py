@@ -20,6 +20,15 @@ class MT19937:
     for i in range(1,624):
       self.mt[i] = (0x6c078965 * ( self.mt[i-1] ^ (self.mt[i-1] >> 30)) + i) & 0xffffffff
 
+
+  def set_state(self,mt,idx=0):
+    '''
+    function to overwrite the internal state table
+    '''
+    assert type(mt) is list and len(mt) == 624, "mt is a wrong list value"
+    self.mt  = mt
+    self.idx = idx
+
   def generate_numbers(self):
     '''
     mixing function
@@ -38,16 +47,16 @@ class MT19937:
       self.generate_numbers()
 
     y  = self.mt[self.idx]
-    out = y
     y ^=  (y >> 11)
     y ^= ((y << 7 ) & 0x9d2c5680)
     y ^= ((y << 15) & 0xefc60000)
     y ^=  (y >> 18)
 
     self.idx = (self.idx + 1) % 624
-    return (out,y)
+    return y
 
 if __name__ == "__main__":
 
   test = MT19937()
-  print test.extract_number()
+  for i in range(30):
+    print test.extract_number()
