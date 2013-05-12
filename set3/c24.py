@@ -2,6 +2,7 @@
 
 import c21
 import random
+import time
 
 def ctrMT(s,key):
   '''
@@ -13,13 +14,17 @@ def ctrMT(s,key):
     out += chr(ord(c) ^ (rng.extract_number() & 0xff))
   return out
 
+key = int(open("/dev/urandom").read(2).encode('hex'),16)
+
+### finding the key for the known plaintext
 msg = ""
 for i in range(random.randint(10,64)):
   msg += chr(random.randint(0,255))
 
 msg += "A"*14
-cph = ctrMT(msg,0xaaaa)
-out = ctrMT(cph,0xaaaa)
+print hex(key)+" "+str(key)
+cph = ctrMT(msg,key)
+out = ctrMT(cph,key)
 
 print msg.encode('string_escape')
 print cph.encode('string_escape')
@@ -30,3 +35,5 @@ for x in xrange(2**16):
   if out2[-14:] == "A" * 14:
     print x
     break
+
+###
