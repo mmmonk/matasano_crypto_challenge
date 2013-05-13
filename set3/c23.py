@@ -3,7 +3,7 @@
 import c21
 import random
 
-def revrnd(x):
+def revrnd(x): #{{{
   '''
   this function reverses the "extract_number" function from:
   https://en.wikipedia.org/wiki/Mersenne_twister#Pseudocode
@@ -27,22 +27,39 @@ def revrnd(x):
       x = tv
       break
 
-  return x
+  return x #}}}
+
+if __name__ == "__main__":
+
+  rng = c21.MT19937(random.randint(0,2**32))
+
+  # create a list to which we will copy the state
+  # and pull the original rng for 624 values
+  copy_state = range(624)
+  for i in range(624):
+    copy_state[i] = revrnd(rng.extract_number())
+
+  # create our own rng
+  copy = c21.MT19937()
+
+  # and change its state with the calculated values
+  copy.set_state(list(copy_state))
+
+  for i in range(30):
+    print "original: "+str(rng.extract_number())
+    print " \-copy : "+str(copy.extract_number())
 
 
-rng = c21.MT19937(random.randint(0,2**32))
+'''
+* How would you modify MT19937 to make this attack hard?
 
-# create a list to which we will copy the state
-# and pull the original rng for 624 values
-copy_state = range(624)
-for i in range(624):
-  copy_state[i] = revrnd(rng.extract_number())
+Make the output of the last function "extract_number()" none reversible, run it
+through a secure hash (message digest function, even the simplest one here is
+good enough).
 
-# create our own rng
-copy = c21.MT19937()
-# and change it state with the predicted values
-copy.set_state(list(copy_state))
 
-for i in range(30):
-  print "original: "+str(rng.extract_number())
-  print " \-copy : "+str(copy.extract_number())
+* What would happen if you subjected each tempered output to a cryptographic hash?
+
+It would prevent anybody from reversing the state (except for bruteforcing),
+but the disadvantage would be that the process would be slower.
+'''

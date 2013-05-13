@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 
+import urllib
 import base64
 import c18
-import urllib
+import c3
 
 msgs = urllib.urlopen("https://gist.github.com/tqbf/3336141/raw/d601f0b675feef570188ab2c8f347843f965ee14/gistfile1.txt").read()
 
@@ -15,6 +16,17 @@ for msg in msgs.split("\n"):
     if len(cts[-1]) > 0 and minl > len(cts[-1]):
       minl = len(cts[-1])
 
-for i in range(0,len(cts)):
+# prepare the list for the one character
+rcts = range(minl)
+for i in range(minl):
+  rcts[i] = list()
+
+for i in range(len(cts)):
   cts[i] = cts[i][:minl]
   print cts[i]
+  ct = cts[i]
+  for j in range(len(ct)):
+    rcts[j].append(ct[j])
+
+for i in range(len(rcts)):
+  print c3.fcxor("".join(rcts[i]))
