@@ -6,17 +6,19 @@ class MT19937:
   '''
   based on the pseudocode from:
   https://en.wikipedia.org/wiki/Mersenne_twister#Pseudocode
+
+  more information on:
+  http://www.math.sci.hiroshima-u.ac.jp/~m-mat/MT/emt.html
   '''
 
   def __init__(self,seed=int(time.time()),size=624): #{{{
     '''
     if not given the seed is int(time.time())
     '''
-    self.mt = list()
     self.idx = 0
     self.size = size
     self.mt = range(0,self.size)
-    self.mt[0] = seed
+    self.mt[0] = seed & 0xffffffff
     for i in range(1,self.size):
       self.mt[i] = (0x6c078965 * ( self.mt[i-1] ^ (self.mt[i-1] >> 30)) + i) & 0xffffffff #}}}
 
@@ -27,6 +29,9 @@ class MT19937:
     assert type(mt) is list and len(mt) == self.size, "mt is a wrong list value"
     self.mt  = mt
     self.idx = idx #}}}
+
+  def get_state(self): #{{{
+    print self.mt #}}}
 
   def generate_numbers(self): #{{{
     '''
@@ -52,10 +57,11 @@ class MT19937:
     y ^=  (y >> 18)
 
     self.idx = (self.idx + 1) % self.size
+
     return y #}}}
 
 if __name__ == "__main__":
 
   test = MT19937(0)
-  for i in range(30):
+  for i in range(10):
     print test.extract_number()
