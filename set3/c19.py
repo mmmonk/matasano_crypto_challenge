@@ -47,7 +47,7 @@ SGUsIHRvbywgaGFzIGJlZW4gY2hhbmdlZCBpbiBoaXMgdHVybiw=\n\
 VHJhbnNmb3JtZWQgdXR0ZXJseTo=\n\
 QSB0ZXJyaWJsZSBiZWF1dHkgaXMgYm9ybi4="
 
-# encrypting above messages
+#### encrypting above messages
 key = open("/dev/urandom").read(16)
 cts = list()
 mxlen = 0    # max length of the CT
@@ -61,7 +61,7 @@ for msg in msgs.split("\n"):
     milen = l
 
 
-# breaking it
+#### breaking it
 
 # prepare the key
 key = [0]*mxlen
@@ -98,7 +98,7 @@ try:
 
     # this prints the current value for the key in hex format
     pkey = "".join([ chr(k1) for k1 in key])
-    stdscr.addstr("\nkey: "+str(pkey).encode('hex')+"\n")
+    stdscr.addstr("\nkey (hex): "+str(pkey).encode('hex')+"\n")
 
     # this highlights the current character
     stdscr.addstr(y+2,x,chr(stdscr.inch(y+2,x) & 0xff),curses.A_REVERSE)
@@ -111,9 +111,9 @@ try:
 
     # normal moving around the screen
     if c == curses.KEY_LEFT:
-      x = (x - 1) % len(key)
+      x = (x - 1) % mxlen
     elif c == curses.KEY_RIGHT:
-      x = (x + 1) % len(key)
+      x = (x + 1) % mxlen
     elif c == curses.KEY_UP:
       y = (y - 1) % len(cts)
     elif c == curses.KEY_DOWN:
