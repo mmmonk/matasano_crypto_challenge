@@ -23,7 +23,7 @@ for i in range(minl):
 
 for i in range(len(cts)):
   cts[i] = cts[i][:minl]
-  print cts[i]
+  #print cts[i]
   ct = cts[i]
   for j in range(len(ct)):
     rcts[j].append(ct[j])
