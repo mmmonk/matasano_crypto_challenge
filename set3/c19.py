@@ -6,6 +6,15 @@ import c3
 import string
 import curses
 
+def hideunprintablechars(s,hc="#"):
+  s = list(s)
+  for i in range(len(s)):
+    if not s[i] in string.printable:
+      s[i] = hc
+    if s[i] in string.whitespace:
+      s[i] = " "
+  return "".join(s)
+
 msgs = "SSBoYXZlIG1ldCB0aGVtIGF0IGNsb3NlIG9mIGRheQ==\n\
 Q29taW5nIHdpdGggdml2aWQgZmFjZXM=\n\
 RnJvbSBjb3VudGVyIG9yIGRlc2sgYW1vbmcgZ3JleQ==\n\
@@ -66,12 +75,14 @@ for msg in msgs.split("\n"):
 # prepare the key
 key = [0]*mxlen
 
-# do some automated guesses
+lcts = len(cts)
+
+# do some basic automating guesses
 rev = range(milen)
 for i in range(milen):
   rev[i] = list()
 
-for i in range(len(cts)):
+for i in range(lcts):
   ct = cts[i]
   for j in range(milen):
     rev[j].append(ct[j])
@@ -81,27 +92,53 @@ for i in range(milen):
   if out != None:
     key[i] = out[0]
 
+# finding the first letter (based on the most common ones):
+# from http://www.cryptograms.org/letter-frequencies.php
+for c in "TAISOCMFPWtaisocmfpw":
+  key[0] = ord(cts[0][0])^ord(c)
+  revt = [ chr(ord(c1)^key[0]) for c1 in rev[0]]
+  good = True
+  for i in range(milen):
+    if not revt[i] in string.letters:
+      good = False
+      break
+  if good == True:
+    break
+
+# finding bigrams
+for i in range(1,milen-1):
+  pass
+
 ### init ncurses and do manual guessing
 stdscr = curses.initscr()
 curses.noecho()
 curses.cbreak()
 stdscr.keypad(1)
 curses.curs_set(0)
+curses.start_color()
+curses.use_default_colors()
+curses.init_pair(1, curses.COLOR_RED, -1)
 x = 0
 y = 0
 try:
   while True:
     stdscr.addstr(0,0,"("+str(x)+","+str(y)+") - press ctrl+c to exit\n\n")
     for ct in cts:
-      out = "".join([ chr(ord(c1)^c2) for (c1,c2) in zip(ct,key)]).encode('string_escape')
-      stdscr.addstr(out+"\n")
+      out = "".join([ chr(ord(c1)^c2) for (c1,c2) in zip(ct,key)])
+      stdscr.addstr(hideunprintablechars(out)+"\n")
 
     # this prints the current value for the key in hex format
     pkey = "".join([ chr(k1) for k1 in key])
     stdscr.addstr("\nkey (hex): "+str(pkey).encode('hex')+"\n")
 
-    # this highlights the current character
-    stdscr.addstr(y+2,x,chr(stdscr.inch(y+2,x) & 0xff),curses.A_REVERSE)
+    # this highlights the current column and current character
+    for i in range(lcts):
+      stdscr.addstr(i+2,x,chr(stdscr.inch(i+2,x) & 0xff),curses.color_pair(1) | curses.A_BOLD)
+    stdscr.addstr(y+2,x,chr(stdscr.inch(y+2,x) & 0xff),curses.color_pair(1) | curses.A_REVERSE)
+
+    # highligth the current key value that we are modifying
+    stdscr.addstr(lcts+3,(x*2)+11,chr(stdscr.inch(lcts+3,(x*2)+11) & 0xff),curses.color_pair(1))
+    stdscr.addstr(lcts+3,(x*2)+12,chr(stdscr.inch(lcts+3,(x*2)+12) & 0xff),curses.color_pair(1))
 
     # refresh the screen
     stdscr.refresh()
@@ -115,10 +152,11 @@ try:
     elif c == curses.KEY_RIGHT:
       x = (x + 1) % mxlen
     elif c == curses.KEY_UP:
-      y = (y - 1) % len(cts)
+      y = (y - 1) % lcts
     elif c == curses.KEY_DOWN:
-      y = (y + 1) % len(cts)
-
+      y = (y + 1) % lcts
+    elif c == curses.KEY_MOUSE:
+      pass
     # modifiying the key
     else:
       try:
