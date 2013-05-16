@@ -94,7 +94,7 @@ for i in range(milen):
 
 # finding the first letter (based on the most common ones):
 # from http://www.cryptograms.org/letter-frequencies.php
-for c in "TAISOCMFPWtaisocmfpw":
+for c in "TAISOCMFPWtaisocmfpw ":
   key[0] = ord(cts[0][0])^ord(c)
   revt = [ chr(ord(c1)^key[0]) for c1 in rev[0]]
   good = True
@@ -106,7 +106,7 @@ for c in "TAISOCMFPWtaisocmfpw":
     break
 
 # finding bigrams
-for i in range(1,milen-1):
+for i in range(len(key)):
   pass
 
 ### init ncurses and do manual guessing
