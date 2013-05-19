@@ -15,6 +15,9 @@ def hideunprintablechars(s,hc="#"):
       s[i] = " "
   return "".join(s)
 
+def xors(s1,s2):
+  return "".join([ chr(ord(c1)^c2) for (c1,c2) in zip(s1,s2)])
+
 msgs = "SSBoYXZlIG1ldCB0aGVtIGF0IGNsb3NlIG9mIGRheQ==\n\
 Q29taW5nIHdpdGggdml2aWQgZmFjZXM=\n\
 RnJvbSBjb3VudGVyIG9yIGRlc2sgYW1vbmcgZ3JleQ==\n\
@@ -99,15 +102,36 @@ for c in "TAISOCMFPWtaisocmfpw":
   revt = [ chr(ord(c1)^key[0]) for c1 in rev[0]]
   good = True
   for i in range(milen):
-    if not revt[i] in string.letters:
+    if not revt[i] in string.letters+" ":
       good = False
       break
   if good == True:
     break
 
+
 # finding bigrams
-for i in range(1,milen-1):
-  pass
+bigrams = ( "th", "he", "in", "er",
+"an", "re", "nd", "on",
+"en", "at", "ou", "ed",
+"ha", "to", "or", "it",
+"is", "hi", "es", "ng")
+
+for i in range(0,milen):
+  if key[i] == "\x00":
+    pass
+
+# finding trigrams
+trigrams = ( "the", "and", "ing", "her",
+"hat", "his", "tha", "ere",
+"for", "ent", "ion", "ter",
+"was", "you", "ith", "ver",
+"all", "wit", "thi", "tio")
+
+quadrigrams = ( "that", "ther", "with", "tion",
+"here", "ould", "ight", "have",
+"hich", "whic", "this", "thin",
+"they", "atio", "ever", "from",
+"ough", "were", "hing", "ment")
 
 ### init ncurses and do manual guessing
 stdscr = curses.initscr()
@@ -124,8 +148,7 @@ try:
   while True:
     stdscr.addstr(0,0,"("+str(x)+","+str(y)+") - press ctrl+c to exit\n\n")
     for ct in cts:
-      out = "".join([ chr(ord(c1)^c2) for (c1,c2) in zip(ct,key)])
-      stdscr.addstr(hideunprintablechars(out)+"\n")
+      stdscr.addstr(hideunprintablechars(xors(ct,key))+"\n")
 
     # this prints the current value for the key in hex format
     pkey = "".join([ chr(k1) for k1 in key])
