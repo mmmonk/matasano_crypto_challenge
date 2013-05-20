@@ -19,6 +19,16 @@ def hideunprintablechars(s,hc="#"):
 def xors(s1,s2):
   return "".join([ chr(ord(c1)^c2) for (c1,c2) in zip(s1,s2)])
 
+def checkkey(cts,k,i):
+  for ct in cts:
+    try:
+      c = chr(ord(ct[i])^k[i])
+    except:
+      c = " "
+    if c not in string.printable:
+      return False
+  return True
+
 class gui:
   '''
   a class for manual correction ;)
@@ -229,8 +239,28 @@ QSB0ZXJyaWJsZSBiZWF1dHkgaXMgYm9ybi4="
   "is", "hi", "es", "ng")
 
   for i in range(0,milen):
-    if key[i] == "\x00":
-      pass
+    if key[i] == 0:
+      for ct in cts:
+        pre = ct[i-1] if i > 0 else ""
+        suf = ct[i+1] if i < len(ct)-1 else ""
+        found = False
+        for bi in bigrams:
+          if bi[0] == pre:
+            k = key[:]
+            k[i] = ord(ct[i])^ord(bi[1])
+            if checkkey(cts,k,i):
+              found = True
+              key = k[:]
+              break
+          elif bi[1] == suf:
+            k = key[:]
+            k[i] = ord(ct[i])^ord(bi[0])
+            if checkkey(cts,k,i):
+              found = True
+              key = k[:]
+              break
+        if found:
+          break
 
   # finding trigrams
   trigrams = ( "the", "and", "ing", "her",
