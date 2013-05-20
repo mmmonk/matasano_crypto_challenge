@@ -18,6 +18,92 @@ def hideunprintablechars(s,hc="#"):
 def xors(s1,s2):
   return "".join([ chr(ord(c1)^c2) for (c1,c2) in zip(s1,s2)])
 
+class gui:
+
+  def __init__(self,cts,key,addx=0,addy=2):
+    self.stdscr = curses.initscr()
+    self.stdscr.keypad(1)
+    curses.curs_set(0)
+    curses.start_color()
+    curses.use_default_colors()
+    curses.init_pair(1, curses.COLOR_RED, -1)
+    curses.noecho()
+    curses.cbreak()
+    self.x = 0
+    self.y = 0
+    self.addx = addx
+    self.addy = addy
+    self.cts = cts
+    self.limity = len(self.cts)
+    self.key = key
+    self.limitx = len(self.key)
+
+  def getkey(self):
+
+    c = self.stdscr.getch()
+
+    # normal moving around the screen
+    if c == curses.KEY_LEFT:
+      self.x = (self.x - 1) % self.limitx
+    elif c == curses.KEY_RIGHT:
+      self.x = (self.x + 1) % self.limitx
+    elif c == curses.KEY_UP:
+      self.y = (self.y - 1) % self.limity
+    elif c == curses.KEY_DOWN:
+      self.y = (self.y + 1) % self.limity
+    # we need to ignore some keypresses
+    elif c == curses.KEY_MOUSE:
+      pass
+    elif c < 32 or c == 127 or c > 255:
+      curses.flash()
+    else:
+      # modifiying the encryption key
+      try:
+        self.key[self.x] = ord(self.cts[self.y][self.x])^c
+      except:
+        pass
+
+  def display(self):
+
+    self.stdscr.addstr(0,0,"cur:("+str(self.x)+","+str(self.y)+") max:("+str(self.limitx)+","+str(self.limity)+") - press ctrl+c to exit\n\n")
+    for ct in self.cts:
+      self.stdscr.addstr(hideunprintablechars(xors(ct,self.key))+"\n")
+
+    # this prints the current value for the key in hex format
+    pkey = "".join([ chr(k1) for k1 in self.key])
+    self.stdscr.addstr("\nkey (hex): "+str(pkey).encode('hex')+"\n")
+
+    # this highlights the current column and current character
+    for i in range(self.limity):
+      self.stdscr.addstr(i+self.addy,self.x,chr(self.stdscr.inch(i+self.addy,self.x) & 0xff),curses.color_pair(1) | curses.A_BOLD)
+    self.stdscr.addstr(self.y+self.addy,self.x,chr(self.stdscr.inch(self.y+self.addy,self.x) & 0xff),curses.color_pair(1) | curses.A_REVERSE)
+
+    # highligth the current key value that we are modifying
+    self.stdscr.addstr(self.limity+3,(self.x*2)+11,chr(self.stdscr.inch(self.limity+3,(self.x*2)+11) & 0xff),curses.color_pair(1))
+    self.stdscr.addstr(self.limity+3,(self.x*2)+12,chr(self.stdscr.inch(self.limity+3,(self.x*2)+12) & 0xff),curses.color_pair(1))
+
+    # refresh the screen
+    self.stdscr.refresh()
+
+  def run(self):
+    # the main function
+
+    try:
+      while True:
+        self.display()
+        self.getkey()
+
+    except KeyboardInterrupt:
+      pass
+
+    ### cleanup terminal after ncurses
+    self.stdscr.keypad(0)
+    curses.curs_set(1)
+    curses.nocbreak()
+    curses.echo()
+    curses.endwin()
+
+
 msgs = "SSBoYXZlIG1ldCB0aGVtIGF0IGNsb3NlIG9mIGRheQ==\n\
 Q29taW5nIHdpdGggdml2aWQgZmFjZXM=\n\
 RnJvbSBjb3VudGVyIG9yIGRlc2sgYW1vbmcgZ3JleQ==\n\
@@ -133,66 +219,7 @@ quadrigrams = ( "that", "ther", "with", "tion",
 "they", "atio", "ever", "from",
 "ough", "were", "hing", "ment")
 
-### init ncurses and do manual guessing
-stdscr = curses.initscr()
-curses.noecho()
-curses.cbreak()
-stdscr.keypad(1)
-curses.curs_set(0)
-curses.start_color()
-curses.use_default_colors()
-curses.init_pair(1, curses.COLOR_RED, -1)
-x = 0
-y = 0
-try:
-  while True:
-    stdscr.addstr(0,0,"("+str(x)+","+str(y)+") - press ctrl+c to exit\n\n")
-    for ct in cts:
-      stdscr.addstr(hideunprintablechars(xors(ct,key))+"\n")
+### manual guessing
 
-    # this prints the current value for the key in hex format
-    pkey = "".join([ chr(k1) for k1 in key])
-    stdscr.addstr("\nkey (hex): "+str(pkey).encode('hex')+"\n")
-
-    # this highlights the current column and current character
-    for i in range(lcts):
-      stdscr.addstr(i+2,x,chr(stdscr.inch(i+2,x) & 0xff),curses.color_pair(1) | curses.A_BOLD)
-    stdscr.addstr(y+2,x,chr(stdscr.inch(y+2,x) & 0xff),curses.color_pair(1) | curses.A_REVERSE)
-
-    # highligth the current key value that we are modifying
-    stdscr.addstr(lcts+3,(x*2)+11,chr(stdscr.inch(lcts+3,(x*2)+11) & 0xff),curses.color_pair(1))
-    stdscr.addstr(lcts+3,(x*2)+12,chr(stdscr.inch(lcts+3,(x*2)+12) & 0xff),curses.color_pair(1))
-
-    # refresh the screen
-    stdscr.refresh()
-
-    # wait for input
-    c = stdscr.getch()
-
-    # normal moving around the screen
-    if c == curses.KEY_LEFT:
-      x = (x - 1) % mxlen
-    elif c == curses.KEY_RIGHT:
-      x = (x + 1) % mxlen
-    elif c == curses.KEY_UP:
-      y = (y - 1) % lcts
-    elif c == curses.KEY_DOWN:
-      y = (y + 1) % lcts
-    elif c == curses.KEY_MOUSE:
-      pass
-    # modifiying the key
-    else:
-      try:
-        key[x] = ord(cts[y][x])^c
-      except:
-        pass
-
-except KeyboardInterrupt:
-  pass
-
-### cleanup terminal after ncurses
-curses.curs_set(1)
-curses.nocbreak()
-stdscr.keypad(0)
-curses.echo()
-curses.endwin()
+g = gui(cts,key)
+g.run()
