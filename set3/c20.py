@@ -2,6 +2,7 @@
 
 import urllib
 import base64
+import c19
 import c18
 import c3
 import string
@@ -16,7 +17,8 @@ key = open("/dev/urandom").read(16)
 cts = list()
 milen = 999
 for msg in msgs.split("\n"):
-    cts.append(c18.ctrencrypt(base64.b64decode(msg),0,key).encode('hex'))
+  if len(msg) > 0:
+    cts.append(c18.ctrencrypt(base64.b64decode(msg),0,key))
     if len(cts[-1]) > 0 and milen > len(cts[-1]):
       milen = len(cts[-1])
 
@@ -52,5 +54,5 @@ for c in "TAISOCMFPWtaisocmfpw":
   if good == True:
     break
 
-for ct in cts:
-  print xors(ct,key).encode('string_escape')
+g = c19.gui(cts,key)
+g.run()

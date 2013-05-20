@@ -5,6 +5,7 @@ import c18
 import c3
 import string
 import curses
+import sys
 
 def hideunprintablechars(s,hc="#"):
   s = list(s)
@@ -19,9 +20,22 @@ def xors(s1,s2):
   return "".join([ chr(ord(c1)^c2) for (c1,c2) in zip(s1,s2)])
 
 class gui:
-
-  def __init__(self,cts,key,addx=0,addy=2):
-    self.stdscr = curses.initscr()
+  '''
+  a class for manual correction ;)
+  '''
+  def __init__(self,cts,key):
+    self.x = 0
+    self.y = 0
+    self.pos = 0
+    self.cts = cts
+    self.limity = len(self.cts)
+    self.key = key
+    self.limitx = len(self.key)
+    self.winscr = curses.initscr()
+    self.maxy,self.maxx = self.winscr.getmaxyx()
+    self.maxy -= 1
+    self.maxx -= 1
+    self.stdscr = curses.newpad(self.limity+200,self.limitx+200)
     self.stdscr.keypad(1)
     curses.curs_set(0)
     curses.start_color()
@@ -29,14 +43,6 @@ class gui:
     curses.init_pair(1, curses.COLOR_RED, -1)
     curses.noecho()
     curses.cbreak()
-    self.x = 0
-    self.y = 0
-    self.addx = addx
-    self.addy = addy
-    self.cts = cts
-    self.limity = len(self.cts)
-    self.key = key
-    self.limitx = len(self.key)
 
   def getkey(self):
 
@@ -51,39 +57,57 @@ class gui:
       self.y = (self.y - 1) % self.limity
     elif c == curses.KEY_DOWN:
       self.y = (self.y + 1) % self.limity
-    # we need to ignore some keypresses
+    elif c == curses.KEY_NPAGE:
+      self.pos = (self.pos + self.maxy) % self.limity
+    elif c == curses.KEY_PPAGE:
+      self.pos = 0
+    # we need to ignore some keys
     elif c == curses.KEY_MOUSE:
       pass
     elif c < 32 or c == 127 or c > 255:
       curses.flash()
     else:
-      # modifiying the encryption key
+      # modifying the encryption key
       try:
         self.key[self.x] = ord(self.cts[self.y][self.x])^c
       except:
         pass
 
-  def display(self):
+  def display_footer(self):
 
-    self.stdscr.addstr(0,0,"cur:("+str(self.x)+","+str(self.y)+") max:("+str(self.limitx)+","+str(self.limity)+") - press ctrl+c to exit\n\n")
+    # print the current value for the key in hex format
+    pkey = "".join([ chr(k1) for k1 in self.key])
+    self.stdscr.addstr("\nkey (hex): "+str(pkey).encode('hex')+"\n\n")
+
+    # print current position of the cursor and its limits
+    self.stdscr.addstr("cur:("+str(self.x)+","+str(self.y)+") max:("+str(self.limitx-1)+","+str(self.limity-1)+") - press ctrl+c to exit\n\n")
+
+    # help
+    self.stdscr.addstr("Use arrows to move around, at chosen position press key\n\
+that you think should be there in a clear text,\nbased on this the key value will be calculated\n\
+and all other ciphertext will be recalculated.")
+
+  def display(self):
+    # always start from top left corner
+    self.stdscr.addstr(0,0,"")
+
+    # print what we have so far
     for ct in self.cts:
       self.stdscr.addstr(hideunprintablechars(xors(ct,self.key))+"\n")
 
-    # this prints the current value for the key in hex format
-    pkey = "".join([ chr(k1) for k1 in self.key])
-    self.stdscr.addstr("\nkey (hex): "+str(pkey).encode('hex')+"\n")
+    self.display_footer()
 
-    # this highlights the current column and current character
+    # highlight the current column and current character
     for i in range(self.limity):
-      self.stdscr.addstr(i+self.addy,self.x,chr(self.stdscr.inch(i+self.addy,self.x) & 0xff),curses.color_pair(1) | curses.A_BOLD)
-    self.stdscr.addstr(self.y+self.addy,self.x,chr(self.stdscr.inch(self.y+self.addy,self.x) & 0xff),curses.color_pair(1) | curses.A_REVERSE)
+      self.stdscr.addstr(i,self.x,chr(self.stdscr.inch(i,self.x) & 0xff),curses.color_pair(1) | curses.A_BOLD)
+    self.stdscr.addstr(self.y,self.x,chr(self.stdscr.inch(self.y,self.x) & 0xff),curses.color_pair(1) | curses.A_REVERSE)
 
-    # highligth the current key value that we are modifying
-    self.stdscr.addstr(self.limity+3,(self.x*2)+11,chr(self.stdscr.inch(self.limity+3,(self.x*2)+11) & 0xff),curses.color_pair(1))
-    self.stdscr.addstr(self.limity+3,(self.x*2)+12,chr(self.stdscr.inch(self.limity+3,(self.x*2)+12) & 0xff),curses.color_pair(1))
+    # highlight the current key value that we are modifying
+    self.stdscr.addstr(self.limity+1,(self.x*2)+11,chr(self.stdscr.inch(self.limity+1,(self.x*2)+11) & 0xff),curses.color_pair(1))
+    self.stdscr.addstr(self.limity+1,(self.x*2)+12,chr(self.stdscr.inch(self.limity+1,(self.x*2)+12) & 0xff),curses.color_pair(1))
 
     # refresh the screen
-    self.stdscr.refresh()
+    self.stdscr.refresh(self.pos,0,0,0,self.maxy,self.maxx)
 
   def run(self):
     # the main function
@@ -104,7 +128,9 @@ class gui:
     curses.endwin()
 
 
-msgs = "SSBoYXZlIG1ldCB0aGVtIGF0IGNsb3NlIG9mIGRheQ==\n\
+if __name__ == "__main__":
+
+  msgs = "SSBoYXZlIG1ldCB0aGVtIGF0IGNsb3NlIG9mIGRheQ==\n\
 Q29taW5nIHdpdGggdml2aWQgZmFjZXM=\n\
 RnJvbSBjb3VudGVyIG9yIGRlc2sgYW1vbmcgZ3JleQ==\n\
 RWlnaHRlZW50aC1jZW50dXJ5IGhvdXNlcy4=\n\
@@ -145,81 +171,81 @@ SGUsIHRvbywgaGFzIGJlZW4gY2hhbmdlZCBpbiBoaXMgdHVybiw=\n\
 VHJhbnNmb3JtZWQgdXR0ZXJseTo=\n\
 QSB0ZXJyaWJsZSBiZWF1dHkgaXMgYm9ybi4="
 
-#### encrypting above messages
-key = open("/dev/urandom").read(16)
-cts = list()
-mxlen = 0    # max length of the CT
-milen = 999  # min length of the CT
-for msg in msgs.split("\n"):
-  cts.append(c18.ctrencrypt(base64.b64decode(msg),0,key))
-  l = len(cts[-1])
-  if l > mxlen:
-    mxlen = l
-  if l < milen:
-    milen = l
+  #### encrypting above messages
+  key = open("/dev/urandom").read(16)
+  cts = list()
+  mxlen = 0    # max length of the CT
+  milen = 999  # min length of the CT
+  for msg in msgs.split("\n"):
+    cts.append(c18.ctrencrypt(base64.b64decode(msg),0,key))
+    l = len(cts[-1])
+    if l > mxlen:
+      mxlen = l
+    if l < milen:
+      milen = l
 
 
-#### breaking it
+  #### breaking it
 
-# prepare the key
-key = [0]*mxlen
+  # prepare the key
+  key = [0]*mxlen
 
-lcts = len(cts)
+  lcts = len(cts)
 
-# do some basic automating guesses
-rev = range(milen)
-for i in range(milen):
-  rev[i] = list()
-
-for i in range(lcts):
-  ct = cts[i]
-  for j in range(milen):
-    rev[j].append(ct[j])
-
-for i in range(milen):
-  out = c3.fcxor(rev[i])
-  if out != None:
-    key[i] = out[0]
-
-# finding the first letter (based on the most common ones):
-# from http://www.cryptograms.org/letter-frequencies.php
-for c in "TAISOCMFPWtaisocmfpw ":
-  key[0] = ord(cts[0][0])^ord(c)
-  revt = [ chr(ord(c1)^key[0]) for c1 in rev[0]]
-  good = True
+  # do some basic automating guesses
+  rev = range(milen)
   for i in range(milen):
-    if not revt[i] in string.letters+" ":
-      good = False
+    rev[i] = list()
+
+  for i in range(lcts):
+    ct = cts[i]
+    for j in range(milen):
+      rev[j].append(ct[j])
+
+  for i in range(milen):
+    out = c3.fcxor(rev[i])
+    if out != None:
+      key[i] = out[0]
+
+  # finding the first letter (based on the most common ones):
+  # from http://www.cryptograms.org/letter-frequencies.php
+  for c in "TAISOCMFPWtaisocmfpw ":
+    key[0] = ord(cts[0][0])^ord(c)
+    revt = [ chr(ord(c1)^key[0]) for c1 in rev[0]]
+    good = True
+    for i in range(milen):
+      if not revt[i] in string.letters+" ":
+        good = False
+        break
+    if good == True:
       break
-  if good == True:
-    break
 
 
-# finding bigrams
-bigrams = ( "th", "he", "in", "er",
-"an", "re", "nd", "on",
-"en", "at", "ou", "ed",
-"ha", "to", "or", "it",
-"is", "hi", "es", "ng")
+  # finding bigrams
+  bigrams = ( "th", "he", "in", "er",
+  "an", "re", "nd", "on",
+  "en", "at", "ou", "ed",
+  "ha", "to", "or", "it",
+  "is", "hi", "es", "ng")
 
-for i in range(0,milen):
-  if key[i] == "\x00":
-    pass
+  for i in range(0,milen):
+    if key[i] == "\x00":
+      pass
 
-# finding trigrams
-trigrams = ( "the", "and", "ing", "her",
-"hat", "his", "tha", "ere",
-"for", "ent", "ion", "ter",
-"was", "you", "ith", "ver",
-"all", "wit", "thi", "tio")
+  # finding trigrams
+  trigrams = ( "the", "and", "ing", "her",
+  "hat", "his", "tha", "ere",
+  "for", "ent", "ion", "ter",
+  "was", "you", "ith", "ver",
+  "all", "wit", "thi", "tio")
 
-quadrigrams = ( "that", "ther", "with", "tion",
-"here", "ould", "ight", "have",
-"hich", "whic", "this", "thin",
-"they", "atio", "ever", "from",
-"ough", "were", "hing", "ment")
+  quadrigrams = ( "that", "ther", "with", "tion",
+  "here", "ould", "ight", "have",
+  "hich", "whic", "this", "thin",
+  "they", "atio", "ever", "from",
+  "ough", "were", "hing", "ment")
 
-### manual guessing
+  ### manual guessing
 
-g = gui(cts,key)
-g.run()
+  g = gui(cts,key)
+  g.run()
