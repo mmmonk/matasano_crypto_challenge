@@ -40,5 +40,5 @@ for i in range(86400):
   # matching the hash both ways - just in case
   if hashlib.md5(str(rnv)+userid).hexdigest() == token or\
       hashlib.md5(userid+str(rnv)).hexdigest() == token:
-    print "the reset token was generated using timestamp: "+str(ts)
+    print "the reset token could have been generated using timestamp: "+str(ts)
     break
