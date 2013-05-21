@@ -12,7 +12,6 @@ time.sleep(random.randint(40,3600))
 rng = c21.MT19937(ts)
 v = rng.extract_number()
 
-
 # get the current timestamp
 
 ts1 = int(time.time())

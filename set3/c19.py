@@ -5,7 +5,6 @@ import c18
 import c3
 import string
 import curses
-import sys
 
 def hideunprintablechars(s,hc="#"):
   s = list(s)
@@ -20,14 +19,166 @@ def xors(s1,s2):
   return "".join([ chr(ord(c1)^c2) for (c1,c2) in zip(s1,s2)])
 
 def checkkey(cts,k,i):
+
+  countspecial = 0
   for ct in cts:
     try:
       c = chr(ord(ct[i])^k[i])
     except:
       c = " "
-    if c not in string.printable:
+    if not c in string.printable:
       return False
+    if c in string.punctuation:
+      countspecial += 1
+    if c in "#*~`{}[]|":
+      return False
+
+  if countspecial > len(cts)*0.2:
+    return False
   return True
+
+
+def basicautoguessing(cts,key,milen):
+
+  lcts = len(cts)
+
+  # do some basic automating guesses
+  rev = range(milen)
+  for i in range(milen):
+    rev[i] = list()
+
+  for i in range(lcts):
+    ct = cts[i]
+    for j in range(milen):
+      rev[j].append(ct[j])
+
+  for i in range(milen):
+    out = c3.fcxor(rev[i])
+    if out != None:
+      key[i] = out[0]
+
+  # finding the first letter (based on the most common ones):
+  # from http://www.cryptograms.org/letter-frequencies.php
+  for c in "TAISOCMFPWtaisocmfpw ":
+    key[0] = ord(cts[0][0])^ord(c)
+    revt = [ chr(ord(c1)^key[0]) for c1 in rev[0]]
+    good = True
+    for i in range(milen):
+      if not revt[i] in string.letters+" '":
+        good = False
+        break
+    if good == True:
+      break
+
+  return key
+
+def bigrams(cts,key):
+
+  # finding bigrams
+  bigrams = ( "th", "he", "in", "er",
+  "an", "re", "nd", "on",
+  "en", "at", "ou", "ed",
+  "ha", "to", "or", "it",
+  "is", "hi", "es", "ng",
+  ' t', ' a', ' i', ' s',
+  ' o', ' c', ' m', ' f',
+  ' p', ' w')
+
+  for i in range(len(key)):
+    if key[i] == 0:
+      for ct in cts:
+        try:
+          c = ct[i]
+        except:
+          continue
+        pre = chr(ord(ct[i-1])^key[i-1])
+        suf = chr(ord(ct[i+1])^key[i+1]) if i < len(ct)-1 else ""
+        found = False
+        for bi in bigrams:
+          if bi[0] == pre:
+            k = key[:]
+            k[i] = ord(c)^ord(bi[1])
+            if checkkey(cts,k,i):
+              found = True
+              key = k[:]
+              break
+          elif bi[1] == suf:
+            k = key[:]
+            k[i] = ord(c)^ord(bi[0])
+            if checkkey(cts,k,i):
+              found = True
+              key = k[:]
+              break
+        if found:
+          break
+
+  return key
+
+def trigrams(cts,key):
+
+  # finding trigrams
+  trigrams = ( "the", "and", "ing", "her",
+  "hat", "his", "tha", "ere",
+  "for", "ent", "ion", "ter",
+  "was", "you", "ith", "ver",
+  "all", "wit", "thi", "tio")
+
+  for i in range(1,len(key)):
+    if key[i] == 0:
+      for ct in cts:
+        try:
+          c = ct[i]
+        except:
+          continue
+        pre = chr(ord(ct[i-1])^key[i-1])
+        suf = chr(ord(ct[i+1])^key[i+1]) if i < len(ct)-1 else ""
+        found = False
+        for tri in trigrams:
+          if tri[0] == pre and tri[2] == suf:
+            k = key[:]
+            k[i] = ord(c)^ord(tri[1])
+            if checkkey(cts,k,i):
+              found = True
+              key = k[:]
+              break
+        if i > 1:
+          pre = chr(ord(ct[i-2])^key[i-2])
+          suf = chr(ord(ct[i-1])^key[i-1])
+          found = False
+          for tri in trigrams:
+            if tri[0] == pre and tri[1] == suf:
+              k = key[:]
+              k[i] = ord(c)^ord(tri[2])
+              if checkkey(cts,k,i):
+                found = True
+                key = k[:]
+                break
+        if i < len(ct)-2:
+          pre = chr(ord(ct[i+1])^key[i+1])
+          suf = chr(ord(ct[i+2])^key[i+2])
+          found = False
+          for tri in trigrams:
+            if tri[1] == pre and tri[2] == suf:
+              k = key[:]
+              k[i] = ord(c)^ord(tri[0])
+              if checkkey(cts,k,i):
+                found = True
+                key = k[:]
+                break
+        if found:
+          break
+
+  return key
+
+def quadrigrams(cts,key):
+
+  quadrigrams = ( "that", "ther", "with", "tion",
+  "here", "ould", "ight", "have",
+  "hich", "whic", "this", "thin",
+  "they", "atio", "ever", "from",
+  "ough", "were", "hing", "ment")
+
+  return key
 
 class gui:
   '''
@@ -45,7 +196,7 @@ class gui:
     self.maxy,self.maxx = self.winscr.getmaxyx()
     self.maxy -= 1
     self.maxx -= 1
-    self.stdscr = curses.newpad(self.limity+200,self.limitx+200)
+    self.stdscr = curses.newpad(self.limity+200,self.limitx*2+10)
     self.stdscr.keypad(1)
     curses.curs_set(0)
     curses.start_color()
@@ -70,6 +221,8 @@ class gui:
     elif c == curses.KEY_NPAGE:
       self.pos = (self.pos + self.maxy) % self.limity
     elif c == curses.KEY_PPAGE:
+      self.pos = (self.pos - self.maxy) % self.limity
+    elif c == curses.KEY_HOME:
       self.pos = 0
     # we need to ignore some keys
     elif c == curses.KEY_MOUSE:
@@ -95,7 +248,7 @@ class gui:
     # help
     self.stdscr.addstr("Use arrows to move around, at chosen position press key\n\
 that you think should be there in a clear text,\nbased on this the key value will be calculated\n\
-and all other ciphertext will be recalculated.")
+and all other ciphertext will be recalculated.\nPGDWN and PGUP scroll the whole page. HOME resets.")
 
   def display(self):
     # always start from top left corner
@@ -194,88 +347,17 @@ QSB0ZXJyaWJsZSBiZWF1dHkgaXMgYm9ybi4="
     if l < milen:
       milen = l
 
-
-  #### breaking it
+  #### breaking them
 
   # prepare the key
   key = [0]*mxlen
 
-  lcts = len(cts)
+  # automated guessing
+  key = basicautoguessing(cts,key,milen)
+  key = bigrams(cts,key)
+  key = trigrams(cts,key)
+  #key = quadrigrams(cts,key)
 
-  # do some basic automating guesses
-  rev = range(milen)
-  for i in range(milen):
-    rev[i] = list()
-
-  for i in range(lcts):
-    ct = cts[i]
-    for j in range(milen):
-      rev[j].append(ct[j])
-
-  for i in range(milen):
-    out = c3.fcxor(rev[i])
-    if out != None:
-      key[i] = out[0]
-
-  # finding the first letter (based on the most common ones):
-  # from http://www.cryptograms.org/letter-frequencies.php
-  for c in "TAISOCMFPWtaisocmfpw ":
-    key[0] = ord(cts[0][0])^ord(c)
-    revt = [ chr(ord(c1)^key[0]) for c1 in rev[0]]
-    good = True
-    for i in range(milen):
-      if not revt[i] in string.letters+" ":
-        good = False
-        break
-    if good == True:
-      break
-
-
-  # finding bigrams
-  bigrams = ( "th", "he", "in", "er",
-  "an", "re", "nd", "on",
-  "en", "at", "ou", "ed",
-  "ha", "to", "or", "it",
-  "is", "hi", "es", "ng")
-
-  for i in range(0,milen):
-    if key[i] == 0:
-      for ct in cts:
-        pre = ct[i-1] if i > 0 else ""
-        suf = ct[i+1] if i < len(ct)-1 else ""
-        found = False
-        for bi in bigrams:
-          if bi[0] == pre:
-            k = key[:]
-            k[i] = ord(ct[i])^ord(bi[1])
-            if checkkey(cts,k,i):
-              found = True
-              key = k[:]
-              break
-          elif bi[1] == suf:
-            k = key[:]
-            k[i] = ord(ct[i])^ord(bi[0])
-            if checkkey(cts,k,i):
-              found = True
-              key = k[:]
-              break
-        if found:
-          break
-
-  # finding trigrams
-  trigrams = ( "the", "and", "ing", "her",
-  "hat", "his", "tha", "ere",
-  "for", "ent", "ion", "ter",
-  "was", "you", "ith", "ver",
-  "all", "wit", "thi", "tio")
-
-  quadrigrams = ( "that", "ther", "with", "tion",
-  "here", "ould", "ight", "have",
-  "hich", "whic", "this", "thin",
-  "they", "atio", "ever", "from",
-  "ough", "were", "hing", "ment")
-
-  ### manual guessing
-
+  # manual guessing
   g = gui(cts,key)
   g.run()
