@@ -196,7 +196,7 @@ class gui:
     self.maxy,self.maxx = self.winscr.getmaxyx()
     self.maxy -= 1
     self.maxx -= 1
-    self.stdscr = curses.newpad(self.limity+200,self.limitx*2+10)
+    self.stdscr = curses.newpad(self.limity+100,self.limitx*2+20)
     self.stdscr.keypad(1)
     curses.curs_set(0)
     curses.start_color()
