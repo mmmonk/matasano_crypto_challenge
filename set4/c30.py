@@ -67,25 +67,18 @@ class md4:
       for j in xrange(16,80):
         w.append(rol32(w[j-3] ^ w[j-8] ^ w[j-14] ^ w[j-16],1))
 
-      a = self.h0
-      b = self.h1
-      c = self.h2
-      d = self.h3
-      e = self.h4
+      AA = self.A
+      BB = self.B
+      CC = self.C
+      DD = self.D
 
       for j in xrange(0,80):
         if j < 20:
           f = (b & c) | ((~ b) & d)
-          k = 0x5A827999
         elif j < 40:
-          f = b ^ c ^ d
-          k = 0x6ED9EBA1
+          g = b ^ c ^ d
         elif j < 60:
-          f = (b & c) | (b & d) | (c & d)
-          k = 0x8F1BBCDC
-        else:
-          f = b ^ c ^ d
-          k = 0xCA62C1D6
+          h = (b & c) | (b & d) | (c & d)
 
         temp = (rol32(a,5) + f + e + k + w[j]) & 0xffffffff
         e = d
@@ -94,11 +87,10 @@ class md4:
         b = a
         a = temp
 
-      self.h0 = (self.h0 + a) & 0xffffffff
-      self.h1 = (self.h1 + b) & 0xffffffff
-      self.h2 = (self.h2 + c) & 0xffffffff
-      self.h3 = (self.h3 + d) & 0xffffffff
-      self.h4 = (self.h4 + e) & 0xffffffff
+      self.A = (self.h0 + a) & 0xffffffff
+      self.B = (self.h1 + b) & 0xffffffff
+      self.C = (self.h2 + c) & 0xffffffff
+      self.D = (self.h3 + d) & 0xffffffff
 
     return struct.pack('>IIIII',self.h0,self.h1,self.h2,self.h3,self.h4)
 
