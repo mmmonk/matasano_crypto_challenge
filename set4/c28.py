@@ -34,8 +34,11 @@ class sha1:
     self.h3 = 0x10325476
     self.h4 = 0xC3D2E1F0
     self.msg = msg
+    self.mlen = len(msg)
+    self.omsg = ""
+    self.omlen = 0
 
-  def extlen(self,orghash):
+  def extlen(self,orghash,msglen):
 
     hs = struct.unpack(">IIIII",orghash.decode('hex'))
 
@@ -45,12 +48,17 @@ class sha1:
     self.h3 = hs[3]
     self.h4 = hs[4]
 
+    self.omsg = padding(msglen)
+    self.omlen = msglen
+
   def digest(self,msg=""):
 
     if msg == "":
       msg = self.msg
+    else:
+      msg = self.omsg+msg
 
-    msg += padding(len(msg))
+    msg += padding(self.omlen+len(msg))
 
     nchunk = 0
     for i in xrange(0,int(len(msg)/64)):

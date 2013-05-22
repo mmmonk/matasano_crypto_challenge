@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import BaseHTTPServer
 import c28
 
 def hmac(key,msg,algo):
@@ -17,7 +18,14 @@ def hmac(key,msg,algo):
 
   return algo(opad + algo(ipad + msg).digest())
 
+def run(server_class=BaseHTTPServer.HTTPServer, handler_class=BaseHTTPServer.BaseHTTPRequestHandler):
+  server_address = ('', 8000)
+  httpd = server_class(server_address, handler_class)
+  httpd.serve_forever()
+
 if __name__ == "__main__":
 
   print hmac("key","The quick brown fox jumps over the lazy dog",c28.sha1).hexdigest()
   print hmac("","",c28.sha1).hexdigest()
+  run()
+
