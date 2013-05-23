@@ -26,15 +26,14 @@ class sha1:
 
   blocksize = 64
 
-  def __init__(self,msg=""):
+  def __init__(self,imsg=""):
 
     self.h0 = 0x67452301
     self.h1 = 0xEFCDAB89
     self.h2 = 0x98BADCFE
     self.h3 = 0x10325476
     self.h4 = 0xC3D2E1F0
-    self.msg = msg
-    self.mlen = len(msg)
+    self.mesg = imsg
     self.omsg = ""
     self.omlen = 0
 
@@ -51,12 +50,11 @@ class sha1:
     self.omsg = padding(msglen)
     self.omlen = msglen
 
-  def digest(self,msg=""):
+  def digest(self,imsg=""):
 
-    if msg == "":
-      msg = self.msg
-    else:
-      msg = self.omsg+msg
+    msg = imsg
+    if imsg != "":
+      msg = self.omsg + imsg
 
     msg += padding(self.omlen+len(msg))
 
@@ -103,8 +101,20 @@ class sha1:
 
     return struct.pack('>IIIII',self.h0,self.h1,self.h2,self.h3,self.h4)
 
-  def hexdigest(self):
-    return self.digest().encode('hex')
+  def hexdigest(self,imsg=""):
+    return self.digest(imsg).encode('hex')
+
+def SHA1test():
+  '''
+  test vectors
+  '''
+  if sha1().hexdigest("The quick brown fox jumps over the lazy dog") != "2fd4e1c67a2d28fced849ee1bb76e7391b93eb12":
+    print "1. not OK"
+    return False
+  if sha1().hexdigest("") != "da39a3ee5e6b4b0d3255bfef95601890afd80709":
+    print "2. not OK"
+    return False
+  return True
 
 if __name__ == "__main__":
   try:
@@ -112,5 +122,8 @@ if __name__ == "__main__":
   except:
     msg = "some test text message"
 
-  key = open("/dev/urandom").read(8).encode('hex')
-  print sha1(key+msg).hexdigest()+" "+key+msg
+  if not SHA1test():
+    print "NOT OK"
+  else:
+    key = open("/dev/urandom").read(8).encode('hex')
+    print sha1(key+msg).hexdigest()+" "+key+msg
