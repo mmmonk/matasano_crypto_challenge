@@ -7,16 +7,14 @@ def rol32(word,count):
     return (word << count | word >> (32 - count)) & 0xFFFFFFFF
 
 def r1(a, b, c, d, x, s):
-  f = ((b&c) | ((~b)&d))
-  return rol32((a + f + x ) & 0xFFFFFFFF,s)
-
+  f = ((b & c) | ((~b) & d))
+  return rol32(( a + f + x )             & 0xFFFFFFFF,s)
 def r2(a, b, c, d, x, s):
-  f = ((b&c) | (b&d) | (c&d))
-  return rol32((a + f + x + 0x5A827999) & 0xFFFFFFFF,s)
-
+  f = ((b & c) | (b & d) | (c & d))
+  return rol32(( a + f + x + 0x5A827999) & 0xFFFFFFFF,s)
 def r3(a, b, c, d, x, s):
   f = b ^ c ^ d
-  return rol32((a + f + x + 0x6ED9EBA1) & 0xFFFFFFFF,s)
+  return rol32(( a + f + x + 0x6ED9EBA1) & 0xFFFFFFFF,s)
 
 def padding(msglen):
 
@@ -26,7 +24,7 @@ def padding(msglen):
   pad = "\x80"
   for i in xrange(0,missing_chunks):
     pad += "\x00"
-  pad += struct.pack('>Q',msglen*8)
+  pad += struct.pack('<Q',msglen*8)
 
   return pad
 
@@ -131,9 +129,9 @@ class md4:
     msg += padding(len(msg))
 
     for i in range(0,len(msg)/64):
-      self.__transform(list(struct.unpack('>IIIIIIIIIIIIIIII',msg[i*64:(i+1)*64])))
+      self.__transform(list(struct.unpack('<IIIIIIIIIIIIIIII',msg[i*64:(i+1)*64])))
 
-    out = struct.pack('>IIII',self.A,self.B,self.C,self.D)
+    out = struct.pack('<IIII',self.A,self.B,self.C,self.D)
     self.__setinit()
     return out
 
