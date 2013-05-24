@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 
+import c28
 import sys
 import struct
+import random
 
 def rol32(word,count):
     return (word << count | word >> (32 - count)) & 0xFFFFFFFF
@@ -39,7 +41,8 @@ class md4:
   def __init__(self,imsg=""):
 
     self.__setinit()
-    self.msg = imsg
+    self.mesg = imsg
+    self.lmsg = len(imsg)
 
   def __setinit(self):
 
@@ -47,15 +50,6 @@ class md4:
     self.B = 0xEFCDAB89
     self.C = 0x98BADCFE
     self.D = 0x10325476
-
-  def extlen(self,orghash):
-
-    hs = struct.unpack(">IIII",orghash.decode('hex'))
-
-    self.A = hs[0]
-    self.B = hs[1]
-    self.C = hs[2]
-    self.D = hs[3]
 
   def __transform(self,x):
 
@@ -122,11 +116,13 @@ class md4:
 
   def digest(self,imsg=""):
 
-    msg = self.msg
+    msg = self.mesg
+    lmsg = self.lmsg
     if imsg != "":
       msg = imsg
+      lmsg = len(imsg)
 
-    msg += padding(len(msg))
+    msg += padding(lmsg)
 
     for i in range(0,len(msg)/64):
       self.__transform(list(struct.unpack('<IIIIIIIIIIIIIIII',msg[i*64:(i+1)*64])))
@@ -158,15 +154,48 @@ class md4:
         return False
     return True
 
+class md4ext(md4):
+
+  def extlen(self,orghash,msglen,imsg):
+
+    hs = struct.unpack("<IIII",orghash.decode('hex'))
+
+    self.A = hs[0]
+    self.B = hs[1]
+    self.C = hs[2]
+    self.D = hs[3]
+
+    self.mesg = imsg
+    tempmsg = padding(msglen)+imsg
+    self.lmsg = msglen + len(tempmsg)
+    return tempmsg
+
+def random_line(afile):
+  line = next(afile)
+  for num, aline in enumerate(afile):
+    if random.randrange(num + 2): continue
+    line = aline
+  return line.strip()+"::"
+
 if __name__ == "__main__":
-  try:
-    msg = sys.argv[1]
-  except:
-    msg = "some test text message"
 
   if not md4().test():
     print "tests failed"
   else:
     print "all tests OK"
-    key = open("/dev/urandom").read(8).encode('hex')
-    print md4(key+msg).hexdigest()+" "+key+msg
+
+    try:
+      key = random_line(open("/usr/share/dict/words"))
+    except:
+      print "can't open /usr/share/dict/words will use secret word \"secret\""
+      key = "secret"
+
+    msg = "comment1=cooking%20MCs;userdata=foo;comment2=%20like%20a%20pound%20of%20bacon"
+    orghash = md4(key+msg).hexdigest()
+    print orghash+" => "+key+msg
+
+    msg2add = ";admin=true"
+    att = md4ext()
+    add = att.extlen(orghash,len(key+msg),msg2add)
+    print att.hexdigest()
+    print md4(key+msg+add).hexdigest()+" => "+key+msg+add.encode('string_escape')

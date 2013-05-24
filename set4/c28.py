@@ -31,10 +31,10 @@ class sha1:
 
     self.__setinit()
     self.mesg = imsg
-    self.omsg = ""
-    self.omlen = 0
+    self.lmsg = len(imsg)
 
   def __setinit(self):
+
     self.h0 = 0x67452301
     self.h1 = 0xEFCDAB89
     self.h2 = 0x98BADCFE
@@ -79,26 +79,15 @@ class sha1:
     self.h3 = (self.h3 + d) & 0xFFFFFFFF
     self.h4 = (self.h4 + e) & 0xFFFFFFFF
 
-  def extlen(self,orghash,msglen):
-
-    hs = struct.unpack(">IIIII",orghash.decode('hex'))
-
-    self.h0 = hs[0]
-    self.h1 = hs[1]
-    self.h2 = hs[2]
-    self.h3 = hs[3]
-    self.h4 = hs[4]
-
-    self.omsg = padding(msglen)
-    self.omlen = msglen
-
   def digest(self,imsg=""):
 
-    msg = imsg
+    msg = self.mesg
+    lmsg = self.lmsg
     if imsg != "":
-      msg = self.omsg + imsg
+      msg = imsg
+      lmsg = len(imsg)
 
-    msg += padding(self.omlen+len(msg))
+    msg += padding(lmsg)
 
     for i in range(0,len(msg)/64):
       self.__transform(list(struct.unpack('>IIIIIIIIIIIIIIII',msg[i*64:(i+1)*64])))
@@ -140,5 +129,5 @@ if __name__ == "__main__":
   if not sha1().test():
     print "NOT OK"
   else:
-    key = open("/dev/urandom").read(8).encode('hex')
-    print sha1(key+msg).hexdigest()+" "+key+msg
+    key = "da39a3ee5e6"
+    print sha1(key+msg).hexdigest()+" => "+key+msg
