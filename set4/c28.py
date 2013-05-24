@@ -5,8 +5,7 @@ import struct
 
 
 def rol32(word,count):
-  word = (word << count | word >> (32 - count)) & 0xFFFFFFFF
-  return word
+  return (word << count | word >> (32 - count)) & 0xFFFFFFFF
 
 def padding(msglen):
 
@@ -21,21 +20,26 @@ def padding(msglen):
   return pad
 
 class sha1:
-
-  # https://en.wikipedia.org/wiki/SHA-1
+  '''
+  https://en.wikipedia.org/wiki/SHA-1
+  http://www.ietf.org/rfc/rfc3174.txt
+  '''
 
   blocksize = 64
 
   def __init__(self,imsg=""):
 
+    self._setinit()
+    self.mesg = imsg
+    self.omsg = ""
+    self.omlen = 0
+
+  def _setinit(self):
     self.h0 = 0x67452301
     self.h1 = 0xEFCDAB89
     self.h2 = 0x98BADCFE
     self.h3 = 0x10325476
     self.h4 = 0xC3D2E1F0
-    self.mesg = imsg
-    self.omsg = ""
-    self.omlen = 0
 
   def extlen(self,orghash,msglen):
 
@@ -58,11 +62,8 @@ class sha1:
 
     msg += padding(self.omlen+len(msg))
 
-    nchunk = 0
-    for i in xrange(0,int(len(msg)/64)):
-      chunk = msg[nchunk*64:(nchunk+1)*64]
-      nchunk += 1
-      w = list(struct.unpack('>IIIIIIIIIIIIIIII',chunk))
+    for i in xrange(0,len(msg)/64):
+      w = list(struct.unpack('>IIIIIIIIIIIIIIII',msg[i*64:(i+1)*64]))
       for j in xrange(16,80):
         w.append(rol32(w[j-3] ^ w[j-8] ^ w[j-14] ^ w[j-16],1))
 
@@ -86,35 +87,46 @@ class sha1:
           f = b ^ c ^ d
           k = 0xCA62C1D6
 
-        temp = (rol32(a,5) + f + e + k + w[j]) & 0xffffffff
+        temp = (rol32(a,5) + f + e + k + w[j]) & 0xFFFFFFFF
         e = d
         d = c
         c = rol32(b,30)
         b = a
         a = temp
 
-      self.h0 = (self.h0 + a) & 0xffffffff
-      self.h1 = (self.h1 + b) & 0xffffffff
-      self.h2 = (self.h2 + c) & 0xffffffff
-      self.h3 = (self.h3 + d) & 0xffffffff
-      self.h4 = (self.h4 + e) & 0xffffffff
+      self.h0 = (self.h0 + a) & 0xFFFFFFFF
+      self.h1 = (self.h1 + b) & 0xFFFFFFFF
+      self.h2 = (self.h2 + c) & 0xFFFFFFFF
+      self.h3 = (self.h3 + d) & 0xFFFFFFFF
+      self.h4 = (self.h4 + e) & 0xFFFFFFFF
 
-    return struct.pack('>IIIII',self.h0,self.h1,self.h2,self.h3,self.h4)
+    out = struct.pack('>IIIII',self.h0,self.h1,self.h2,self.h3,self.h4)
+    self._setinit()
+    return out
 
   def hexdigest(self,imsg=""):
     return self.digest(imsg).encode('hex')
 
-def SHA1test():
-  '''
-  test vectors
-  '''
-  if sha1().hexdigest("The quick brown fox jumps over the lazy dog") != "2fd4e1c67a2d28fced849ee1bb76e7391b93eb12":
-    print "1. not OK"
-    return False
-  if sha1().hexdigest("") != "da39a3ee5e6b4b0d3255bfef95601890afd80709":
-    print "2. not OK"
-    return False
-  return True
+  def test(self):
+    '''
+    test vectors
+    '''
+
+    test_vectors = {
+      "": "da39a3ee5e6b4b0d3255bfef95601890afd80709",
+      "a": "86f7e437faa5a7fce15d1ddcb9eaeaea377667b8",
+      "abc": "a9993e364706816aba3e25717850c26c9cd0d89d",
+      "message digest": "c12252ceda8be8994d5fa0290a47231c1d16aae3",
+      "abcdefghijklmnopqrstuvwxyz": "32d10c7b8cf96570ca04ce37f2a19d84240d3a89",
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789": "761c457bf73b14d27e9e9265c46f4b4dda11f940",
+      "12345678901234567890123456789012345678901234567890123456789012345678901234567890": "50abf5706a150990a08b2c5ea40fa0e585554732",
+      "The quick brown fox jumps over the lazy dog": "2fd4e1c67a2d28fced849ee1bb76e7391b93eb12"}
+
+    for tt in test_vectors:
+      if self.hexdigest(tt) != test_vectors[tt]:
+        print "\""+tt+"\" "+self.hexdigest(tt)+" should be "+test_vectors[tt]
+        return False
+    return True
 
 if __name__ == "__main__":
   try:
@@ -122,7 +134,7 @@ if __name__ == "__main__":
   except:
     msg = "some test text message"
 
-  if not SHA1test():
+  if not sha1().test():
     print "NOT OK"
   else:
     key = open("/dev/urandom").read(8).encode('hex')
