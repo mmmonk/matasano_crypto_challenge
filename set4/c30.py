@@ -182,7 +182,6 @@ if __name__ == "__main__":
   if not md4().test():
     print "tests failed"
   else:
-    print "all tests OK"
 
     try:
       key = random_line(open("/usr/share/dict/words"))
@@ -192,10 +191,15 @@ if __name__ == "__main__":
 
     msg = "comment1=cooking%20MCs;userdata=foo;comment2=%20like%20a%20pound%20of%20bacon"
     orghash = md4(key+msg).hexdigest()
+    print "original hash: key+msg"
     print orghash+" => "+key+msg
 
+    print "now lets extend this hash, we assume knowledge of only the hashed value ("+orghash+")\
+ and length of the secret key, the \""+msg+"\" is publicly known (so we know the length of it).\
+ This allows us to add anything to the end of the calculation (plus padding before our suffix)."
     msg2add = ";admin=true"
     att = md4ext()
     add = att.extlen(orghash,len(key+msg),msg2add)
     print att.hexdigest()
+    print "this hash is calculated based on the key+msg+padding+oursuffix it should match the one above."
     print md4(key+msg+add).hexdigest()+" => "+key+msg+add.encode('string_escape')
