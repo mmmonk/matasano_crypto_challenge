@@ -3,6 +3,7 @@
 import urllib2
 import time
 
+
 url = "http://127.0.0.1:9000/test?file="
 fn = "c31s.py"
 
@@ -18,22 +19,20 @@ def checkurl(url,fn,sig):
   return (en,ok)
 
 if __name__ == "__main__":
-  tries = 1 # 10 is enough for 0.005 seconds (5 ms)
   sig = [0] * 20
 
   try:
+    # this is just to make sure that the server caches the file
+    checkurl(url,fn,"".join([chr(c) for c in sig]).encode('hex'))
     for idx in range(20):
-      print "idx["+str(idx)+"] =",
+      print "idx["+str(idx).zfill(2)+"]=",
       a = list()
       for i in range(256):
         sig[idx] = i
-        b = list()
-        t = 0
-        rc = 0
-        for i in range(tries):
-          t, rc = checkurl(url,fn,"".join([chr(c) for c in sig]).encode('hex'))
-          b.append(t)
-        a.append(sum(b)/tries)
+        t, rc = checkurl(url,fn,"".join([chr(c) for c in sig]).encode('hex'))
+        a.append(t)
+        if len(a) > 1 and abs(a[-2]-a[-1]) > 0.1:
+          break
 
       sig[idx] =  a.index(max(a))
       print hex(sig[idx]).replace("0x","").zfill(2)+"\a"

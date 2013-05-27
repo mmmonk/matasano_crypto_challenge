@@ -29,7 +29,7 @@ class hmac_check:
       sig = hmac("secret",open(var.file).read(),c28.sha1).digest()
     except:
       sig = "\x00"
-    if insecure_compare(sig,var.signature,0.005):
+    if insecure_compare(sig,var.signature,0.001):
       return "OK"
     raise web.internalerror()
 
