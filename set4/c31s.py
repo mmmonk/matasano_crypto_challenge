@@ -4,6 +4,7 @@ import web
 import c28
 import time
 
+
 def hmac(key,msg,algo):
   '''
   generic HMAC function
@@ -21,20 +22,18 @@ def hmac(key,msg,algo):
 
 
 class hmac_check:
-  def GET(self, name):
-    var = web.input(file="c31.py",signature="0")
+
+  def GET(self):
+    var = web.input(file="c31s.py",signature="0")
     try:
       sig = hmac("secret",open(var.file).read(),c28.sha1).digest()
     except:
       sig = "\x00"
-    if insecure_compare(sig,var.signature):
-      return 'OK File: ' + str(var.file) + ' ' + var.signature
+    if insecure_compare(sig,var.signature,0.5):
+      return "OK"
+    raise web.internalerror()
 
-      #raise web.internalerror()
-
-    return 'Nope File: ' + str(var.file) + ' ' + sig.encode('hex')
-
-def insecure_compare(s1,hs2):
+def insecure_compare(s1,hs2,st=0):
   try:
     s2 = hs2.decode('hex')
   except:
@@ -43,20 +42,23 @@ def insecure_compare(s1,hs2):
   for (c1,c2) in zip (s1,s2):
     if c1 != c2:
       return False
-    time.sleep(0.5)
+    time.sleep(st)
   return True
 
-class MyApplication(web.application):
+class MyWrongHmacApp(web.application):
   def run(self, port=9000, *middleware):
     func = self.wsgifunc(*middleware)
     return web.httpserver.runsimple(func, ('127.0.0.1', port))
 
 def internalerror():
-      return web.internalerror("you are wrrooooooonggg.")
+  return web.internalerror("you are wrrooooooonggg.")
 
-if __name__ == "__main__":
-
-  urls = ( '/test?(.*)', 'hmac_check')
-  app = MyApplication(urls, globals())
+def webserver(sleeptime=0):
+  urls = ( '/test?.*', 'hmac_check')
+  app = MyWrongHmacApp(urls, globals())
   app.internalerror = internalerror
   app.run()
+
+if __name__ == "__main__":
+  webserver()
+
