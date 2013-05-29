@@ -5,82 +5,95 @@ import time
 import c31c
 import numpy
 import socket
+import sys
 
 url = "http://127.0.0.1:9001/test?file="
 fn = "c32s.py"
 
-def checkurl(url,fn,sig):
+def checkurl(fn,sig):
+
+  msg = "GET /test?file="+fn+"&signature="+sig+" HTTP/1.1\r\nHost: 127.0.0.1:9001\r\nConnection: close\r\n\r\n"
 
   s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
   s.setsockopt(socket.IPPROTO_TCP,socket.TCP_NODELAY,1)
   s.connect(("127.0.0.1",9001))
-  msg="GET /test?file="+fn+"?signature="+sig+" HTTP/1.1\r\n\
-Accept-Encoding: identity\r\n\
-Host: 127.0.0.1:9001\r\n\
-Connection: close\r\n\
-\r\n"
-  st = time.time()
+
+  ts = time.time()
   s.send(msg)
-  data = s.recv(20)
-  et = time.time() - st
+  data = s.recv(30)
+  ts = time.time() - ts
+  s.shutdown(socket.SHUT_RDWR)
+
   ok = False
   if "200" in data:
     ok = True
-  return et, ok
 
+  return ts, ok
 
-def test4extream(value ,mean,stddev,multi=1):
-  if (value > (mean + (multi * stddev))) or \
-    (value < (mean - (multi * stddev))):
+def test4extream(value, mean, stddev):
+  if (value > (mean + stddev)) or (value < (mean - stddev)):
     return False
   return True
 
+def test1char(sig,idx,tries,url,fn):
+
+  a = range(256)    # this holds the mean values for all the numbers tested
+  left = range(256) # this holds the values of b[] there were not removed due to extreme test
+  for i in range(256):
+    sig[idx] = i
+    b = list()      # this holds the times for all the tests for a give value
+    for j in range(tries):
+      t, rc = checkurl(fn,"".join([chr(c) for c in sig]).encode('hex'))
+      if rc:
+        print "done, this works: "+url+fn+"&signature="+"".join([chr(c) for c in sig]).encode('hex')
+        sys.exit(0)
+      else:
+        b.append(t)
+    # this is to collect some data
+    #open("c32c_data_"+str(idx).zfill(3)+"_"+chr(i).encode('hex').zfill(2)+".txt","w").write(str(b))
+    mean = numpy.mean(b)
+    std = numpy.std(b)
+    b = [v for v in b if test4extream(v,mean,std)]
+    a[i] = numpy.mean(b)
+    left[i] = len(b)
+
+  return a.index(max(a)),a,left
+
 if __name__ == "__main__":
-  '''
-  how many samples we need to gather from a single value
-  100 is enough for delay of 0.005 s
 
-  '''
-  tries = 250 # tune this value
-
+  tries = 1 # initial value this will be auto adjusted later
   sig = [0] * 20 # numbers of bytes in the signature
 
   try:
-    # this is just to make sure that the server caches the file
-    c31c.checkurl(url,fn,"".join([chr(c) for c in sig]).encode('hex'))
+
+    # this is just to make sure that the server has the file in memory/cache
+    checkurl(fn,"".join([chr(c) for c in sig]).encode('hex'))
 
     for idx in range(20):
 
-      a = list()    # this holds the mean values for all the numbers tested
-      left = list() # this holds the values of b[] there were not removed due to extreme test
-      for i in range(256):
-        sig[idx] = i
-        b = list()  # this holds the times for all the tests for a give value
-        t = 0
-        rc = 0
-        for j in range(tries):
-          t, rc = checkurl(url,fn,"".join([chr(c) for c in sig]).encode('hex'))
-          if rc:
-            sig[idx] = i
-            print "done, trying: "+url+fn+"&signature="+"".join([chr(c) for c in sig]).encode('hex')
-            if c31c.checkurl(url,fn,"".join([chr(c) for c in sig]).encode('hex'))[1]:
-              print "Looks good :)"
-            else:
-              print "Doesn't look good :("
-            sys.exit(0)
-          else:
-            b.append(t)
-        # this is to collect some data
-        #open("c32c_data_"+str(idx).zfill(3)+"_"+chr(i).encode('hex').zfill(2)+".txt","w").write(str(b))
-        if len(b) > 1:
-          mean = numpy.mean(b)
-          std = numpy.std(b)
-          b = [v for v in b if test4extream(v,mean,std,1)]
-        a.append(numpy.mean(b))
-        left.append(len(b))
-      sig[idx] = a.index(max(a))
+      autoadj = 1  # reset this for each new idx
+      prev = [0,0]
+      a = [0]
+      left = [0]
+      first = True
 
-      print "idx["+str(idx).zfill(2)+"]="+hex(sig[idx]).replace("0x","").zfill(2)+" "+str(max(a))+" "+str(numpy.mean(a)) +" "+str(numpy.mean(left))+"\a"
+      while True:
+        ans,a,left = test1char(sig,idx,tries,url,fn)
+        if ans == prev[0]: # if we get three times in a row the same answer, this is a good start
+          if ans == prev[1]:
+            sig[idx] = ans
+            break
+          else:
+            prev[1] = prev[0]
+        elif first:
+          first = False
+        else:
+          tries += autoadj    # increase the number of tries
+          autoadj += 1        # increase the autoadj
+        prev[0] = ans
+        print str(tries)+"\r",
+      print "idx["+str(idx).zfill(2)+"]="+hex(sig[idx]).replace("0x","").zfill(2)+" "+str(max(a)).rjust(15)+" "+str(numpy.mean(a)).rjust(15)+" "+str(numpy.mean(left)).rjust(15)+" "+str(tries)+"\a"
+    print "done, probably this doesn't work by try it anyway:\n"+url+fn+"&signature="+"".join([chr(c) for c in sig]).encode('hex')
 
   except KeyboardInterrupt:
     pass

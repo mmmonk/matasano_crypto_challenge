@@ -4,7 +4,6 @@ import web
 import c28
 import time
 
-
 def hmac(key,msg,algo):
   '''
   generic HMAC function
@@ -29,11 +28,12 @@ class hmac_check:
       sig = hmac("secret",open(var.file).read(),c28.sha1).digest()
     except:
       sig = "\x00"
-    if insecure_compare(sig,var.signature,0.001):
+    if insecure_compare(sig,var.signature):
       return "OK"
     raise web.internalerror()
 
 def insecure_compare(s1,hs2,st=0):
+
   try:
     s2 = hs2.decode('hex')
   except:
@@ -42,7 +42,7 @@ def insecure_compare(s1,hs2,st=0):
   for (c1,c2) in zip (s1,s2):
     if c1 != c2:
       return False
-    time.sleep(st)
+    time.sleep(0.001) # <<<- DELAY ADJUST THIS
   return True
 
 class MyWrongHmacApp(web.application):
@@ -51,14 +51,11 @@ class MyWrongHmacApp(web.application):
     return web.httpserver.runsimple(func, ('127.0.0.1', port))
 
 def internalerror():
-  return web.internalerror("you are wrrooooooonggg.")
+  return web.internalerror("nope")
 
-def webserver(sleeptime=0):
+if __name__ == "__main__":
   urls = ( '/test?.*', 'hmac_check')
   app = MyWrongHmacApp(urls, globals())
   app.internalerror = internalerror
   app.run()
-
-if __name__ == "__main__":
-  webserver()
 
