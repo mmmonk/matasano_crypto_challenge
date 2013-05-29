@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 
-import c28
 import sys
 import struct
 import random
