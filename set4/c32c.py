@@ -4,13 +4,29 @@ import urllib2
 import time
 import c31c
 import numpy
+import socket
 
 url = "http://127.0.0.1:9001/test?file="
 fn = "c32s.py"
 
 def checkurl(url,fn,sig):
-  import socket
-  pass
+
+  s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+  s.setsockopt(socket.IPPROTO_TCP,socket.TCP_NODELAY,1)
+  s.connect(("127.0.0.1",9001))
+  msg="GET /test?file="+fn+"?signature="+sig+" HTTP/1.1\r\n\
+Accept-Encoding: identity\r\n\
+Host: 127.0.0.1:9001\r\n\
+Connection: close\r\n\
+\r\n"
+  st = time.time()
+  s.send(msg)
+  data = s.recv(20)
+  et = time.time() - st
+  ok = False
+  if "200" in data:
+    ok = True
+  return et, ok
 
 
 def test4extream(value ,mean,stddev,multi=1):
@@ -43,7 +59,7 @@ if __name__ == "__main__":
         t = 0
         rc = 0
         for j in range(tries):
-          t, rc = c31c.checkurl(url,fn,"".join([chr(c) for c in sig]).encode('hex'))
+          t, rc = checkurl(url,fn,"".join([chr(c) for c in sig]).encode('hex'))
           if rc:
             sig[idx] = i
             print "done, trying: "+url+fn+"&signature="+"".join([chr(c) for c in sig]).encode('hex')
