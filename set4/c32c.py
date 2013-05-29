@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 
-import urllib2
 import time
 import c31c
 import numpy
@@ -91,7 +90,8 @@ if __name__ == "__main__":
           tries += autoadj    # increase the number of tries
           autoadj += 1        # increase the autoadj
         prev[0] = ans
-        print str(tries)+"\r",
+        print hex(ans)+" "+str(tries)+" "+str(autoadj)+"\r",
+        sys.stdout.flush()
       print "idx["+str(idx).zfill(2)+"]="+hex(sig[idx]).replace("0x","").zfill(2)+" "+str(max(a)).rjust(15)+" "+str(numpy.mean(a)).rjust(15)+" "+str(numpy.mean(left)).rjust(15)+" "+str(tries)+"\a"
     print "done, probably this doesn't work by try it anyway:\n"+url+fn+"&signature="+"".join([chr(c) for c in sig]).encode('hex')
 
