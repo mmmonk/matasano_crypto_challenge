@@ -48,8 +48,6 @@ def test1char(sig,idx,tries,url,fn):
         sys.exit(0)
       else:
         b.append(t)
-    # this is to collect some data
-    #open("c32c_data_"+str(idx).zfill(3)+"_"+chr(i).encode('hex').zfill(2)+".txt","w").write(str(b))
     mean = numpy.mean(b)
     std = numpy.std(b)
     b = [v for v in b if test4extream(v,mean,std)]
