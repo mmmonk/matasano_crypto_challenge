@@ -16,6 +16,8 @@ def modexp(g,u,p):
 
 class dh:
 
+  # https://en.wikipedia.org/wiki/Diffie%E2%80%93Hellman_key_exchange
+
   def __init__(self,a,p,g):
     self.a = a
     self.p = p
