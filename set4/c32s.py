@@ -51,6 +51,9 @@ def insecure_compare(s1,hs2,st=0):
   except:
     return False
 
+  if len(s1) != len(s2):
+    return False
+
   for (c1,c2) in zip (s1,s2):
     if c1 != c2:
       return False
