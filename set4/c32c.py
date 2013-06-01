@@ -6,16 +6,16 @@ import numpy
 import socket
 import sys
 
-url = "http://127.0.0.1:9001/test?file="
+url = "http://127.0.0.1:9000/test?file="
 fn = "c32s.py"
 
 def checkurl(fn,sig):
 
-  msg = "GET /test?file="+fn+"&signature="+sig+" HTTP/1.1\r\nHost: 127.0.0.1:9001\r\nConnection: close\r\n\r\n"
+  msg = "GET /test?file="+fn+"&signature="+sig+" HTTP/1.1\r\nHost: 127.0.0.1:9000\r\nConnection: close\r\n\r\n"
 
   s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
   s.setsockopt(socket.IPPROTO_TCP,socket.TCP_NODELAY,1)
-  s.connect(("127.0.0.1",9001))
+  s.connect(("127.0.0.1",9000))
 
   ts = time.time()
   s.send(msg)

@@ -3,6 +3,9 @@
 import web
 import c28
 import time
+import os
+
+sigs = dict()
 
 def hmac(key,msg,algo):
   '''
@@ -23,11 +26,20 @@ def hmac(key,msg,algo):
 class hmac_check:
 
   def GET(self):
+
+    global sigs
+
     var = web.input(file="c32s.py",signature="0")
+    sig = "\x00"
     try:
-      sig = hmac("secret",open(var.file).read(),c28.sha1).digest()
+      if sigs.has_key(var.file) and sigs[var.file][1] > os.stat(var.file)[8]:
+        sig = sigs[var.file][0]
+      else:
+        sig = hmac("secret",open(var.file).read(),c28.sha1).digest()
+        sigs[var.file] = (sig,int(time.time()))
     except:
-      sig = "\x00"
+      pass
+
     if insecure_compare(sig,var.signature):
       return "OK"
     raise web.internalerror()
@@ -42,11 +54,11 @@ def insecure_compare(s1,hs2,st=0):
   for (c1,c2) in zip (s1,s2):
     if c1 != c2:
       return False
-    time.sleep(0.001) # <<<- DELAY ADJUST THIS
+    #time.sleep(0.0001) # <<<- DELAY ADJUST THIS
   return True
 
 class MyWrongHmacApp(web.application):
-  def run(self, port=9001, *middleware):
+  def run(self, port=9000, *middleware):
     func = self.wsgifunc(*middleware)
     return web.httpserver.runsimple(func, ('127.0.0.1', port))
 
