@@ -4,6 +4,7 @@ def modexp(g,u,p):
   '''
   computes s = (g ^ u) mod p
   args are base, exponent, modulus
+  "Applied Cryptography" B. Schneier p. 244
   '''
   s = 1
   while u != 0:
