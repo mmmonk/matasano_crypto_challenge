@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 import hashlib
-from c33 import modexp # from Diffie-Hellman
 import hmac
 
 def i2s(i):
@@ -28,15 +27,15 @@ class SRP_server :
     self.b = int(open("/dev/urandom").read(4).encode('hex'),16) # <<- random number
     self.salt = open("/dev/urandom").read(4) # <<- should be taken from a db
     x = int(hashlib.sha256(self.salt+self.P).hexdigest(),16)  # <<- this should be taken from a DB, although maybe scrypt/bcrypt/sth similar ?
-    self.v = modexp(self.g,x,self.N)
-    self.B = (self.k*self.v)+(modexp(self.g,self.b,self.N))
+    self.v = pow(self.g,x,self.N)
+    self.B = (self.k*self.v)+(pow(self.g,self.b,self.N))
 
   def send1(self):
     return self.salt,self.B
 
   def recv2(self,hks):
     u = int(hashlib.sha256(i2s(self.A)+i2s(self.B)).hexdigest(),16)
-    S = modexp(self.A * modexp(self.v,u,self.N),self.b,self.N)
+    S = pow(self.A * pow(self.v,u,self.N),self.b,self.N)
     K = hashlib.sha256(i2s(S)).digest()
 
     if hks == hmac.HMAC(K,self.salt,hashlib.sha256).digest() and self.I == self.Ic:
@@ -53,7 +52,7 @@ class SRP_client :
     self.I = I
     self.P = P
     self.a = int(open("/dev/urandom").read(4).encode('hex'),16)
-    self.A = modexp(self.g,self.a,self.N)
+    self.A = pow(self.g,self.a,self.N)
 
   def send1(self):
     return self.I,self.A
@@ -62,7 +61,7 @@ class SRP_client :
     self.salt = salt
     u = int(hashlib.sha256(i2s(self.A)+i2s(B)).hexdigest(),16)
     x = int(hashlib.sha256(self.salt+self.P).hexdigest(),16)
-    S = modexp(B - self.k * modexp(self.g,x,self.N),(self.a+u*x),self.N)
+    S = pow(B - self.k * pow(self.g,x,self.N),(self.a+u*x),self.N)
     self.K = hashlib.sha256(i2s(S)).digest()
 
   def send2(self):
