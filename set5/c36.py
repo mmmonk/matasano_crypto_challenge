@@ -8,8 +8,8 @@ def i2s(i):
   Simple integer to string conversion
   '''
   x = hex(i).replace("0x","").replace("L","")
-  if len(x)%2:
-    x = "0"+x
+  if len(x) % 2 == 1:
+    x = "0" + x
   return x.decode('hex')
 
 class SRP_server :
