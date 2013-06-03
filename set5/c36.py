@@ -22,7 +22,7 @@ class SRP_server :
     self.I = I
     self.P = P   # <<- this should not be here in reality, only hash or scrypt/bcrypt should be avalible
 
-  def recv1(self,(I,A)):
+  def recv1(self,I,A):
     self.A = A
     self.Ic = I # <<- incoming user, we will compare this after calcualting the recevied HMAC
     self.b = int(open("/dev/urandom").read(4).encode('hex'),16) # <<- random number
@@ -58,7 +58,7 @@ class SRP_client :
   def send1(self):
     return self.I,self.A
 
-  def recv1(self,(salt,B)):
+  def recv1(self,salt,B):
     self.salt = salt
     u = int(hashlib.sha256(i2s(self.A)+i2s(B)).hexdigest(),16)
     x = int(hashlib.sha256(self.salt+self.P).hexdigest(),16)
@@ -74,7 +74,9 @@ if __name__ == "__main__":
 
   s = SRP_server(NISTprime,2,3,'a@a.com','abc')
   c = SRP_client(NISTprime,2,3,'a@a.com','abc')
-  s.recv1(c.send1())
-  c.recv1(s.send1())
+  I,A = c.send1()
+  s.recv1(I,A)
+  salt,B = s.send1()
+  c.recv1(salt,B)
   print s.recv2(c.send2())
 
