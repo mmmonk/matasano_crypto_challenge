@@ -17,15 +17,27 @@ def i2s(i):
     x = "0" + x
   return x.decode('hex')
 
-def egcd(a,b):
+#def egcd(a,b):
+#  '''
+#  the recursive function breaks on large values of a and b
+#  https://en.wikibooks.org/wiki/Algorithm_Implementation/Mathematics/Extended_Euclidean_algorithm
+#  '''
+#  if a == 0:
+#    return (b, 0, 1)
+#  else:
+#    g, y, x = egcd(b % a, a)
+#    return (g, x - (b//a) * y ,y)
+
+def egcd(a, b):
   '''
   https://en.wikibooks.org/wiki/Algorithm_Implementation/Mathematics/Extended_Euclidean_algorithm
   '''
-  if a == 0:
-    return (b, 0, 1)
-  else:
-    g, y, x = egcd(b % a, a)
-    return (g, x - (b//a) * y ,y)
+  x,y, u,v = 0,1, 1,0
+  while a != 0:
+    q,r = b//a, b%a
+    m,n = x-u*q,y-v*q
+    b,a, x,y, u,v = a,r, u,v, m,n
+  return b, x, y
 
 def invmod(a,m):
   '''
@@ -45,7 +57,8 @@ class RSA:
       q = Crypto.Util.number.getStrongPrime(l)
       n = p * q
       et = (p-1)*(q-1)
-      e = 3  # << - this is bad, this should be a large prime
+      #e = Crypto.Util.number.getStrongPrime(l) # << - this is good
+      e = 3  # << - this is bad
       d = invmod(e,et)
       if d != None:
         break
