@@ -19,7 +19,8 @@ def i2s(i):
 
 #def egcd(a,b):
 #  '''
-#  the recursive function breaks on large values of a and b
+#  this recursive function breaks on large values of a and b
+#  too many recursions
 #  https://en.wikibooks.org/wiki/Algorithm_Implementation/Mathematics/Extended_Euclidean_algorithm
 #  '''
 #  if a == 0:
@@ -51,14 +52,16 @@ def invmod(a,m):
 
 class RSA:
 
-  def keygen(self,l=2048):
+  def keygen(self,l=2048,s=True):
     while True:
       p = Crypto.Util.number.getStrongPrime(l)
       q = Crypto.Util.number.getStrongPrime(l)
       n = p * q
       et = (p-1)*(q-1)
-      #e = Crypto.Util.number.getStrongPrime(l) # << - this is good
-      e = 3  # << - this is bad
+      if s == True:
+        e = Crypto.Util.number.getStrongPrime(l) # << - this is good
+      else:
+        e = 3  # << - this is bad
       d = invmod(e,et)
       if d != None:
         break
@@ -76,7 +79,7 @@ class RSA:
 if __name__ == "__main__":
 
   k1,k2 = RSA().keygen()
-  cleartext  = "this is just a test of a message"
+  cleartext  = "this is just a test of a message that will be encrypted using RSA private/public key cryptography"
   print cleartext
   ciphertext = RSA().encrypt(cleartext,k1)
   print ciphertext.encode('string_escape')
