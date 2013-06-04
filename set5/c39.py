@@ -37,18 +37,18 @@ def invmod(a,m):
   else:
     return x % m
 
-class rsa:
+class RSA:
 
-  def keygen(self,n=2048):
-    p = Crypto.Util.number.getStrongPrime(n)
-    q = Crypto.Util.number.getStrongPrime(n)
-    n = p * q
-    et = (p-1)*(q-1)
-    e = 3  # << - this is bad, this should be a large prime
-    # e = Crypto.Util.number.getStrongPrime(n)
-    d = invmod(e,et)
-    if d == None:
-      print "error"
+  def keygen(self,l=2048):
+    while True:
+      p = Crypto.Util.number.getStrongPrime(l)
+      q = Crypto.Util.number.getStrongPrime(l)
+      n = p * q
+      et = (p-1)*(q-1)
+      e = 3  # << - this is bad, this should be a large prime
+      d = invmod(e,et)
+      if d != None:
+        break
 
     return (e,n),(d,n)
 
@@ -62,11 +62,11 @@ class rsa:
 
 if __name__ == "__main__":
 
-  k1,k2 = rsa().keygen()
+  k1,k2 = RSA().keygen()
   cleartext  = "this is just a test of a message"
   print cleartext
-  ciphertext = rsa().encrypt(cleartext,k1)
+  ciphertext = RSA().encrypt(cleartext,k1)
   print ciphertext.encode('string_escape')
-  decryptedtext = rsa().decrypt(ciphertext,k2)
+  decryptedtext = RSA().decrypt(ciphertext,k2)
   print decryptedtext.encode('string_escape')
 
