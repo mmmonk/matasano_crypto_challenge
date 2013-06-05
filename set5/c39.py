@@ -64,8 +64,8 @@ class RSA:
         e = 3  # << - this is bad
       d = invmod(e, et)
       if d != None:
-        print "d is None, lets try again"
         break
+      print "d is None, lets try again"
 
     return (e, n), (d, n)
 
