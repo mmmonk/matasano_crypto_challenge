@@ -40,7 +40,7 @@ def egcd(a, b):
     b,a, x,y, u,v = a,r, u,v, m,n
   return b, x, y
 
-def invmod(a,m):
+def invmod(a, m):
   '''
   https://en.wikibooks.org/wiki/Algorithm_Implementation/Mathematics/Extended_Euclidean_algorithm
   '''
@@ -52,29 +52,30 @@ def invmod(a,m):
 
 class RSA:
 
-  def keygen(self,l=2048,s=True):
+  def keygen(self, l=2048, s=True):
     while True:
-      p = Crypto.Util.number.getStrongPrime(l)
-      q = Crypto.Util.number.getStrongPrime(l)
+      p = Crypto.Util.number.getPrime(l)
+      q = Crypto.Util.number.getPrime(l)
       n = p * q
-      et = (p-1)*(q-1)
+      et = (p - 1) * (q - 1)
       if s == True:
-        e = Crypto.Util.number.getStrongPrime(l) # << - this is good
+        e = Crypto.Util.number.getPrime(l) # << - this is good
       else:
         e = 3  # << - this is bad
-      d = invmod(e,et)
+      d = invmod(e, et)
       if d != None:
+        print "d is None, lets try again"
         break
 
-    return (e,n),(d,n)
+    return (e, n), (d, n)
 
-  def encrypt(self,m,(e,n)):
+  def encrypt(self, m, (e,n)):
     m = int(m.encode('hex'),16)
-    return i2s(pow(m,e,n))
+    return i2s(pow(m, e, n))
 
-  def decrypt(self,c,(d,n)):
+  def decrypt(self, c, (d,n)):
     c = int(c.encode('hex'),16)
-    return i2s(pow(c,d,n))
+    return i2s(pow(c, d, n))
 
 if __name__ == "__main__":
 
