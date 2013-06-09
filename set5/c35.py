@@ -5,7 +5,6 @@ import c10 # CBC mode
 import c28 # SHA1
 
 import random
-import string
 
 def exchange(p,g,Mallory=False,mg=0):
 
