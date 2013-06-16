@@ -59,13 +59,12 @@ class RSA:
       n = p * q
       et = (p - 1) * (q - 1)
       if s == True:
-        e = Crypto.Util.number.getPrime(l) # << - this is good
+        e = Crypto.Util.number.getPrime(l) # << - this is better
       else:
         e = 3  # << - this is bad
       d = invmod(e, et)
       if d != None:
         break
-      print "d is None, lets try again"
 
     return (e, n), (d, n)
 
