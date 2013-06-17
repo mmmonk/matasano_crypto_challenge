@@ -11,3 +11,5 @@ if __name__ == "__main__":
   pub3,priv3 = RSA().keygen(l=2048,s=False) # s=False gives e=3
   ct3 = RSA().encrypt(cleartext,pub1)
 
+  # https://en.wikipedia.org/wiki/Coppersmith%27s_Attack#H.C3.A5stad.27s_Broadcast_Attack
+
