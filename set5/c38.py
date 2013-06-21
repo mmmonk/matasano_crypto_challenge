@@ -4,6 +4,7 @@ from c36 import i2s
 import hashlib
 import hmac
 import random
+import math
 
 class sSRP_server :
 
@@ -60,10 +61,11 @@ class sSRP_client :
     return hmac.HMAC(self.K,self.salt,hashlib.sha256).digest()
 
 
-def test(N):
-
-  s = sSRP_server(N,2,3,'a@a.com','abc')
-  c = sSRP_client(N,2,3,'a@a.com','abc')
+def testsSRP(N):
+  g = 2
+  p = 3
+  s = sSRP_server(N,g,p,'a@a.com','abc')
+  c = sSRP_client(N,g,p,'a@a.com','abc')
   I,A = c.send1()
   s.recv1(I,A)
   salt,B,u = s.send1()
@@ -72,20 +74,52 @@ def test(N):
     return True
   return False
 
+
+class a_candidates:
+  def __init__(self,A,g,n):
+    self.A = A
+    self.g = g
+    self.n = n
+
+  def __iter__(self):
+    return self
+
+  def next(self):
+    cur = self.a1
+    self.a1 += self.n
+    return cur
+
+
 if __name__ == "__main__":
 
   NISTprime = 0xffffffffffffffffc90fdaa22168c234c4c6628b80dc1cd129024e088a67cc74020bbea63b139b22514a08798e3404ddef9519b3cd3a431b302b0a6df25f14374fe1356d6d51c245e485b576625e7ec6f44c42e9a637ed6b0bff5cb6f406b7edee386bfb5a899fa5ae9f24117c4b1fe649286651ece45b3dc2007cb8a163bf0598da48361c55d39a69163fa8fd24cf5f83655d23dca3ad961c62f356208552bb9ed529077096966d670c354e4abc9804f1746c08ca237327ffffffffffffffff
 
-  if test(NISTprime):
-    print "OK"
-
+  if not testsSRP(NISTprime):
+    raise Exception("sSRP doesn't work correctly - test failed.")
 
   # MITM
-  c = sSRP_client(NISTprime,2,3,'a@a.com','abc')
+  g = 2
+  p = 3
+  c = sSRP_client(NISTprime,g,p,'a@a.com','abc')
   I,A = c.send1()  # <-- MITM captures client I and A
   c.recv1("",2,1)  # <-- MITM sends salt="" B=2 u=1
   client_pass = c.send2() #  <-- client sends HMAC
 
   print client_pass.encode('string_escape')
+  print c.a
+  print c.A
 
+  ### so lets try some brute forcing
+  i = 0
+  while True:
+    a_c = math.log(A+(NISTprime*i),g)
+    if a_c % 1 == 0:
+      a_c = int(a_c)
+      A_c = pow(g,a_c,NISTprime) # this is quicker then reversing via log
+      if A_c == A:
+        print "found a "+str(a_c)
+        break
+      print str(int(a_c))+" "+str(c.a)+" "+str(int((int(a_c)/c.a)*100))
+    i += 1
 
+  print a_c
