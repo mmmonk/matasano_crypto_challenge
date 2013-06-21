@@ -109,7 +109,7 @@ if __name__ == "__main__":
   print c.a
   print c.A
 
-  ### so lets try some brute forcing
+  ### so lets try some brute forcing - we need "a"
   i = 0
   while True:
     a_c = math.log(A+(NISTprime*i),g)
