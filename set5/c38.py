@@ -4,7 +4,7 @@ from c36 import i2s
 import hashlib
 import hmac
 import random
-import math
+import multiprocessing
 
 class sSRP_server :
 
@@ -75,20 +75,16 @@ def testsSRP(N):
   return False
 
 
-class a_candidates:
-  def __init__(self,A,g,n):
-    self.A = A
-    self.g = g
-    self.n = n
+def tworker(A,start,step,g,N,q):
 
-  def __iter__(self):
-    return self
-
-  def next(self):
-    cur = self.a1
-    self.a1 += self.n
-    return cur
-
+  a = start
+  A_c = 0
+  while A_c != A:
+    A_c = pow(g,a,N)
+    if A_c == A:
+      q.put(a)
+      break
+    a += step
 
 if __name__ == "__main__":
 
@@ -105,21 +101,16 @@ if __name__ == "__main__":
   c.recv1("",2,1)  # <-- MITM sends salt="" B=2 u=1
   client_pass = c.send2() #  <-- client sends HMAC
 
-  print client_pass.encode('string_escape')
-  print c.a
-  print c.A
+  ncpu = multiprocessing.cpu_count()
 
-  ### so lets try some brute forcing - we need "a"
-  i = 0
-  while True:
-    a_c = math.log(A+(NISTprime*i),g)
-    if a_c % 1 == 0:
-      a_c = int(a_c)
-      A_c = pow(g,a_c,NISTprime) # this is quicker then reversing via log
-      if A_c == A:
-        print "found a "+str(a_c)
-        break
-      print str(int(a_c))+" "+str(c.a)+" "+str(int((int(a_c)/c.a)*100))
-    i += 1
+  q = multiprocessing.Queue()
 
+  mps = []
+  for i in range(ncpu):
+    mp = multiprocessing.Process(target=tworker, args=(A,i,ncpu,g,NISTprime,q))
+    mp.start()
+    mps.append(mp)
+    print "process "+str(i)+" started"
+
+  a_c = q.get()
   print a_c
