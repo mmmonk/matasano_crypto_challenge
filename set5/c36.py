@@ -4,13 +4,13 @@ import hashlib
 import hmac
 
 def i2s(i):
-  '''
-  Simple integer to string conversion
-  '''
   x = hex(i).replace("0x","").replace("L","")
   if len(x) % 2 == 1:
     x = "0" + x
   return x.decode('hex')
+
+def s2i(s):
+  return int(s.encode('hex'),16)
 
 class SRP_server :
 
@@ -24,9 +24,9 @@ class SRP_server :
   def recv1(self,I,A):
     self.A = A
     self.Ic = I # <<- incoming user, we will compare this after calcualting the recevied HMAC
-    self.b = int(open("/dev/urandom").read(4).encode('hex'),16) # <<- random number
+    self.b = s2i(open("/dev/urandom").read(4)) # <<- random number
     self.salt = open("/dev/urandom").read(4) # <<- should be taken from a db
-    x = int(hashlib.sha256(self.salt+self.P).hexdigest(),16)  # <<- this should be taken from a DB, although maybe scrypt/bcrypt/sth similar ?
+    x = s2i(hashlib.sha256(self.salt+self.P).digest())  # <<- this should be taken from a DB, although maybe scrypt/bcrypt/sth similar ?
     self.v = pow(self.g,x,self.N)
     self.B = (self.k*self.v)+(pow(self.g,self.b,self.N))
 
@@ -34,7 +34,7 @@ class SRP_server :
     return self.salt,self.B
 
   def recv2(self,hks):
-    u = int(hashlib.sha256(i2s(self.A)+i2s(self.B)).hexdigest(),16)
+    u = s2i(hashlib.sha256(i2s(self.A)+i2s(self.B)).digest())
     S = pow(self.A * pow(self.v,u,self.N),self.b,self.N)
     K = hashlib.sha256(i2s(S)).digest()
 
@@ -51,7 +51,7 @@ class SRP_client :
     self.k = k
     self.I = I
     self.P = P
-    self.a = int(open("/dev/urandom").read(4).encode('hex'),16)
+    self.a = s2i(open("/dev/urandom").read(4))
     self.A = pow(self.g,self.a,self.N)
 
   def send1(self):
@@ -59,8 +59,8 @@ class SRP_client :
 
   def recv1(self,salt,B):
     self.salt = salt
-    u = int(hashlib.sha256(i2s(self.A)+i2s(B)).hexdigest(),16)
-    x = int(hashlib.sha256(self.salt+self.P).hexdigest(),16)
+    u = s2i(hashlib.sha256(i2s(self.A)+i2s(B)).digest())
+    x = s2i(hashlib.sha256(self.salt+self.P).digest())
     S = pow(B - self.k * pow(self.g,x,self.N),(self.a+u*x),self.N)
     self.K = hashlib.sha256(i2s(S)).digest()
 
