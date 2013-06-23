@@ -14,6 +14,7 @@ if __name__ == "__main__":
   ct2 = RSA().encrypt(cleartext,pub2)
 
   # https://en.wikipedia.org/wiki/Coppersmith%27s_Attack#H.C3.A5stad.27s_Broadcast_Attack
+  # https://en.wikipedia.org/wiki/Chinese_remainder_theorem
 
   c_0 = s2i(ct0)
   c_1 = s2i(ct1)
