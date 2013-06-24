@@ -3,10 +3,12 @@
 import Crypto.Util.number
 from c36 import i2s, s2i
 
-# https://en.wikipedia.org/wiki/Modular_multiplicative_inverse
-# https://en.wikibooks.org/wiki/Algorithm_Implementation/Mathematics/Extended_Euclidean_algorithm
-# https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm
-# https://en.wikipedia.org/wiki/RSA_%28algorithm%29
+'''
+https://en.wikipedia.org/wiki/Modular_multiplicative_inverse
+https://en.wikibooks.org/wiki/Algorithm_Implementation/Mathematics/Extended_Euclidean_algorithm
+https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm
+https://en.wikipedia.org/wiki/RSA_%28algorithm%29
+'''
 
 def egcd(a, b):
   '''
@@ -48,16 +50,15 @@ class RSA:
     return (e, n), (d, n)
 
   def encrypt(self, m, (e,n)):
-    ns = i2s(n)
-    len_ns = len(ns)
+    len_n = len(i2s(n))-1
     len_m = len(m)
-    if len_ns > len_m:
+    if len_n > len_m:
       return [i2s(pow(s2i(m), e, n))]
     else:
       cs = []
       i = 0
-      while len_ns*i < len_m:
-        cs.append(i2s(pow(s2i(m[len_ns*i:len_ns*(i+1)]), e, n)))
+      while len_n*i < len_m:
+        cs.append(i2s(pow(s2i(m[len_n*i:len_n*(i+1)]), e, n)))
         i += 1
       return cs
 
