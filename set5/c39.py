@@ -48,18 +48,34 @@ class RSA:
     return (e, n), (d, n)
 
   def encrypt(self, m, (e,n)):
-    return i2s(pow(s2i(m), e, n))
+    ns = i2s(n)
+    len_ns = len(ns)
+    len_m = len(m)
+    if len_ns > len_m:
+      return [i2s(pow(s2i(m), e, n))]
+    else:
+      cs = []
+      i = 0
+      while len_ns*i < len_m:
+        cs.append(i2s(pow(s2i(m[len_ns*i:len_ns*(i+1)]), e, n)))
+        i += 1
+      return cs
 
-  def decrypt(self, c, (d,n)):
-    return i2s(pow(s2i(c), d, n))
+  def decrypt(self, cs, (d,n)):
+    m = ""
+    for c in cs:
+      m += i2s(pow(s2i(c), d, n))
+    return m
 
 if __name__ == "__main__":
 
   k1,k2 = RSA().keygen()
-  cleartext  = "this is just a test of a message that will be encrypted using RSA private/public key cryptography"
+  cleartext  = "this is just a test of a message that will be encrypted using RSA private/public key cryptography, lets try something very long to see how this may woRk.\
+ We may also try to add some random things here and here, and here. Just a test like I said,"
+  #cleartext = open("c39.py").read() # <<-- this also works, but this actually needs padding
   print cleartext
   ciphertext = RSA().encrypt(cleartext,k1)
-  print ciphertext.encode('string_escape')
+  print ciphertext
   decryptedtext = RSA().decrypt(ciphertext,k2)
-  print decryptedtext.encode('string_escape')
+  print decryptedtext
 
