@@ -2,15 +2,27 @@
 
 from c39 import RSA, invmod
 from c36 import i2s, s2i
+from decimal import *
+setcontext(ExtendedContext)
+getcontext().prec = 100
 
 if __name__ == "__main__":
 
   cleartext  = "attack at dawn"
+
+  print "0. key generation"
   pub0,priv0 = RSA().keygen(l=2048,s=False) # s=False gives e=3
+  print "0. encrypting using pub key"
   ct0 = RSA().encrypt(cleartext,pub0)
+
+  print "1. key generation"
   pub1,priv1 = RSA().keygen(l=2048,s=False) # s=False gives e=3
+  print "1. encrypting using pub key"
   ct1 = RSA().encrypt(cleartext,pub1)
+
+  print "2. key generation"
   pub2,priv2 = RSA().keygen(l=2048,s=False) # s=False gives e=3
+  print "2. encrypting using pub key"
   ct2 = RSA().encrypt(cleartext,pub2)
 
   assert RSA().decrypt(ct0,priv0) == cleartext, "error on key0"
@@ -35,4 +47,4 @@ if __name__ == "__main__":
   result += (c_2 * m_s_2 * invmod(m_s_2, n_2))
   result %= (n_0 * n_1 * n_2)
 
-  print i2s(int(round(pow(result,1/3.0),0)))
+  print i2s(int(pow(Decimal(result),Decimal(1)/Decimal(3)))+1)
