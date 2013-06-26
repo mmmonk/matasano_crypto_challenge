@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 
-from c36 import i2s
+from c36 import i2s,s2i
 import hashlib
 import hmac
+import math
 import random
 import multiprocessing
 
@@ -18,9 +19,9 @@ class sSRP_server :
   def recv1(self,I,A):
     self.A = A
     self.Ic = I # <<- incoming user, we will compare this after calcualting the recevied HMAC
-    self.b = int(open("/dev/urandom").read(4).encode('hex'),16) # <<- random number
+    self.b = s2i(open("/dev/urandom").read(4)) # <<- random number
     self.salt = open("/dev/urandom").read(4) # <<- should be taken from a db
-    x = int(hashlib.sha256(self.salt+self.P).hexdigest(),16)  # <<- this should be taken from a DB, although maybe scrypt/bcrypt/sth similar ?
+    x = s2i(hashlib.sha256(self.salt+self.P).digest())  # <<- this should be taken from a DB, although maybe scrypt/bcrypt/sth similar ?
     self.v = pow(self.g,x,self.N)
     self.B = (pow(self.g,self.b,self.N))
     self.u = random.randint(2**127,(2**128)-1)
@@ -45,7 +46,7 @@ class sSRP_client :
     self.k = k
     self.I = I
     self.P = P
-    self.a = int(open("/dev/urandom").read(4).encode('hex'),16)
+    self.a = s2i(open("/dev/urandom").read(4))
     self.A = pow(self.g,self.a,self.N)
 
   def send1(self):
@@ -53,7 +54,7 @@ class sSRP_client :
 
   def recv1(self,salt,B,u):
     self.salt = salt
-    x = int(hashlib.sha256(self.salt+self.P).hexdigest(),16)
+    x = s2i(hashlib.sha256(self.salt+self.P).digest())
     S = pow(B,(self.a+u*x),self.N)
     self.K = hashlib.sha256(i2s(S)).digest()
 
@@ -75,11 +76,11 @@ def testsSRP(N):
   return False
 
 
-def tworker(A,start,step,g,N,q):
+def tworker1(A,start,step,g,N,q):
 
   a = start
   A_c = 0
-  while A_c != A:
+  while True:
     A_c = pow(g,a,N)
     if A_c == A:
       q.put(a)
@@ -101,16 +102,21 @@ if __name__ == "__main__":
   c.recv1("",2,1)  # <-- MITM sends salt="" B=2 u=1
   client_pass = c.send2() #  <-- client sends HMAC
 
-  ncpu = multiprocessing.cpu_count()
 
+  print c.a
+  ncpu = multiprocessing.cpu_count()
   q = multiprocessing.Queue()
 
+  a0 = int(math.log(A,g))
+  print a0
   mps = []
   for i in range(ncpu):
-    mp = multiprocessing.Process(target=tworker, args=(A,i,ncpu,g,NISTprime,q))
+    mp = multiprocessing.Process(target=tworker1, args=(A,a0+i,ncpu,g,NISTprime,q))
     mp.start()
     mps.append(mp)
     print "process "+str(i)+" started"
 
   a_c = q.get()
+  for mp in mps:
+    mp.terminate()
   print a_c
