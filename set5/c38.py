@@ -46,7 +46,7 @@ class sSRP_client :
     self.k = k
     self.I = I
     self.P = P
-    self.a = s2i(open("/dev/urandom").read(4))
+    self.a = s2i(open("/dev/urandom").read(2)) # in normal operations this should be bigger
     self.A = pow(self.g,self.a,self.N)
 
   def send1(self):
@@ -75,9 +75,10 @@ def testsSRP(N):
     return True
   return False
 
-
 def tworker1(A,start,step,g,N,q):
-
+  '''
+  this BF a
+  '''
   a = start
   A_c = 0
   while True:
@@ -86,6 +87,69 @@ def tworker1(A,start,step,g,N,q):
       q.put(a)
       break
     a += step
+
+def tworker2(hpass,a,start,step,g,N,q):
+  '''
+  this BF password
+  '''
+  sc = ord('a')+start
+  ec = ord('z')
+  cc = [sc]
+  while True:
+    h_c = "".join([chr(c) for c in cc])
+
+    x = s2i(hashlib.sha256(h_c).digest())
+    S = pow(2,a+x,N)
+    K = hashlib.sha256(i2s(S)).digest()
+
+    if hmac.HMAC(K,"",hashlib.sha256).digest() == hpass:
+      q.put(h_c)
+      break
+
+    cc[0] += step
+    for i in range(0,len(cc)):
+      if cc[i] > ec:
+        try:
+          cc[i+1] += 1
+        except:
+          cc.append(sc)
+        cc[i] %= (ec+1)
+        cc[i] += sc
+      else:
+        break
+
+
+def attack1(A,a0,hpass,g,p,N):
+  '''
+  simples possible brute force,
+  the only optimization is done via multiprocessing
+  '''
+  ncpu = multiprocessing.cpu_count()
+  q = multiprocessing.Queue()
+
+  mps = []
+  for i in range(ncpu):
+    mp = multiprocessing.Process(target=tworker1, args=(A,a0+i,ncpu,g,N,q))
+    mp.start()
+    mps.append(mp)
+
+  a_c = q.get()
+  for mp in mps:
+    mp.terminate()
+
+  print "possible a: "+str(a_c)
+
+  mps = []
+  for i in range(ncpu):
+    mp = multiprocessing.Process(target=tworker2, args=(hpass,a_c,i,ncpu,g,N,q))
+    mp.start()
+    mps.append(mp)
+
+  pw = q.get()
+  for mp in mps:
+    mp.terminate()
+
+  print "possible pass: "+str(pw)
 
 if __name__ == "__main__":
 
@@ -102,21 +166,5 @@ if __name__ == "__main__":
   c.recv1("",2,1)  # <-- MITM sends salt="" B=2 u=1
   client_pass = c.send2() #  <-- client sends HMAC
 
-
-  print c.a
-  ncpu = multiprocessing.cpu_count()
-  q = multiprocessing.Queue()
-
   a0 = int(math.log(A,g))
-  print a0
-  mps = []
-  for i in range(ncpu):
-    mp = multiprocessing.Process(target=tworker1, args=(A,a0+i,ncpu,g,NISTprime,q))
-    mp.start()
-    mps.append(mp)
-    print "process "+str(i)+" started"
-
-  a_c = q.get()
-  for mp in mps:
-    mp.terminate()
-  print a_c
+  attack1(A,a0,client_pass,g,p,NISTprime)
