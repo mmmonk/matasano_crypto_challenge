@@ -4,7 +4,7 @@ from c39 import RSA, invmod
 from c36 import i2s, s2i
 from decimal import *
 setcontext(ExtendedContext)
-getcontext().prec = 100
+getcontext().prec = 100 # <- adjust this for longer messages
 
 if __name__ == "__main__":
 
