@@ -198,18 +198,18 @@ def attack1(A,a0,hpass,g,p,N):
       mp.start()
       mps.append(mp)
 
-  while True:
-    try:
-      pw = q.get(timeout=1)
-      for mp in mps:
-        mp.terminate()
-    except:
-      searching = False
-      for mp in mps:
-        if mp.is_alive():
-          searching = True
-      if searching == False:
-        break
+    while True:
+      try:
+        pw = q.get(timeout=1)
+        for mp in mps:
+          mp.terminate()
+      except:
+        searching = False
+        for mp in mps:
+          if mp.is_alive():
+            searching = True
+        if searching == False:
+          break
 
   print "possible pass: "+str(pw)
 
