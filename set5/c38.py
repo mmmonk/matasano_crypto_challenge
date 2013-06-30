@@ -88,7 +88,21 @@ def tworker1(A,start,step,g,N,q):
       break
     a += step
 
-def tworker2(hpass,a,start,step,g,N,q):
+def tworker2(hpass,a,words,start,step,g,N,q):
+  '''
+  dictionary attack
+  '''
+  i = start
+  while i < len(words):
+    x = s2i(hashlib.sha256(words[i]).digest())
+    S = pow(2,a+x,N)
+    K = hashlib.sha256(i2s(S)).digest()
+    if hmac.HMAC(K,"",hashlib.sha256).digest() == hpass:
+      q.put(words[i])
+      break
+    i += step
+
+def tworker3(hpass,a,start,step,g,N,q):
   '''
   this BF password
   '''
@@ -121,33 +135,81 @@ def tworker2(hpass,a,start,step,g,N,q):
 
 def attack1(A,a0,hpass,g,p,N):
   '''
-  simples possible brute force,
+  simples possible brute force + dictionary attack,
   the only optimization is done via multiprocessing
   '''
   ncpu = multiprocessing.cpu_count()
   q = multiprocessing.Queue()
 
+  print "guessing a"
   mps = []
   for i in range(ncpu):
     mp = multiprocessing.Process(target=tworker1, args=(A,a0+i,ncpu,g,N,q))
     mp.start()
     mps.append(mp)
 
-  a_c = q.get()
-  for mp in mps:
-    mp.terminate()
+  while True:
+    try:
+      a_c = q.get(timeout=1)
+      for mp in mps:
+        mp.terminate()
+    except:
+      searching = False
+      for mp in mps:
+        if mp.is_alive():
+          searching = True
+      if searching == False:
+        break
 
   print "possible a: "+str(a_c)
 
+  words = list()
+  try:
+    words = [ w.strip() for w in open("/usr/share/dict/words").readlines()]
+  except:
+    pass
+
+  print "trying dictionary attack on the password"
+  pw = ""
   mps = []
   for i in range(ncpu):
-    mp = multiprocessing.Process(target=tworker2, args=(hpass,a_c,i,ncpu,g,N,q))
+    mp = multiprocessing.Process(target=tworker2, args=(hpass,a_c,words,i,ncpu,g,N,q))
     mp.start()
     mps.append(mp)
 
-  pw = q.get()
-  for mp in mps:
-    mp.terminate()
+  while True:
+    try:
+      pw = q.get(timeout=1)
+      for mp in mps:
+        mp.terminate()
+    except:
+      searching = False
+      for mp in mps:
+        if mp.is_alive():
+          searching = True
+      if searching == False:
+        break
+
+  if pw == "":
+    print "trying brute force attack on the password"
+    mps = []
+    for i in range(ncpu):
+      mp = multiprocessing.Process(target=tworker3, args=(hpass,a_c,i,ncpu,g,N,q))
+      mp.start()
+      mps.append(mp)
+
+  while True:
+    try:
+      pw = q.get(timeout=1)
+      for mp in mps:
+        mp.terminate()
+    except:
+      searching = False
+      for mp in mps:
+        if mp.is_alive():
+          searching = True
+      if searching == False:
+        break
 
   print "possible pass: "+str(pw)
 
