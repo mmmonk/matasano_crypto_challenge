@@ -40,7 +40,7 @@ class RSA:
       n = p * q
       et = (p - 1) * (q - 1)
       if s == True:
-        e = Crypto.Util.number.getPrime(l) # << - this is better
+        e = 2**16+1 # << - this is better
       else:
         e = 3  # << - this is bad
       d = invmod(e, et)
