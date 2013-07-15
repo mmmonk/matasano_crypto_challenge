@@ -2,6 +2,8 @@
 
 import base64
 import c3
+import urllib
+
 
 def findkeylen(ct,keylen,blocks=5): # calculates Hamming distance for few blocks for the same keylength
   return sum(hd(ct[i:i+keylen],ct[i+keylen:i+keylen*2])/float(keylen) for i in range(0,keylen*blocks,keylen))/blocks
@@ -22,23 +24,31 @@ def reorderblk(ct,keylen):
         blks[j].append(txt[j])
   return blks
 
-ct = base64.b64decode(open("c6.txt").read())
+if __name__ == "__main__":
 
-key_len = dict()
-for kl in range(2,40):
-  key_len[kl] = findkeylen(ct,kl)
+  try:
+    data = open("c6.txt").read()
+  except:
+    data = urllib.urlopen("https://gist.github.com/tqbf/3132752/raw/cecdb818e3ee4f5dda6f0847bfd90a83edb87e73/gistfile1.txt").read()
+    open("c6.txt","w").write(data)
 
-for kl in sorted(key_len , key = key_len.get):
-  sxor = reorderblk(ct,kl)
-  key = ""
-  for i in range(kl):
-    txt = c3.fcxor("".join(sxor[i]))
-    if txt != None:
-      key += chr(txt[0])
-    else:
-      key += chr(0)
+  ct = base64.b64decode(data)
 
-  if not '\x00' in key:
-    print str((kl,key))
-    break
+  key_len = dict()
+  for kl in range(2,40):
+    key_len[kl] = findkeylen(ct,kl)
+
+  for kl in sorted(key_len , key = key_len.get):
+    sxor = reorderblk(ct,kl)
+    key = ""
+    for i in range(kl):
+      txt = c3.fcxor("".join(sxor[i]))
+      if txt != None:
+        key += chr(txt[0])
+      else:
+        key += chr(0)
+
+    if not '\x00' in key:
+      print str((kl,key))
+      break
 

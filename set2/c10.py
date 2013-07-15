@@ -45,7 +45,13 @@ def cbcdecrypt(s,iv,key,blksize=16):
 
 if __name__ == "__main__":
   import base64
+  import urllib
 
-  txt = base64.b64decode(open("c10.txt").read())
+  try:
+    txt = base64.b64decode(open("c10.txt").read())
+  except:
+    data = urllib.urlopen("https://gist.github.com/tqbf/3132976/raw/f0802a5bc9ffa2a69cd92c981438399d4ce1b8e4/gistfile1.txt").read()
+    open("c10.txt","w").write(data)
+    txt = base64.b64decode(data)
   print cbcdecrypt(txt,"\x00"*16,"YELLOW SUBMARINE")
 

@@ -9,8 +9,11 @@ import string
 def xors(s1,s2):
   return "".join([ chr(ord(c1)^c2) for (c1,c2) in zip(s1,s2)])
 
-#msgs = urllib.urlopen("https://gist.github.com/tqbf/3336141/raw/d601f0b675feef570188ab2c8f347843f965ee14/gistfile1.txt").read()
-msgs = open("c20.txt").read()
+try:
+  msgs = open("c20.txt").read()
+except:
+  msgs = urllib.urlopen("https://gist.github.com/tqbf/3336141/raw/d601f0b675feef570188ab2c8f347843f965ee14/gistfile1.txt").read()
+  open("c20.txt","w").write(msgs)
 
 key = open("/dev/urandom").read(16)
 
