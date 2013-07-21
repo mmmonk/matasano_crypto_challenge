@@ -65,7 +65,8 @@ if __name__ == "__main__":
   sign = rs.make(message,priv1)
   assert rs.verify(message,sign,pub1), "signature algo wrong"
 
-  signf = forging(message,pub1)
+  print sign
+  signf = [ forging(message,pub1) ]
+  print signf
   if rs.verify(message,signf,pub1):
     print "ok"
-
