@@ -17,14 +17,13 @@ class PKCS15:
   '''
 
   def pad(self,msg,k):
-    mlen = len(msg)
-    fflen = k - mlen - 13
-    return "\x00\x02%s\x00%s" % ("\xff" * fflen, msg)
+    fflen = k - 20 - 13
+    return "\x00\x01%s\x00%s" % ("\xff" * fflen, msg)
 
   def unpad(self,msg):
-    if msg[0:2] == '\x00\x02':
+    if msg[0:2] == '\x00\x01':
       i = msg.find('\x00', 2)
-      return msg[i+1:]
+      return msg[i+1:i+1+20] # we need to set the upper limit here
     return None
 
 class RSAsign:
@@ -50,9 +49,16 @@ def forging(mesg,key):
     raise Exception("E not equal 3")
   pkcs15 = PKCS15()
   dgst = hashlib.sha1(mesg).digest()
-  paddgst = s2i(pkcs15.pad(dgst,len(i2s(key[1]))))
+  keylen = len(i2s(key[1]))
 
-  return i2s(int(pow(Decimal(paddgst),Decimal(1)/Decimal(3)))+1)
+  # this is the valid beginning
+  forge = "\x00\x01%s\x00%s" % ("\xff" * 8, dgst)
+  # this will be garbge
+  garbage = "\x00" * (keylen - 8 - len(dgst) - 13)
+  whole = s2i(forge+garbage)
+  cr = int(pow(whole,Decimal(1)/Decimal(3)))+1
+
+  return i2s(cr)
 
 if __name__ == "__main__":
 
@@ -65,8 +71,6 @@ if __name__ == "__main__":
   sign = rs.make(message,priv1)
   assert rs.verify(message,sign,pub1), "signature algo wrong"
 
-  print sign
   signf = [ forging(message,pub1) ]
-  print signf
   if rs.verify(message,signf,pub1):
     print "ok"
