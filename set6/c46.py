@@ -22,33 +22,25 @@ class oracle:
 
 def attack(enc,key,iseven):
 
-  e = key[0]
-  n = key[1]
-  ct = s2i(enc[0]) # encrypted message
-  c2 = pow(2,e,n) # (2**e)%n)
-  limit = int(math.log(n,2))+1
-  getcontext().prec = limit
+  e = key[0]         # e - from the pub key
+  n = key[1]         # n - from the pub key
+  ct = s2i(enc[0])   # encrypted message
+  c2 = pow(2,e,n)    # (2**e)%n)
+  ct = (ct * c2) % n # we need to do this before we start counting
+  limit = int(math.log(n,2))+1 # number of bits in the key
+  getcontext().prec = limit # how precise our floats should be
 
-  l = Decimal(0)
-  u = Decimal(n)
-
-  la = 0
-  ua = 0
+  a = Decimal(0)
+  b = Decimal(n)
   for x in range(limit):
-    t = (l+u)/2
+    t = (a+b)/2
     if iseven([i2s(ct)]):
-      u = t
-      ua += 1
+      b = t
     else:
-      l = t
-      la += 1
+      a = t
     ct = (ct * c2) % n
 
-  print limit
-  #print (l,u)
-  print (la,ua)
-  print i2s(int(l)).encode('string_escape')
-  print i2s(int(u)).encode('string_escape')
+  return i2s(int(b)).encode('string_escape')
 
 if __name__ == "__main__":
 
@@ -58,5 +50,5 @@ if __name__ == "__main__":
   pub = c46.getpubkey()
 
   rsa = RSA()
-  enc = rsa.encrypt("this is just a test please ignore this message",pub)
-  attack(enc,pub,c46.iseven)
+  enc = rsa.encrypt(base64.b64decode(txt),pub)
+  print attack(enc,pub,c46.iseven)
