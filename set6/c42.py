@@ -5,11 +5,9 @@
 
 from c39 import RSA # RSA
 from c36 import i2s, s2i
-
+import math
 import hashlib
 from decimal import *
-setcontext(ExtendedContext)
-getcontext().prec = 1000 # <- adjust this for longer messages
 
 class PKCS15:
   '''
@@ -39,17 +37,20 @@ class RSAsign:
     pkcs15 = PKCS15()
     rsa = RSA()
     dgst = hashlib.sha1(message).digest()
-    if pkcs15.unpad("\x00"+rsa.decrypt(sign,key)) == dgst:
-      return True
-    else:
-      return False
+    return pkcs15.unpad("\x00"+rsa.decrypt(sign,key)) == dgst
 
 def forging(mesg,key):
-  if key[0] != 3:
-    raise Exception("E not equal 3")
+
+  e = key[0]
+  n = key[1]
+
+  if e != 3:
+    raise Exception("e not equal 3")
   pkcs15 = PKCS15()
   dgst = hashlib.sha1(mesg).digest()
-  keylen = len(i2s(key[1]))
+  keylen = len(i2s(n))
+
+  getcontext().prec = keylen * 8
 
   # this is the valid beginning
   forge = "\x00\x01%s\x00%s" % ("\xff" * 8, dgst)
