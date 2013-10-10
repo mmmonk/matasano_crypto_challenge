@@ -1,0 +1,725 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+Alice	set5/c33.py	/^  Alice = dh(random.randint(0,100000),p,g)$/;"	v
+Alice	set5/c34.py	/^Alice = c33.dh(random.randint(0,10000),p,g)$/;"	v
+Alice	set5/dh.py	/^  Alice = dh(random.randint(0,100000),p,g)$/;"	v
+Alice_enc	set5/c34.py	/^Alice_enc = c10.cbcencrypt(Alice_msg,Alice_iv,c28.sha1(str(Alice_secret)).digest()[:16])$/;"	v
+Alice_iv	set5/c34.py	/^Alice_iv = open("\/dev\/urandom").read(16)$/;"	v
+Alice_msg	set5/c34.py	/^Alice_msg = "Alice says Hi"$/;"	v
+Alice_secret	set5/c33.py	/^  Alice_secret = Alice.shsecret(Bob.A)$/;"	v
+Alice_secret	set5/c34.py	/^Alice_secret = Alice.shsecret(Bob.A)$/;"	v
+Alice_secret	set5/c34.py	/^Alice_secret = Alice.shsecret(p)$/;"	v
+Alice_secret	set5/dh.py	/^  Alice_secret = Alice.shsecret(Bob.A)$/;"	v
+Bob	set5/c33.py	/^  Bob = dh(random.randint(0,100000),p,g)$/;"	v
+Bob	set5/c34.py	/^Bob = c33.dh(random.randint(0,10000),p,g)$/;"	v
+Bob	set5/dh.py	/^  Bob = dh(random.randint(0,100000),p,g)$/;"	v
+Bob_enc	set5/c34.py	/^Bob_enc = c10.cbcencrypt(Bob_msg,Bob_iv,c28.sha1(str(Bob_secret)).digest()[:16])$/;"	v
+Bob_iv	set5/c34.py	/^Bob_iv = open("\/dev\/urandom").read(16)$/;"	v
+Bob_msg	set5/c34.py	/^Bob_msg = "Bob says Hi"$/;"	v
+Bob_secret	set5/c33.py	/^  Bob_secret = Bob.shsecret(Alice.A)$/;"	v
+Bob_secret	set5/c34.py	/^Bob_secret = Bob.shsecret(Alice.A)$/;"	v
+Bob_secret	set5/c34.py	/^Bob_secret = Bob.shsecret(p)$/;"	v
+Bob_secret	set5/dh.py	/^  Bob_secret = Bob.shsecret(Alice.A)$/;"	v
+C	set6/c41.py	/^  C = rsa.encrypt(msg,pub)$/;"	v
+C1	set6/c41.py	/^  C1 = list() # the cipher text is a list$/;"	v
+DSA	set6/c43.py	/^class DSA:$/;"	c
+GET	set4/c31s.py	/^  def GET(self):$/;"	m	class:hmac_check
+GET	set4/c32s.py	/^  def GET(self):$/;"	m	class:hmac_check
+GET	set4/hmac.py	/^  def GET(self):$/;"	m	class:hmac_check
+GET	set5/c31s.py	/^  def GET(self):$/;"	m	class:hmac_check
+K	set5/c37_client.py	/^  K = hashlib.sha256(i2s(0)).digest()$/;"	v
+MT19937	set3/c21.py	/^class MT19937:$/;"	c
+MT19937	set3/mt19937_mersenne_twister_rng.py	/^class MT19937:$/;"	c
+MyWrongHmacApp	set4/c31s.py	/^class MyWrongHmacApp(web.application):$/;"	c
+MyWrongHmacApp	set4/c32s.py	/^class MyWrongHmacApp(web.application):$/;"	c
+MyWrongHmacApp	set4/hmac.py	/^class MyWrongHmacApp(web.application):$/;"	c
+MyWrongHmacApp	set5/c31s.py	/^class MyWrongHmacApp(web.application):$/;"	c
+NISTprime	set5/c36.py	/^  NISTprime = 0xffffffffffffffffc90fdaa22168c234c4c6628b80dc1cd129024e088a67cc74020bbea63b139b22514a08798e3404ddef9519b3cd3a431b302b0a6df25f14374fe1356d6d51c245e485b576625e7ec6f44c42e9a637ed6b0bff5cb6f406b7edee386bfb5a899fa5ae9f24117c4b1fe649286651ece45b3dc2007cb8a163bf0598da48361c55d39a69163fa8fd24cf5f83655d23dca3ad961c62f356208552bb9ed529077096966d670c354e4abc9804f1746c08ca237327ffffffffffffffff$/;"	v
+NISTprime	set5/c37_client.py	/^  NISTprime = 0xffffffffffffffffc90fdaa22168c234c4c6628b80dc1cd129024e088a67cc74020bbea63b139b22514a08798e3404ddef9519b3cd3a431b302b0a6df25f14374fe1356d6d51c245e485b576625e7ec6f44c42e9a637ed6b0bff5cb6f406b7edee386bfb5a899fa5ae9f24117c4b1fe649286651ece45b3dc2007cb8a163bf0598da48361c55d39a69163fa8fd24cf5f83655d23dca3ad961c62f356208552bb9ed529077096966d670c354e4abc9804f1746c08ca237327ffffffffffffffff$/;"	v
+NISTprime	set5/c37_server.py	/^  NISTprime = 0xffffffffffffffffc90fdaa22168c234c4c6628b80dc1cd129024e088a67cc74020bbea63b139b22514a08798e3404ddef9519b3cd3a431b302b0a6df25f14374fe1356d6d51c245e485b576625e7ec6f44c42e9a637ed6b0bff5cb6f406b7edee386bfb5a899fa5ae9f24117c4b1fe649286651ece45b3dc2007cb8a163bf0598da48361c55d39a69163fa8fd24cf5f83655d23dca3ad961c62f356208552bb9ed529077096966d670c354e4abc9804f1746c08ca237327ffffffffffffffff$/;"	v
+NISTprime	set5/c38.py	/^  NISTprime = 0xffffffffffffffffc90fdaa22168c234c4c6628b80dc1cd129024e088a67cc74020bbea63b139b22514a08798e3404ddef9519b3cd3a431b302b0a6df25f14374fe1356d6d51c245e485b576625e7ec6f44c42e9a637ed6b0bff5cb6f406b7edee386bfb5a899fa5ae9f24117c4b1fe649286651ece45b3dc2007cb8a163bf0598da48361c55d39a69163fa8fd24cf5f83655d23dca3ad961c62f356208552bb9ed529077096966d670c354e4abc9804f1746c08ca237327ffffffffffffffff$/;"	v
+NISTprime	set5/srp.py	/^  NISTprime = 0xffffffffffffffffc90fdaa22168c234c4c6628b80dc1cd129024e088a67cc74020bbea63b139b22514a08798e3404ddef9519b3cd3a431b302b0a6df25f14374fe1356d6d51c245e485b576625e7ec6f44c42e9a637ed6b0bff5cb6f406b7edee386bfb5a899fa5ae9f24117c4b1fe649286651ece45b3dc2007cb8a163bf0598da48361c55d39a69163fa8fd24cf5f83655d23dca3ad961c62f356208552bb9ed529077096966d670c354e4abc9804f1746c08ca237327ffffffffffffffff$/;"	v
+NISTprime	set6/c36.py	/^  NISTprime = 0xffffffffffffffffc90fdaa22168c234c4c6628b80dc1cd129024e088a67cc74020bbea63b139b22514a08798e3404ddef9519b3cd3a431b302b0a6df25f14374fe1356d6d51c245e485b576625e7ec6f44c42e9a637ed6b0bff5cb6f406b7edee386bfb5a899fa5ae9f24117c4b1fe649286651ece45b3dc2007cb8a163bf0598da48361c55d39a69163fa8fd24cf5f83655d23dca3ad961c62f356208552bb9ed529077096966d670c354e4abc9804f1746c08ca237327ffffffffffffffff$/;"	v
+P1	set6/c41.py	/^    P1 = rsa.decrypt(C1,priv)$/;"	v
+PKCS15	set6/c42.py	/^class PKCS15:$/;"	c
+RSA	set5/c39.py	/^class RSA:$/;"	c
+RSA	set5/rsa.py	/^class RSA:$/;"	c
+RSA	set6/c39.py	/^class RSA:$/;"	c
+RSAsign	set6/c42.py	/^class RSAsign:$/;"	c
+S	set6/c41.py	/^  S = 3       # lowest possible S$/;"	v
+SRP_client	set5/c36.py	/^class SRP_client :$/;"	c
+SRP_client	set5/srp.py	/^class SRP_client :$/;"	c
+SRP_client	set6/c36.py	/^class SRP_client :$/;"	c
+SRP_server	set5/c36.py	/^class SRP_server :$/;"	c
+SRP_server	set5/srp.py	/^class SRP_server :$/;"	c
+SRP_server	set6/c36.py	/^class SRP_server :$/;"	c
+__init__	set3/c17.py	/^  def __init__(self,blksize=16):$/;"	m	class:cc17
+__init__	set3/c19.py	/^  def __init__(self,cts,key):$/;"	m	class:gui
+__init__	set3/c21.py	/^  def __init__(self,seed=int(time.time()),size=624): #{{{$/;"	m	class:MT19937
+__init__	set3/cbc_padding_oracle.py	/^  def __init__(self,blksize=16):$/;"	m	class:cc17
+__init__	set3/ctr_fixed_nonce.py	/^  def __init__(self,cts,key):$/;"	m	class:gui
+__init__	set3/mt19937_mersenne_twister_rng.py	/^  def __init__(self,seed=int(time.time()),size=624): #{{{$/;"	m	class:MT19937
+__init__	set4/c25.py	/^  def __init__(self,data):$/;"	m	class:ctredit
+__init__	set4/c26.py	/^  def __init__(self):$/;"	m	class:c26
+__init__	set4/c27.py	/^  def __init__(self):$/;"	m	class:c27
+__init__	set4/c28.py	/^  def __init__(self,imsg=""):$/;"	m	class:sha1
+__init__	set4/c30.py	/^  def __init__(self,imsg=""):$/;"	m	class:md4
+__init__	set4/cbc_edit.py	/^  def __init__(self,data):$/;"	m	class:ctredit
+__init__	set4/cbc_key_eq_iv.py	/^  def __init__(self):$/;"	m	class:c27
+__init__	set4/ctr_bit_flipping.py	/^  def __init__(self):$/;"	m	class:c26
+__init__	set4/md4_len_ext_attack.py	/^  def __init__(self,imsg=""):$/;"	m	class:md4
+__init__	set4/sha1.py	/^  def __init__(self,imsg=""):$/;"	m	class:sha1
+__init__	set5/c28.py	/^  def __init__(self,imsg=""):$/;"	m	class:sha1
+__init__	set5/c33.py	/^  def __init__(self,a,p,g):$/;"	m	class:dh
+__init__	set5/c36.py	/^  def __init__(self,N,g,k,I,P):$/;"	m	class:SRP_client
+__init__	set5/c36.py	/^  def __init__(self,N,g,k,I,P):$/;"	m	class:SRP_server
+__init__	set5/c38.py	/^  def __init__(self,N,g,k,I,P):$/;"	m	class:sSRP_client
+__init__	set5/c38.py	/^  def __init__(self,N,g,k,I,P):$/;"	m	class:sSRP_server
+__init__	set5/dh.py	/^  def __init__(self,a,p,g):$/;"	m	class:dh
+__init__	set5/srp.py	/^  def __init__(self,N,g,k,I,P):$/;"	m	class:SRP_client
+__init__	set5/srp.py	/^  def __init__(self,N,g,k,I,P):$/;"	m	class:SRP_server
+__init__	set6/c36.py	/^  def __init__(self,N,g,k,I,P):$/;"	m	class:SRP_client
+__init__	set6/c36.py	/^  def __init__(self,N,g,k,I,P):$/;"	m	class:SRP_server
+__init__	set6/c43.py	/^  def __init__(self):$/;"	m	class:DSA
+__init__	set6/c46.py	/^  def __init__(self):$/;"	m	class:oracle
+__setinit	set4/c28.py	/^  def __setinit(self):$/;"	m	class:sha1	file:
+__setinit	set4/c30.py	/^  def __setinit(self):$/;"	m	class:md4	file:
+__setinit	set4/md4_len_ext_attack.py	/^  def __setinit(self):$/;"	m	class:md4	file:
+__setinit	set4/sha1.py	/^  def __setinit(self):$/;"	m	class:sha1	file:
+__setinit	set5/c28.py	/^  def __setinit(self):$/;"	m	class:sha1	file:
+__transform	set4/c28.py	/^  def __transform(self,w):$/;"	m	class:sha1	file:
+__transform	set4/c30.py	/^  def __transform(self,x):$/;"	m	class:md4	file:
+__transform	set4/md4_len_ext_attack.py	/^  def __transform(self,x):$/;"	m	class:md4	file:
+__transform	set4/sha1.py	/^  def __transform(self,w):$/;"	m	class:sha1	file:
+__transform	set5/c28.py	/^  def __transform(self,w):$/;"	m	class:sha1	file:
+a	set1/c7.py	/^a = AES.new("YELLOW SUBMARINE",AES.MODE_ECB)$/;"	v
+a	set4/c31c.py	/^      a = list()$/;"	v
+a	set4/c32c.py	/^      a = [0]$/;"	v
+a	set4/timing_attack_on_hmac.py	/^      a = [0]$/;"	v
+a0	set5/c38.py	/^  a0 = int(math.log(A,g))$/;"	v
+add	set4/c29.py	/^    add = att.extlen(orghash,len(key+msg),msg2add)$/;"	v
+add	set4/c30.py	/^    add = att.extlen(orghash,len(key+msg),msg2add)$/;"	v
+add	set4/md4_len_ext_attack.py	/^    add = att.extlen(orghash,len(key+msg),msg2add)$/;"	v
+add	set4/sha1_len_ext_attack.py	/^    add = att.extlen(orghash,len(key+msg),msg2add)$/;"	v
+att	set4/c29.py	/^    att = sha1ext()$/;"	v
+att	set4/c30.py	/^    att = md4ext()$/;"	v
+att	set4/md4_len_ext_attack.py	/^    att = md4ext()$/;"	v
+att	set4/sha1_len_ext_attack.py	/^    att = sha1ext()$/;"	v
+attack	set2/c12.py	/^      attack = attack[1:]$/;"	v
+attack	set2/c12.py	/^    attack = nextblock$/;"	v
+attack	set2/c14.py	/^      attack = attack[1:]$/;"	v
+attack	set2/c14.py	/^    attack = "A"*offstr+nxtblk$/;"	v
+attack	set2/ecb_decryption_byte_at_a_time.py	/^      attack = attack[1:]$/;"	v
+attack	set2/ecb_decryption_byte_at_a_time.py	/^    attack = nextblock$/;"	v
+attack	set2/ecb_decryption_byte_at_a_time2.py	/^      attack = attack[1:]$/;"	v
+attack	set2/ecb_decryption_byte_at_a_time2.py	/^    attack = "A"*offstr+nxtblk$/;"	v
+attack	set6/c46.py	/^def attack(enc,key,iseven):$/;"	f
+attack1	set5/c38.py	/^def attack1(A,a0,hpass,g,p,N):$/;"	f
+autoadj	set4/c32c.py	/^      autoadj = 1  # reset this for each new idx$/;"	v
+autoadj	set4/timing_attack_on_hmac.py	/^      autoadj = 1  # reset this for each new idx$/;"	v
+basicautoguessing	set3/c19.py	/^def basicautoguessing(cts,key,milen):$/;"	f
+basicautoguessing	set3/ctr_fixed_nonce.py	/^def basicautoguessing(cts,key,milen):$/;"	f
+bigrams	set3/c19.py	/^def bigrams(cts,key):$/;"	f
+bigrams	set3/ctr_fixed_nonce.py	/^def bigrams(cts,key):$/;"	f
+bindiff	libs/monk.py	/^def bindiff(a,b,bl=32):$/;"	f
+blksize	set2/c12.py	/^  blksize = 1$/;"	v
+blksize	set2/c14.py	/^  blksize = 1$/;"	v
+blksize	set2/ecb_decryption_byte_at_a_time.py	/^  blksize = 1$/;"	v
+blksize	set2/ecb_decryption_byte_at_a_time2.py	/^  blksize = 1$/;"	v
+blksize	set3/c17.py	/^  blksize = 16$/;"	v
+blksize	set3/cbc_padding_oracle.py	/^  blksize = 16$/;"	v
+blocksize	set4/c28.py	/^  blocksize = 64$/;"	v	class:sha1
+blocksize	set4/c30.py	/^  blocksize = 64$/;"	v	class:md4
+blocksize	set4/md4_len_ext_attack.py	/^  blocksize = 64$/;"	v	class:md4
+blocksize	set4/sha1.py	/^  blocksize = 64$/;"	v	class:sha1
+blocksize	set5/c28.py	/^  blocksize = 64$/;"	v	class:sha1
+c	set2/c12.py	/^    c = encryption_oracle(s,key)$/;"	v
+c	set2/c14.py	/^    c = encryption_oracle(s, key, prefix)$/;"	v
+c	set2/ecb_decryption_byte_at_a_time.py	/^    c = encryption_oracle(s,key)$/;"	v
+c	set2/ecb_decryption_byte_at_a_time2.py	/^    c = encryption_oracle(s, key, prefix)$/;"	v
+c	set5/c36.py	/^  c = SRP_client(NISTprime,2,3,'a@a.com','abc')$/;"	v
+c	set5/c37_client.py	/^  c = SRP_client(NISTprime,2,3,'a@a.com','abc')$/;"	v
+c	set5/c38.py	/^  c = sSRP_client(NISTprime,g,p,'a@a.com','abc')$/;"	v
+c	set5/srp.py	/^  c = SRP_client(NISTprime,2,3,'a@a.com','abc')$/;"	v
+c	set6/c36.py	/^  c = SRP_client(NISTprime,2,3,'a@a.com','abc')$/;"	v
+c17	set3/c17.py	/^  c17 = cc17(blksize)$/;"	v
+c17	set3/cbc_padding_oracle.py	/^  c17 = cc17(blksize)$/;"	v
+c26	set4/c26.py	/^class c26:$/;"	c
+c26	set4/ctr_bit_flipping.py	/^class c26:$/;"	c
+c27	set4/c27.py	/^class c27:$/;"	c
+c27	set4/cbc_key_eq_iv.py	/^class c27:$/;"	c
+c46	set6/c46.py	/^  c46 = oracle()$/;"	v
+c_0	set5/c40.py	/^  c_0 = s2i(ct0[0])$/;"	v
+c_0	set5/rsa_broadcast_attack.py	/^  c_0 = s2i(ct0[0])$/;"	v
+c_1	set5/c40.py	/^  c_1 = s2i(ct1[0])$/;"	v
+c_1	set5/rsa_broadcast_attack.py	/^  c_1 = s2i(ct1[0])$/;"	v
+c_2	set5/c40.py	/^  c_2 = s2i(ct2[0])$/;"	v
+c_2	set5/rsa_broadcast_attack.py	/^  c_2 = s2i(ct2[0])$/;"	v
+cbcdecrypt	set2/c10.py	/^def cbcdecrypt(s,iv,key,blksize=16):$/;"	f
+cbcdecrypt	set2/c16.py	/^def cbcdecrypt(s,iv,key,blksize=16):$/;"	f
+cbcdecrypt	set2/cbc_bit_flipping.py	/^def cbcdecrypt(s,iv,key,blksize=16):$/;"	f
+cbcdecrypt	set2/cbc_mode.py	/^def cbcdecrypt(s,iv,key,blksize=16):$/;"	f
+cbcdecrypt	set3/c10.py	/^def cbcdecrypt(s,iv,key,blksize=16):$/;"	f
+cbcdecrypt	set4/c16.py	/^def cbcdecrypt(s,iv,key,blksize=16):$/;"	f
+cbcdecrypt	set5/c10.py	/^def cbcdecrypt(s,iv,key,blksize=16):$/;"	f
+cbcencrypt	set2/c10.py	/^def cbcencrypt(s,iv,key,blksize=16):$/;"	f
+cbcencrypt	set2/c16.py	/^def cbcencrypt(s,iv,key,blksize=16):$/;"	f
+cbcencrypt	set2/cbc_bit_flipping.py	/^def cbcencrypt(s,iv,key,blksize=16):$/;"	f
+cbcencrypt	set2/cbc_mode.py	/^def cbcencrypt(s,iv,key,blksize=16):$/;"	f
+cbcencrypt	set3/c10.py	/^def cbcencrypt(s,iv,key,blksize=16):$/;"	f
+cbcencrypt	set4/c16.py	/^def cbcencrypt(s,iv,key,blksize=16):$/;"	f
+cbcencrypt	set5/c10.py	/^def cbcencrypt(s,iv,key,blksize=16):$/;"	f
+cc17	set3/c17.py	/^class cc17:$/;"	c
+cc17	set3/cbc_padding_oracle.py	/^class cc17:$/;"	c
+cfs	set1/c3.py	/^def cfs(k,s): # character frequency from string$/;"	f
+cfs	set3/c3.py	/^def cfs(k,s): # character frequency from string$/;"	f
+ch2bin	set1/c6.py	/^def ch2bin(s): # changing chars to bits$/;"	f
+check	set3/c24b.py	/^  def check(self,s):$/;"	m	class:pwdtoken
+check	set4/c27.py	/^  def check(self,s):$/;"	m	class:c27
+check	set4/cbc_key_eq_iv.py	/^  def check(self,s):$/;"	m	class:c27
+checkadmin	set2/c16.py	/^def checkadmin(s,iv,key):$/;"	f
+checkadmin	set2/cbc_bit_flipping.py	/^def checkadmin(s,iv,key):$/;"	f
+checkadmin	set4/c16.py	/^def checkadmin(s,iv,key):$/;"	f
+checkadmin	set4/c26.py	/^  def checkadmin(self,s):$/;"	m	class:c26
+checkadmin	set4/ctr_bit_flipping.py	/^  def checkadmin(self,s):$/;"	m	class:c26
+checkkey	set3/c19.py	/^def checkkey(cts,k,i):$/;"	f
+checkkey	set3/ctr_fixed_nonce.py	/^def checkkey(cts,k,i):$/;"	f
+checkurl	set4/c31c.py	/^def checkurl(url,fn,sig):$/;"	f
+checkurl	set4/c32c.py	/^def checkurl(fn,sig):$/;"	f
+checkurl	set4/timing_attack_on_hmac.py	/^def checkurl(fn,sig):$/;"	f
+ciphertext	set5/c39.py	/^  ciphertext = RSA().encrypt(cleartext,k1)$/;"	v	class:RSA
+ciphertext	set5/rsa.py	/^  ciphertext = RSA().encrypt(cleartext,k1)$/;"	v	class:RSA
+ciphertext	set6/c39.py	/^  ciphertext = RSA().encrypt(cleartext,k1)$/;"	v	class:RSA
+cleartext	set5/c39.py	/^ We may also try to add some random things here and here, and here. Just a test like I said,"$/;"	v	class:RSA
+cleartext	set5/c40.py	/^  cleartext  = "attack at dawn"$/;"	v
+cleartext	set5/rsa.py	/^ We may also try to add some random things here and here, and here. Just a test like I said,"$/;"	v	class:RSA
+cleartext	set5/rsa_broadcast_attack.py	/^  cleartext  = "attack at dawn"$/;"	v
+cleartext	set6/c39.py	/^ We may also try to add some random things here and here, and here. Just a test like I said,"$/;"	v	class:RSA
+client	set5/c37_client.py	/^  client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)$/;"	v
+client1	set5/c37_client.py	/^  client1 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)$/;"	v
+client2	set5/c37_client.py	/^  client2 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)$/;"	v
+client3	set5/c37_client.py	/^  client3 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)$/;"	v
+client_pass	set5/c38.py	/^  client_pass = c.send2() #  <-- client sends HMAC$/;"	v
+copy	set3/c23.py	/^  copy = c21.MT19937()$/;"	v
+copy	set3/mt19937_cloning.py	/^  copy = c21.MT19937()$/;"	v
+copy_state	set3/c23.py	/^  copy_state = range(624)$/;"	v
+copy_state	set3/mt19937_cloning.py	/^  copy_state = range(624)$/;"	v
+cph	set3/c24.py	/^cph = ctrMT(msg,key)$/;"	v
+cph	set3/mt19937_stream_cipher.py	/^cph = ctrMT(msg,key)$/;"	v
+ct	set1/c3.py	/^  ct = "1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736"$/;"	v
+ct	set1/c6.py	/^  ct = base64.b64decode(data)$/;"	v
+ct	set1/c7.py	/^ct = base64.b64decode(data)$/;"	v
+ct	set1/c8.py	/^    ct = findecb(l.rstrip())$/;"	v
+ct	set3/c3.py	/^  ct = "1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736"$/;"	v
+ct0	set5/c40.py	/^  ct0 = RSA().encrypt(cleartext,pub0)$/;"	v
+ct0	set5/rsa_broadcast_attack.py	/^  ct0 = RSA().encrypt(cleartext,pub0)$/;"	v
+ct1	set2/c14.py	/^  ct1 = encryption_oracle("a", key, prefix)$/;"	v
+ct1	set2/ecb_decryption_byte_at_a_time2.py	/^  ct1 = encryption_oracle("a", key, prefix)$/;"	v
+ct1	set5/c40.py	/^  ct1 = RSA().encrypt(cleartext,pub1)$/;"	v
+ct1	set5/rsa_broadcast_attack.py	/^  ct1 = RSA().encrypt(cleartext,pub1)$/;"	v
+ct2	set2/c14.py	/^  ct2 = encryption_oracle("b", key, prefix)$/;"	v
+ct2	set2/ecb_decryption_byte_at_a_time2.py	/^  ct2 = encryption_oracle("b", key, prefix)$/;"	v
+ct2	set5/c40.py	/^  ct2 = RSA().encrypt(cleartext,pub2)$/;"	v
+ct2	set5/rsa_broadcast_attack.py	/^  ct2 = RSA().encrypt(cleartext,pub2)$/;"	v
+ctrMT	set3/c24.py	/^def ctrMT(s,key):$/;"	f
+ctrMT	set3/mt19937_stream_cipher.py	/^def ctrMT(s,key):$/;"	f
+ctrdecrypt	set3/c18.py	/^def ctrdecrypt(s,nonce,key,blksize=16):$/;"	f
+ctrdecrypt	set3/ctr_mode.py	/^def ctrdecrypt(s,nonce,key,blksize=16):$/;"	f
+ctrdecrypt	set4/c18.py	/^def ctrdecrypt(s,nonce,key,blksize=16):$/;"	f
+ctredit	set4/c25.py	/^class ctredit:$/;"	c
+ctredit	set4/cbc_edit.py	/^class ctredit:$/;"	c
+ctrencrypt	set3/c18.py	/^def ctrencrypt(s,nonce,key,blksize=16):$/;"	f
+ctrencrypt	set3/ctr_mode.py	/^def ctrencrypt(s,nonce,key,blksize=16):$/;"	f
+ctrencrypt	set4/c18.py	/^def ctrencrypt(s,nonce,key,blksize=16):$/;"	f
+cts	set3/c19.py	/^  cts = list()$/;"	v
+cts	set3/c20.py	/^cts = list()$/;"	v
+cts	set3/ctr_fixed_nonce.py	/^  cts = list()$/;"	v
+cts	set3/ctr_fixed_nonce2.py	/^cts = list()$/;"	v
+data	set1/c4.py	/^  data = open("c4.txt").read()$/;"	v
+data	set1/c4.py	/^  data = urllib.urlopen("https:\/\/gist.github.com\/tqbf\/3132713\/raw\/40da378d42026a0731ee1cd0b2bd50f66aabac5b\/gistfile1.txt").read()$/;"	v
+data	set1/c6.py	/^    data = open("c6.txt").read()$/;"	v
+data	set1/c6.py	/^    data = urllib.urlopen("https:\/\/gist.github.com\/tqbf\/3132752\/raw\/cecdb818e3ee4f5dda6f0847bfd90a83edb87e73\/gistfile1.txt").read()$/;"	v
+data	set1/c7.py	/^  data = open("c7.txt").read()$/;"	v
+data	set1/c7.py	/^  data = urllib.urlopen("https:\/\/gist.github.com\/tqbf\/3132853\/raw\/c02ff8a08ccf872f4cd278396379f4bb1ef337d8\/gistfile1.txt").read()$/;"	v
+data	set1/c8.py	/^    data = open("c8.txt").read()$/;"	v
+data	set1/c8.py	/^    data = urllib.urlopen("https:\/\/gist.github.com\/tqbf\/3132928\/raw\/6f74d4131d02dee3dd0766bd99a6b46c965491cc\/gistfile1.txt").read()$/;"	v
+data	set2/c10.py	/^    data = urllib.urlopen("https:\/\/gist.github.com\/tqbf\/3132976\/raw\/f0802a5bc9ffa2a69cd92c981438399d4ce1b8e4\/gistfile1.txt").read()$/;"	v
+data	set2/cbc_mode.py	/^    data = urllib.urlopen("https:\/\/gist.github.com\/tqbf\/3132976\/raw\/f0802a5bc9ffa2a69cd92c981438399d4ce1b8e4\/gistfile1.txt").read()$/;"	v
+data	set3/c10.py	/^    data = urllib.urlopen("https:\/\/gist.github.com\/tqbf\/3132976\/raw\/f0802a5bc9ffa2a69cd92c981438399d4ce1b8e4\/gistfile1.txt").read()$/;"	v
+data	set5/c10.py	/^    data = urllib.urlopen("https:\/\/gist.github.com\/tqbf\/3132976\/raw\/f0802a5bc9ffa2a69cd92c981438399d4ce1b8e4\/gistfile1.txt").read()$/;"	v
+data	set5/c37_client.py	/^  data = client.recv(4096)$/;"	v
+data	set5/c37_client.py	/^  data = client1.recv(4096)$/;"	v
+data	set5/c37_client.py	/^  data = client2.recv(4096)$/;"	v
+data	set5/c37_client.py	/^  data = client3.recv(4096)$/;"	v
+data	set5/c37_server.py	/^        data = conn.recv(4096)$/;"	v
+data	set6/c44.py	/^    data = open("c44.txt").read()$/;"	v
+data	set6/c44.py	/^    data = urllib.urlopen("https:\/\/gist.github.com\/anonymous\/f83e6b6e6889f2e8b7ff\/raw\/3eea46b071376679c9cde13dd27c4fb22a56e601\/challenge+44").read()$/;"	v
+dec	set4/c27.py	/^  dec = ""$/;"	v	class:c27
+dec	set4/cbc_key_eq_iv.py	/^  dec = ""$/;"	v	class:c27
+decrypt	set2/c13.py	/^def decrypt(s,key):$/;"	f
+decrypt	set2/ecb_cut_and_paste.py	/^def decrypt(s,key):$/;"	f
+decrypt	set5/c39.py	/^  def decrypt(self, cs, (d,n)):$/;"	m	class:RSA
+decrypt	set5/rsa.py	/^  def decrypt(self, cs, (d,n)):$/;"	m	class:RSA
+decrypt	set6/c39.py	/^  def decrypt(self, cs, (d,n)):$/;"	m	class:RSA
+decryptedtext	set5/c39.py	/^  decryptedtext = RSA().decrypt(ciphertext,k2)$/;"	v	class:RSA
+decryptedtext	set5/rsa.py	/^  decryptedtext = RSA().decrypt(ciphertext,k2)$/;"	v	class:RSA
+decryptedtext	set6/c39.py	/^  decryptedtext = RSA().decrypt(ciphertext,k2)$/;"	v	class:RSA
+dh	set5/c33.py	/^class dh:$/;"	c
+dh	set5/dh.py	/^class dh:$/;"	c
+digest	set4/c28.py	/^  def digest(self,imsg=""):$/;"	m	class:sha1
+digest	set4/c30.py	/^  def digest(self,imsg=""):$/;"	m	class:md4
+digest	set4/md4_len_ext_attack.py	/^  def digest(self,imsg=""):$/;"	m	class:md4
+digest	set4/sha1.py	/^  def digest(self,imsg=""):$/;"	m	class:sha1
+digest	set5/c28.py	/^  def digest(self,imsg=""):$/;"	m	class:sha1
+display	set3/c19.py	/^  def display(self):$/;"	m	class:gui
+display	set3/ctr_fixed_nonce.py	/^  def display(self):$/;"	m	class:gui
+display_footer	set3/c19.py	/^  def display_footer(self):$/;"	m	class:gui
+display_footer	set3/ctr_fixed_nonce.py	/^  def display_footer(self):$/;"	m	class:gui
+edit	set4/c25.py	/^  def edit(self,offset,text):$/;"	m	class:ctredit
+edit	set4/cbc_edit.py	/^  def edit(self,offset,text):$/;"	m	class:ctredit
+egcd	set5/c39.py	/^def egcd(a, b):$/;"	f
+egcd	set5/rsa.py	/^def egcd(a, b):$/;"	f
+egcd	set6/c39.py	/^def egcd(a, b):$/;"	f
+enc	set4/c26.py	/^  enc = t.myinput("a"*len(txt))$/;"	v
+enc	set4/c27.py	/^  enc = list(t.myinput(""))$/;"	v	class:c27
+enc	set4/cbc_key_eq_iv.py	/^  enc = list(t.myinput(""))$/;"	v	class:c27
+enc	set4/ctr_bit_flipping.py	/^  enc = t.myinput("a"*len(txt))$/;"	v
+enc	set6/c46.py	/^  enc = rsa.encrypt(base64.b64decode(txt),pub)$/;"	v
+enc0	set4/c25.py	/^  enc0 = obj.getdata()$/;"	v	class:ctredit
+enc0	set4/cbc_edit.py	/^  enc0 = obj.getdata()$/;"	v	class:ctredit
+encblk	set2/c14.py	/^      encblk = encryption_oracle(attack, key, prefix)[offset+x+blksize:offset+x+blksize*2]$/;"	v
+encblk	set2/ecb_decryption_byte_at_a_time2.py	/^      encblk = encryption_oracle(attack, key, prefix)[offset+x+blksize:offset+x+blksize*2]$/;"	v
+enclen	set2/c12.py	/^  enclen = len(encryption_oracle("a",key))$/;"	v
+enclen	set2/c14.py	/^  enclen = len(encryption_oracle("a", key, prefix)) - offset$/;"	v
+enclen	set2/ecb_decryption_byte_at_a_time.py	/^  enclen = len(encryption_oracle("a",key))$/;"	v
+enclen	set2/ecb_decryption_byte_at_a_time2.py	/^  enclen = len(encryption_oracle("a", key, prefix)) - offset$/;"	v
+encrypt	set2/c13.py	/^def encrypt(s,key):$/;"	f
+encrypt	set2/ecb_cut_and_paste.py	/^def encrypt(s,key):$/;"	f
+encrypt	set5/c39.py	/^  def encrypt(self, m, (e,n)):$/;"	m	class:RSA
+encrypt	set5/rsa.py	/^  def encrypt(self, m, (e,n)):$/;"	m	class:RSA
+encrypt	set6/c39.py	/^  def encrypt(self, m, (e,n)):$/;"	m	class:RSA
+encryptedblk	set2/c12.py	/^      encryptedblk = encryption_oracle(attack,key)[x:x+blksize]$/;"	v
+encryptedblk	set2/ecb_decryption_byte_at_a_time.py	/^      encryptedblk = encryption_oracle(attack,key)[x:x+blksize]$/;"	v
+encryption_oracle	set2/c11.py	/^def encryption_oracle(s):$/;"	f
+encryption_oracle	set2/c12.py	/^def encryption_oracle(s,key):$/;"	f
+encryption_oracle	set2/c14.py	/^def encryption_oracle(s,key="",prefix=""):$/;"	f
+encryption_oracle	set2/detecing_blk_cipher_mode.py	/^def encryption_oracle(s):$/;"	f
+encryption_oracle	set2/ecb_decryption_byte_at_a_time.py	/^def encryption_oracle(s,key):$/;"	f
+encryption_oracle	set2/ecb_decryption_byte_at_a_time2.py	/^def encryption_oracle(s,key="",prefix=""):$/;"	f
+exchange	set5/c35.py	/^def exchange(p,g,Mallory=False,mg=0):$/;"	f
+extlen	set4/c29.py	/^  def extlen(self,orghash,msglen,imsg):$/;"	m	class:sha1ext
+extlen	set4/c30.py	/^  def extlen(self,orghash,msglen,imsg):$/;"	m	class:md4ext
+extlen	set4/md4_len_ext_attack.py	/^  def extlen(self,orghash,msglen,imsg):$/;"	m	class:md4ext
+extlen	set4/sha1_len_ext_attack.py	/^  def extlen(self,orghash,msglen,imsg):$/;"	m	class:sha1ext
+extract_number	set3/c21.py	/^  def extract_number(self): #{{{$/;"	m	class:MT19937
+extract_number	set3/mt19937_mersenne_twister_rng.py	/^  def extract_number(self): #{{{$/;"	m	class:MT19937
+fcxor	set1/c3.py	/^def fcxor(ct): # find one character xor$/;"	f
+fcxor	set3/c3.py	/^def fcxor(ct): # find one character xor$/;"	f
+findecb	set1/c8.py	/^def findecb(cte,blksize=16):$/;"	f
+findecb	set2/c11.py	/^def findecb(cte,blksize=16):$/;"	f
+findecb	set2/c12.py	/^def findecb(cte,blksize=16):$/;"	f
+findecb	set2/c14.py	/^def findecb(cte,blksize=16):$/;"	f
+findecb	set2/detecing_blk_cipher_mode.py	/^def findecb(cte,blksize=16):$/;"	f
+findecb	set2/ecb_decryption_byte_at_a_time.py	/^def findecb(cte,blksize=16):$/;"	f
+findecb	set2/ecb_decryption_byte_at_a_time2.py	/^def findecb(cte,blksize=16):$/;"	f
+findkeylen	set1/c6.py	/^def findkeylen(ct,keylen,blocks=5): # calculates Hamming distance for few blocks for the same keylength$/;"	f
+first	set4/c32c.py	/^          first = False$/;"	v
+first	set4/c32c.py	/^      first = True$/;"	v
+first	set4/timing_attack_on_hmac.py	/^          first = False$/;"	v
+first	set4/timing_attack_on_hmac.py	/^      first = True$/;"	v
+fn	set4/c31c.py	/^fn = "c31s.py"$/;"	v
+fn	set4/c32c.py	/^fn = "c32s.py"$/;"	v
+fn	set4/timing_attack_on_hmac.py	/^fn = "c32s.py"$/;"	v
+forging	set6/c42.py	/^def forging(mesg,key):$/;"	f
+fun1	set3/c17.py	/^  def fun1 (self):$/;"	m	class:cc17
+fun1	set3/cbc_padding_oracle.py	/^  def fun1 (self):$/;"	m	class:cc17
+fun2	set3/c17.py	/^  def fun2(self,s):$/;"	m	class:cc17
+fun2	set3/cbc_padding_oracle.py	/^  def fun2(self,s):$/;"	m	class:cc17
+g	set3/c19.py	/^  g = gui(cts,key)$/;"	v
+g	set3/c20.py	/^g = c19.gui(cts,key)$/;"	v
+g	set3/ctr_fixed_nonce.py	/^  g = gui(cts,key)$/;"	v
+g	set3/ctr_fixed_nonce2.py	/^g = c19.gui(cts,key)$/;"	v
+g	set5/c33.py	/^  g = 2**16+1$/;"	v
+g	set5/c34.py	/^g = 2$/;"	v
+g	set5/c35.py	/^  g = 2$/;"	v
+g	set5/c38.py	/^  g = 2$/;"	v
+g	set5/dh.py	/^  g = 2**16+1$/;"	v
+gen	set3/c24b.py	/^  def gen(self,uid):$/;"	m	class:pwdtoken
+generate_numbers	set3/c21.py	/^  def generate_numbers(self): #{{{$/;"	m	class:MT19937
+generate_numbers	set3/mt19937_mersenne_twister_rng.py	/^  def generate_numbers(self): #{{{$/;"	m	class:MT19937
+get_state	set3/c21.py	/^  def get_state(self): #{{{$/;"	m	class:MT19937
+get_state	set3/mt19937_mersenne_twister_rng.py	/^  def get_state(self): #{{{$/;"	m	class:MT19937
+getdata	set4/c25.py	/^  def getdata(self):$/;"	m	class:ctredit
+getdata	set4/cbc_edit.py	/^  def getdata(self):$/;"	m	class:ctredit
+getkey	set3/c19.py	/^  def getkey(self):$/;"	m	class:gui
+getkey	set3/ctr_fixed_nonce.py	/^  def getkey(self):$/;"	m	class:gui
+getpubkey	set6/c46.py	/^  def getpubkey(self):$/;"	m	class:oracle
+gui	set3/c19.py	/^class gui:$/;"	c
+gui	set3/ctr_fixed_nonce.py	/^class gui:$/;"	c
+hd	set1/c6.py	/^def hd(s1, s2): # calculations for the Hamming distance$/;"	f
+hexdigest	set4/c28.py	/^  def hexdigest(self,imsg=""):$/;"	m	class:sha1
+hexdigest	set4/c30.py	/^  def hexdigest(self,imsg=""):$/;"	m	class:md4
+hexdigest	set4/md4_len_ext_attack.py	/^  def hexdigest(self,imsg=""):$/;"	m	class:md4
+hexdigest	set4/sha1.py	/^  def hexdigest(self,imsg=""):$/;"	m	class:sha1
+hexdigest	set5/c28.py	/^  def hexdigest(self,imsg=""):$/;"	m	class:sha1
+hideunprintablechars	set3/c19.py	/^def hideunprintablechars(s,hc="#"):$/;"	f
+hideunprintablechars	set3/ctr_fixed_nonce.py	/^def hideunprintablechars(s,hc="#"):$/;"	f
+hmac	set4/c31s.py	/^def hmac(key,msg,algo):$/;"	f
+hmac	set4/c32s.py	/^def hmac(key,msg,algo):$/;"	f
+hmac	set4/hmac.py	/^def hmac(key,msg,algo):$/;"	f
+hmac	set5/c31s.py	/^def hmac(key,msg,algo):$/;"	f
+hmac_check	set4/c31s.py	/^class hmac_check:$/;"	c
+hmac_check	set4/c32s.py	/^class hmac_check:$/;"	c
+hmac_check	set4/hmac.py	/^class hmac_check:$/;"	c
+hmac_check	set5/c31s.py	/^class hmac_check:$/;"	c
+i2s	set5/c36.py	/^def i2s(i):$/;"	f
+i2s	set5/srp.py	/^def i2s(i):$/;"	f
+i2s	set6/c36.py	/^def i2s(i):$/;"	f
+insecure_compare	set4/c31s.py	/^def insecure_compare(s1,hs2,st=0):$/;"	f
+insecure_compare	set4/c32s.py	/^def insecure_compare(s1,hs2,st=0):$/;"	f
+insecure_compare	set4/hmac.py	/^def insecure_compare(s1,hs2,st=0):$/;"	f
+insecure_compare	set5/c31s.py	/^def insecure_compare(s1,hs2,st=0):$/;"	f
+internalerror	set4/c31s.py	/^def internalerror():$/;"	f
+internalerror	set4/c32s.py	/^def internalerror():$/;"	f
+internalerror	set4/hmac.py	/^def internalerror():$/;"	f
+internalerror	set5/c31s.py	/^def internalerror():$/;"	f
+invmod	set5/c39.py	/^def invmod(a, m):$/;"	f
+invmod	set5/rsa.py	/^def invmod(a, m):$/;"	f
+invmod	set6/c39.py	/^def invmod(a, m):$/;"	f
+iseven	set6/c46.py	/^  def iseven(self,ct):$/;"	m	class:oracle
+key	set1/c5.py	/^  key = "ICE"$/;"	v
+key	set1/c6.py	/^    key = ""$/;"	v
+key	set2/c12.py	/^  key = open("\/dev\/urandom").read(16)$/;"	v
+key	set2/c14.py	/^  key = open("\/dev\/urandom").read(16)$/;"	v
+key	set2/ecb_decryption_byte_at_a_time.py	/^  key = open("\/dev\/urandom").read(16)$/;"	v
+key	set2/ecb_decryption_byte_at_a_time2.py	/^  key = open("\/dev\/urandom").read(16)$/;"	v
+key	set3/c19.py	/^  key = [0]*mxlen$/;"	v
+key	set3/c19.py	/^  key = basicautoguessing(cts,key,milen)$/;"	v
+key	set3/c19.py	/^  key = bigrams(cts,key)$/;"	v
+key	set3/c19.py	/^  key = open("\/dev\/urandom").read(16)$/;"	v
+key	set3/c19.py	/^  key = trigrams(cts,key)$/;"	v
+key	set3/c20.py	/^key = [0]*milen$/;"	v
+key	set3/c20.py	/^key = c19.basicautoguessing(cts,key,milen)$/;"	v
+key	set3/c20.py	/^key = c19.bigrams(cts,key)$/;"	v
+key	set3/c20.py	/^key = open("\/dev\/urandom").read(16)$/;"	v
+key	set3/c24.py	/^key = int(open("\/dev\/urandom").read(2).encode('hex'),16)$/;"	v
+key	set3/ctr_fixed_nonce.py	/^  key = [0]*mxlen$/;"	v
+key	set3/ctr_fixed_nonce.py	/^  key = basicautoguessing(cts,key,milen)$/;"	v
+key	set3/ctr_fixed_nonce.py	/^  key = bigrams(cts,key)$/;"	v
+key	set3/ctr_fixed_nonce.py	/^  key = open("\/dev\/urandom").read(16)$/;"	v
+key	set3/ctr_fixed_nonce.py	/^  key = trigrams(cts,key)$/;"	v
+key	set3/ctr_fixed_nonce2.py	/^key = [0]*milen$/;"	v
+key	set3/ctr_fixed_nonce2.py	/^key = c19.basicautoguessing(cts,key,milen)$/;"	v
+key	set3/ctr_fixed_nonce2.py	/^key = c19.bigrams(cts,key)$/;"	v
+key	set3/ctr_fixed_nonce2.py	/^key = open("\/dev\/urandom").read(16)$/;"	v
+key	set3/mt19937_stream_cipher.py	/^key = int(open("\/dev\/urandom").read(2).encode('hex'),16)$/;"	v
+key	set4/c26.py	/^  key = [ ord(c)^ord("a") for c in enc[32:32+len(txt)] ]$/;"	v
+key	set4/c27.py	/^  key = [chr(ord(c1)^ord(c2)) for c1,c2 in zip(dec[:16],dec[32:48])]$/;"	v	class:c27
+key	set4/c29.py	/^      key = "secret"$/;"	v
+key	set4/c29.py	/^      key = random_line(open("\/usr\/share\/dict\/words"))$/;"	v
+key	set4/c30.py	/^      key = "secret"$/;"	v
+key	set4/c30.py	/^      key = random_line(open("\/usr\/share\/dict\/words"))$/;"	v
+key	set4/cbc_key_eq_iv.py	/^  key = [chr(ord(c1)^ord(c2)) for c1,c2 in zip(dec[:16],dec[32:48])]$/;"	v	class:c27
+key	set4/ctr_bit_flipping.py	/^  key = [ ord(c)^ord("a") for c in enc[32:32+len(txt)] ]$/;"	v
+key	set4/md4_len_ext_attack.py	/^      key = "secret"$/;"	v
+key	set4/md4_len_ext_attack.py	/^      key = random_line(open("\/usr\/share\/dict\/words"))$/;"	v
+key	set4/sha1_len_ext_attack.py	/^      key = "secret"$/;"	v
+key	set4/sha1_len_ext_attack.py	/^      key = random_line(open("\/usr\/share\/dict\/words"))$/;"	v
+key_len	set1/c6.py	/^  key_len = dict()$/;"	v
+keygen	set5/c39.py	/^  def keygen(self, l=2048, s=True):$/;"	m	class:RSA
+keygen	set5/rsa.py	/^  def keygen(self, l=2048, s=True):$/;"	m	class:RSA
+keygen	set6/c39.py	/^  def keygen(self, l=2048, s=True):$/;"	m	class:RSA
+left	set4/c32c.py	/^      left = [0]$/;"	v
+left	set4/timing_attack_on_hmac.py	/^      left = [0]$/;"	v
+lfet	set1/c3.py	/^def lfet(cc): # letter frequency for english test$/;"	f
+lfet	set3/c3.py	/^def lfet(cc): # letter frequency for english test$/;"	f
+m_s_0	set5/c40.py	/^  m_s_0 = n_1 * n_2$/;"	v
+m_s_0	set5/rsa_broadcast_attack.py	/^  m_s_0 = n_1 * n_2$/;"	v
+m_s_1	set5/c40.py	/^  m_s_1 = n_0 * n_2$/;"	v
+m_s_1	set5/rsa_broadcast_attack.py	/^  m_s_1 = n_0 * n_2$/;"	v
+m_s_2	set5/c40.py	/^  m_s_2 = n_0 * n_1$/;"	v
+m_s_2	set5/rsa_broadcast_attack.py	/^  m_s_2 = n_0 * n_1$/;"	v
+make	set6/c42.py	/^  def make(self,msg,key):$/;"	m	class:RSAsign
+mcxor	set1/c5.py	/^def mcxor(key,msg):$/;"	f
+md4	set4/c30.py	/^class md4:$/;"	c
+md4	set4/md4_len_ext_attack.py	/^class md4:$/;"	c
+md4ext	set4/c30.py	/^class md4ext(md4):$/;"	c
+md4ext	set4/md4_len_ext_attack.py	/^class md4ext(md4):$/;"	c
+message	set6/c42.py	/^  message = "hi mom"$/;"	v
+milen	set3/c19.py	/^  milen = 999  # min length of the CT$/;"	v
+milen	set3/c20.py	/^      milen = len(cts[-1])$/;"	v
+milen	set3/c20.py	/^milen = 999$/;"	v
+milen	set3/ctr_fixed_nonce.py	/^  milen = 999  # min length of the CT$/;"	v
+milen	set3/ctr_fixed_nonce2.py	/^      milen = len(cts[-1])$/;"	v
+milen	set3/ctr_fixed_nonce2.py	/^milen = 999$/;"	v
+mkobj	set2/c13.py	/^def mkobj(s):$/;"	f
+mkobj	set2/ecb_cut_and_paste.py	/^def mkobj(s):$/;"	f
+modexp	set5/c33.py	/^def modexp(g,u,p):$/;"	f
+modexp	set5/dh.py	/^def modexp(g,u,p):$/;"	f
+msg	set3/c24.py	/^msg = ""$/;"	v
+msg	set3/mt19937_stream_cipher.py	/^msg = ""$/;"	v
+msg	set6/c41.py	/^  msg = "attack after the breakfast"$/;"	v
+msgs	set3/c20.py	/^  msgs = urllib.urlopen("https:\/\/gist.github.com\/tqbf\/3336141\/raw\/d601f0b675feef570188ab2c8f347843f965ee14\/gistfile1.txt").read()$/;"	v
+msgs	set3/ctr_fixed_nonce2.py	/^  msgs = urllib.urlopen("https:\/\/gist.github.com\/tqbf\/3336141\/raw\/d601f0b675feef570188ab2c8f347843f965ee14\/gistfile1.txt").read()$/;"	v
+mxlen	set3/c19.py	/^  mxlen = 0    # max length of the CT$/;"	v
+mxlen	set3/ctr_fixed_nonce.py	/^  mxlen = 0    # max length of the CT$/;"	v
+myinput	set2/c16.py	/^def myinput(s,iv,key):$/;"	f
+myinput	set2/cbc_bit_flipping.py	/^def myinput(s,iv,key):$/;"	f
+myinput	set4/c16.py	/^def myinput(s,iv,key):$/;"	f
+myinput	set4/c26.py	/^  def myinput(self,s):$/;"	m	class:c26
+myinput	set4/c27.py	/^  def myinput(self,s):$/;"	m	class:c27
+myinput	set4/cbc_key_eq_iv.py	/^  def myinput(self,s):$/;"	m	class:c27
+myinput	set4/ctr_bit_flipping.py	/^  def myinput(self,s):$/;"	m	class:c26
+n_0	set5/c40.py	/^  n_0 = pub0[1]$/;"	v
+n_0	set5/rsa_broadcast_attack.py	/^  n_0 = pub0[1]$/;"	v
+n_1	set5/c40.py	/^  n_1 = pub1[1]$/;"	v
+n_1	set5/rsa_broadcast_attack.py	/^  n_1 = pub1[1]$/;"	v
+n_2	set5/c40.py	/^  n_2 = pub2[1]$/;"	v
+n_2	set5/rsa_broadcast_attack.py	/^  n_2 = pub2[1]$/;"	v
+nextblock	set2/c12.py	/^    nextblock = ""$/;"	v
+nextblock	set2/c12.py	/^  nextblock = "A"*blksize$/;"	v
+nextblock	set2/ecb_decryption_byte_at_a_time.py	/^    nextblock = ""$/;"	v
+nextblock	set2/ecb_decryption_byte_at_a_time.py	/^  nextblock = "A"*blksize$/;"	v
+nxtblk	set2/c14.py	/^    nxtblk = ""$/;"	v
+nxtblk	set2/c14.py	/^  nxtblk = "A"*blksize$/;"	v
+nxtblk	set2/ecb_decryption_byte_at_a_time2.py	/^    nxtblk = ""$/;"	v
+nxtblk	set2/ecb_decryption_byte_at_a_time2.py	/^  nxtblk = "A"*blksize$/;"	v
+obj	set4/c25.py	/^  obj = ctredit(base64.b64decode(data))$/;"	v	class:ctredit
+obj	set4/cbc_edit.py	/^  obj = ctredit(base64.b64decode(data))$/;"	v	class:ctredit
+offset	set2/c14.py	/^      offset = i$/;"	v
+offset	set2/c14.py	/^  offset = 0$/;"	v
+offset	set2/ecb_decryption_byte_at_a_time2.py	/^      offset = i$/;"	v
+offset	set2/ecb_decryption_byte_at_a_time2.py	/^  offset = 0$/;"	v
+offstr	set2/c14.py	/^      offstr = i-(blksize*2)$/;"	v
+offstr	set2/c14.py	/^  offstr = 0$/;"	v
+offstr	set2/ecb_decryption_byte_at_a_time2.py	/^      offstr = i-(blksize*2)$/;"	v
+offstr	set2/ecb_decryption_byte_at_a_time2.py	/^  offstr = 0$/;"	v
+oracle	set6/c46.py	/^class oracle:$/;"	c
+orghash	set4/c29.py	/^    orghash = c28.sha1(key+msg).hexdigest()$/;"	v
+orghash	set4/c30.py	/^    orghash = md4(key+msg).hexdigest()$/;"	v
+orghash	set4/md4_len_ext_attack.py	/^    orghash = md4(key+msg).hexdigest()$/;"	v
+orghash	set4/sha1_len_ext_attack.py	/^    orghash = c28.sha1(key+msg).hexdigest()$/;"	v
+out	set2/c11.py	/^  out = findecb(encryption_oracle("0"*128).encode('hex'))$/;"	v
+out	set2/c14.py	/^  out = ""$/;"	v
+out	set2/detecing_blk_cipher_mode.py	/^  out = findecb(encryption_oracle("0"*128).encode('hex'))$/;"	v
+out	set2/ecb_decryption_byte_at_a_time2.py	/^  out = ""$/;"	v
+out2	set3/c24.py	/^  out2 =  ctrMT(cph,x)$/;"	v
+out2	set3/mt19937_stream_cipher.py	/^  out2 =  ctrMT(cph,x)$/;"	v
+output	set2/c12.py	/^  output = ""$/;"	v
+output	set2/ecb_decryption_byte_at_a_time.py	/^  output = ""$/;"	v
+p	set5/c33.py	/^  p = 0xffffffffffffffffc90fdaa22168c234c4c6628b80dc1cd129024e088a67cc74020bbea63b139b22514a08798e3404ddef9519b3cd3a431b302b0a6df25f14374fe1356d6d51c245e485b576625e7ec6f44c42e9a637ed6b0bff5cb6f406b7edee386bfb5a899fa5ae9f24117c4b1fe649286651ece45b3dc2007cb8a163bf0598da48361c55d39a69163fa8fd24cf5f83655d23dca3ad961c62f356208552bb9ed529077096966d670c354e4abc9804f1746c08ca237327ffffffffffffffff$/;"	v
+p	set5/c34.py	/^p = 0xffffffffffffffffc90fdaa22168c234c4c6628b80dc1cd129024e088a67cc74020bbea63b139b22514a08798e3404ddef9519b3cd3a431b302b0a6df25f14374fe1356d6d51c245e485b576625e7ec6f44c42e9a637ed6b0bff5cb6f406b7edee386bfb5a899fa5ae9f24117c4b1fe649286651ece45b3dc2007cb8a163bf0598da48361c55d39a69163fa8fd24cf5f83655d23dca3ad961c62f356208552bb9ed529077096966d670c354e4abc9804f1746c08ca237327ffffffffffffffff$/;"	v
+p	set5/c35.py	/^  p = 0xffffffffffffffffc90fdaa22168c234c4c6628b80dc1cd129024e088a67cc74020bbea63b139b22514a08798e3404ddef9519b3cd3a431b302b0a6df25f14374fe1356d6d51c245e485b576625e7ec6f44c42e9a637ed6b0bff5cb6f406b7edee386bfb5a899fa5ae9f24117c4b1fe649286651ece45b3dc2007cb8a163bf0598da48361c55d39a69163fa8fd24cf5f83655d23dca3ad961c62f356208552bb9ed529077096966d670c354e4abc9804f1746c08ca237327ffffffffffffffff$/;"	v
+p	set5/c38.py	/^  p = 3$/;"	v
+p	set5/dh.py	/^  p = 0xffffffffffffffffc90fdaa22168c234c4c6628b80dc1cd129024e088a67cc74020bbea63b139b22514a08798e3404ddef9519b3cd3a431b302b0a6df25f14374fe1356d6d51c245e485b576625e7ec6f44c42e9a637ed6b0bff5cb6f406b7edee386bfb5a899fa5ae9f24117c4b1fe649286651ece45b3dc2007cb8a163bf0598da48361c55d39a69163fa8fd24cf5f83655d23dca3ad961c62f356208552bb9ed529077096966d670c354e4abc9804f1746c08ca237327ffffffffffffffff$/;"	v
+pad	set6/c42.py	/^  def pad(self,msg,k):$/;"	m	class:PKCS15
+padding	set4/c28.py	/^def padding(msglen):$/;"	f
+padding	set4/c30.py	/^def padding(msglen):$/;"	f
+padding	set4/md4_len_ext_attack.py	/^def padding(msglen):$/;"	f
+padding	set4/sha1.py	/^def padding(msglen):$/;"	f
+padding	set5/c28.py	/^def padding(msglen):$/;"	f
+padding_oracle_attack	set3/c17.py	/^def padding_oracle_attack(oracfunc, pblk, blk):$/;"	f
+padding_oracle_attack	set3/cbc_padding_oracle.py	/^def padding_oracle_attack(oracfunc, pblk, blk):$/;"	f
+pkcs7chk	set2/c10.py	/^def pkcs7chk(s,blksize=16):$/;"	f
+pkcs7chk	set2/c15.py	/^def pkcs7chk(s,blksize=16):$/;"	f
+pkcs7chk	set2/c16.py	/^def pkcs7chk(s,blksize=16):$/;"	f
+pkcs7chk	set2/cbc_bit_flipping.py	/^def pkcs7chk(s,blksize=16):$/;"	f
+pkcs7chk	set2/cbc_mode.py	/^def pkcs7chk(s,blksize=16):$/;"	f
+pkcs7chk	set2/pkcs7_padding_validation.py	/^def pkcs7chk(s,blksize=16):$/;"	f
+pkcs7chk	set3/c10.py	/^def pkcs7chk(s,blksize=16):$/;"	f
+pkcs7chk	set4/c16.py	/^def pkcs7chk(s,blksize=16):$/;"	f
+pkcs7chk	set5/c10.py	/^def pkcs7chk(s,blksize=16):$/;"	f
+pkcs7pad	set2/c10.py	/^def pkcs7pad(s,blksize=16):$/;"	f
+pkcs7pad	set2/c16.py	/^def pkcs7pad(s,blksize=16):$/;"	f
+pkcs7pad	set2/c9.py	/^def pkcs7pad(s,blksize=16):$/;"	f
+pkcs7pad	set2/cbc_bit_flipping.py	/^def pkcs7pad(s,blksize=16):$/;"	f
+pkcs7pad	set2/cbc_mode.py	/^def pkcs7pad(s,blksize=16):$/;"	f
+pkcs7pad	set2/pkcs7_padding.py	/^def pkcs7pad(s,blksize=16):$/;"	f
+pkcs7pad	set3/c10.py	/^def pkcs7pad(s,blksize=16):$/;"	f
+pkcs7pad	set4/c16.py	/^def pkcs7pad(s,blksize=16):$/;"	f
+pkcs7pad	set5/c10.py	/^def pkcs7pad(s,blksize=16):$/;"	f
+prefix	set2/c14.py	/^  prefix = open("\/dev\/urandom").read(random.randint(1,256))$/;"	v
+prefix	set2/ecb_decryption_byte_at_a_time2.py	/^  prefix = open("\/dev\/urandom").read(random.randint(1,256))$/;"	v
+prev	set4/c32c.py	/^      prev = [0,0]$/;"	v
+prev	set4/timing_attack_on_hmac.py	/^      prev = [0,0]$/;"	v
+profile_for	set2/c13.py	/^def profile_for(s):$/;"	f
+profile_for	set2/ecb_cut_and_paste.py	/^def profile_for(s):$/;"	f
+pub	set6/c46.py	/^  pub = c46.getpubkey()$/;"	v
+pwdrst	set3/c24b.py	/^pwdrst = pwdtoken()$/;"	v
+pwdtoken	set3/c24b.py	/^class pwdtoken:$/;"	c
+quadrigrams	set3/c19.py	/^def quadrigrams(cts,key):$/;"	f
+quadrigrams	set3/ctr_fixed_nonce.py	/^def quadrigrams(cts,key):$/;"	f
+r1	set4/c30.py	/^def r1(a, b, c, d, x, s):$/;"	f
+r1	set4/md4_len_ext_attack.py	/^def r1(a, b, c, d, x, s):$/;"	f
+r2	set4/c30.py	/^def r2(a, b, c, d, x, s):$/;"	f
+r2	set4/md4_len_ext_attack.py	/^def r2(a, b, c, d, x, s):$/;"	f
+r3	set4/c30.py	/^def r3(a, b, c, d, x, s):$/;"	f
+r3	set4/md4_len_ext_attack.py	/^def r3(a, b, c, d, x, s):$/;"	f
+random_line	set4/c29.py	/^def random_line(afile):$/;"	f
+random_line	set4/c30.py	/^def random_line(afile):$/;"	f
+random_line	set4/md4_len_ext_attack.py	/^def random_line(afile):$/;"	f
+random_line	set4/sha1_len_ext_attack.py	/^def random_line(afile):$/;"	f
+re	set6/c42.py	/^  re = RSA()$/;"	v
+recv1	set5/c36.py	/^  def recv1(self,I,A):$/;"	m	class:SRP_server
+recv1	set5/c36.py	/^  def recv1(self,salt,B):$/;"	m	class:SRP_client
+recv1	set5/c38.py	/^  def recv1(self,I,A):$/;"	m	class:sSRP_server
+recv1	set5/c38.py	/^  def recv1(self,salt,B,u):$/;"	m	class:sSRP_client
+recv1	set5/srp.py	/^  def recv1(self,I,A):$/;"	m	class:SRP_server
+recv1	set5/srp.py	/^  def recv1(self,salt,B):$/;"	m	class:SRP_client
+recv1	set6/c36.py	/^  def recv1(self,I,A):$/;"	m	class:SRP_server
+recv1	set6/c36.py	/^  def recv1(self,salt,B):$/;"	m	class:SRP_client
+recv2	set5/c36.py	/^  def recv2(self,hks):$/;"	m	class:SRP_server
+recv2	set5/c38.py	/^  def recv2(self,hks):$/;"	m	class:sSRP_server
+recv2	set5/srp.py	/^  def recv2(self,hks):$/;"	m	class:SRP_server
+recv2	set6/c36.py	/^  def recv2(self,hks):$/;"	m	class:SRP_server
+reorderblk	set1/c6.py	/^def reorderblk(ct,keylen):$/;"	f
+result	set5/c40.py	/^  result  = (c_0 * m_s_0 * invmod(m_s_0, n_0))$/;"	v
+result	set5/rsa_broadcast_attack.py	/^  result  = (c_0 * m_s_0 * invmod(m_s_0, n_0))$/;"	v
+revrnd	set3/c23.py	/^def revrnd(x): #{{{$/;"	f
+revrnd	set3/mt19937_cloning.py	/^def revrnd(x): #{{{$/;"	f
+rng	set3/c22.py	/^rng = c21.MT19937(ts)$/;"	v
+rng	set3/c23.py	/^  rng = c21.MT19937(seed)$/;"	v
+rng	set3/c24b.py	/^  rng = c21.MT19937(ts - i)$/;"	v
+rng	set3/mt19937_cloning.py	/^  rng = c21.MT19937(seed)$/;"	v
+rng	set3/mt19937_finding_the_seed.py	/^rng = c21.MT19937(ts)$/;"	v
+rng1	set3/c22.py	/^  rng1 = c21.MT19937(ts1-i) # substracting from current timestamp$/;"	v
+rng1	set3/mt19937_finding_the_seed.py	/^  rng1 = c21.MT19937(ts1-i) # substracting from current timestamp$/;"	v
+rnv	set3/c24b.py	/^  rnv = rng.extract_number()$/;"	v
+rol32	set4/c28.py	/^def rol32(word,count):$/;"	f
+rol32	set4/c30.py	/^def rol32(word,count):$/;"	f
+rol32	set4/md4_len_ext_attack.py	/^def rol32(word,count):$/;"	f
+rol32	set4/sha1.py	/^def rol32(word,count):$/;"	f
+rol32	set5/c28.py	/^def rol32(word,count):$/;"	f
+rs	set6/c42.py	/^  rs = RSAsign()$/;"	v
+rsa	set6/c41.py	/^  rsa = RSA()$/;"	v
+rsa	set6/c46.py	/^  rsa = RSA()$/;"	v
+run	set3/c19.py	/^  def run(self):$/;"	m	class:gui
+run	set3/ctr_fixed_nonce.py	/^  def run(self):$/;"	m	class:gui
+run	set4/c31s.py	/^  def run(self, port=9000, *middleware):$/;"	m	class:MyWrongHmacApp
+run	set4/c32s.py	/^  def run(self, port=9000, *middleware):$/;"	m	class:MyWrongHmacApp
+run	set4/hmac.py	/^  def run(self, port=9000, *middleware):$/;"	m	class:MyWrongHmacApp
+run	set5/c31s.py	/^  def run(self, port=9000, *middleware):$/;"	m	class:MyWrongHmacApp
+s	set2/c12.py	/^        s = attack + nextblock + chr(c)$/;"	v
+s	set2/c12.py	/^    s = "A"*(blksize*2)$/;"	v
+s	set2/c14.py	/^        s = attack + nxtblk + chr(c)$/;"	v
+s	set2/c14.py	/^    s = 'A'*i$/;"	v
+s	set2/c14.py	/^    s = ("A"*(blksize*2))*3$/;"	v
+s	set2/ecb_decryption_byte_at_a_time.py	/^        s = attack + nextblock + chr(c)$/;"	v
+s	set2/ecb_decryption_byte_at_a_time.py	/^    s = "A"*(blksize*2)$/;"	v
+s	set2/ecb_decryption_byte_at_a_time2.py	/^        s = attack + nxtblk + chr(c)$/;"	v
+s	set2/ecb_decryption_byte_at_a_time2.py	/^    s = 'A'*i$/;"	v
+s	set2/ecb_decryption_byte_at_a_time2.py	/^    s = ("A"*(blksize*2))*3$/;"	v
+s	set5/c36.py	/^  s = SRP_server(NISTprime,2,3,'a@a.com','abc')$/;"	v
+s	set5/c37_server.py	/^  s = SRP_server(NISTprime,2,3,'a@a.com','abc')$/;"	v
+s	set5/srp.py	/^  s = SRP_server(NISTprime,2,3,'a@a.com','abc')$/;"	v
+s	set6/c36.py	/^  s = SRP_server(NISTprime,2,3,'a@a.com','abc')$/;"	v
+s2i	set5/c36.py	/^def s2i(s):$/;"	f
+s2i	set5/srp.py	/^def s2i(s):$/;"	f
+s2i	set6/c36.py	/^def s2i(s):$/;"	f
+sSRP_client	set5/c38.py	/^class sSRP_client :$/;"	c
+sSRP_server	set5/c38.py	/^class sSRP_server :$/;"	c
+salt	set5/c37_client.py	/^  salt = data.split(",")[0]$/;"	v
+seed	set3/c23.py	/^  seed = int(open("\/dev\/urandom").read(4).encode('hex'),16)$/;"	v
+seed	set3/mt19937_cloning.py	/^  seed = int(open("\/dev\/urandom").read(4).encode('hex'),16)$/;"	v
+send1	set5/c36.py	/^  def send1(self):$/;"	m	class:SRP_client
+send1	set5/c36.py	/^  def send1(self):$/;"	m	class:SRP_server
+send1	set5/c38.py	/^  def send1(self):$/;"	m	class:sSRP_client
+send1	set5/c38.py	/^  def send1(self):$/;"	m	class:sSRP_server
+send1	set5/srp.py	/^  def send1(self):$/;"	m	class:SRP_client
+send1	set5/srp.py	/^  def send1(self):$/;"	m	class:SRP_server
+send1	set6/c36.py	/^  def send1(self):$/;"	m	class:SRP_client
+send1	set6/c36.py	/^  def send1(self):$/;"	m	class:SRP_server
+send2	set5/c36.py	/^  def send2(self):$/;"	m	class:SRP_client
+send2	set5/c38.py	/^  def send2(self):$/;"	m	class:sSRP_client
+send2	set5/srp.py	/^  def send2(self):$/;"	m	class:SRP_client
+send2	set6/c36.py	/^  def send2(self):$/;"	m	class:SRP_client
+server	set5/c37_server.py	/^  server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)$/;"	v
+set_state	set3/c21.py	/^  def set_state(self,mt,idx=0): #{{{$/;"	m	class:MT19937
+set_state	set3/mt19937_mersenne_twister_rng.py	/^  def set_state(self,mt,idx=0): #{{{$/;"	m	class:MT19937
+sha1	set4/c28.py	/^class sha1:$/;"	c
+sha1	set4/sha1.py	/^class sha1:$/;"	c
+sha1	set5/c28.py	/^class sha1:$/;"	c
+sha1ext	set4/c29.py	/^class sha1ext(c28.sha1):$/;"	c
+sha1ext	set4/sha1_len_ext_attack.py	/^class sha1ext(c28.sha1):$/;"	c
+shsecret	set5/c33.py	/^  def shsecret(self,B):$/;"	m	class:dh
+shsecret	set5/dh.py	/^  def shsecret(self,B):$/;"	m	class:dh
+sig	set4/c31c.py	/^  sig = [0] * 20$/;"	v
+sig	set4/c32c.py	/^  sig = [0] * 20 # numbers of bytes in the signature$/;"	v
+sig	set4/timing_attack_on_hmac.py	/^  sig = [0] * 20 # numbers of bytes in the signature$/;"	v
+sign	set6/c42.py	/^  sign = rs.make(message,priv1)$/;"	v
+sign	set6/c43.py	/^  def sign(self,m):$/;"	m	class:DSA
+signf	set6/c42.py	/^  signf = [ forging(message,pub1) ]$/;"	v
+sigs	set4/c32s.py	/^sigs = dict()$/;"	v
+status	set5/c37_server.py	/^        status = s.recv2(data)$/;"	v
+sxor	set1/c6.py	/^    sxor = reorderblk(ct,kl)$/;"	v
+t	set4/c26.py	/^  t = c26()$/;"	v
+t	set4/c27.py	/^  t = c27()$/;"	v	class:c27
+t	set4/cbc_key_eq_iv.py	/^  t = c27()$/;"	v	class:c27
+t	set4/ctr_bit_flipping.py	/^  t = c26()$/;"	v
+test	set3/c21.py	/^  test = MT19937(0)$/;"	v	class:MT19937
+test	set3/mt19937_mersenne_twister_rng.py	/^  test = MT19937(0)$/;"	v	class:MT19937
+test	set4/c26.py	/^  test = enc[:32]+"".join([chr(ord(c)^k) for c,k in zip(txt,key)])+enc[32+len(txt):]$/;"	v
+test	set4/c27.py	/^  test = "".join(enc[:16]+["\\x00"]*16+enc[:16]+enc[16:])$/;"	v	class:c27
+test	set4/c28.py	/^  def test(self):$/;"	m	class:sha1
+test	set4/c30.py	/^  def test(self):$/;"	m	class:md4
+test	set4/cbc_key_eq_iv.py	/^  test = "".join(enc[:16]+["\\x00"]*16+enc[:16]+enc[16:])$/;"	v	class:c27
+test	set4/ctr_bit_flipping.py	/^  test = enc[:32]+"".join([chr(ord(c)^k) for c,k in zip(txt,key)])+enc[32+len(txt):]$/;"	v
+test	set4/md4_len_ext_attack.py	/^  def test(self):$/;"	m	class:md4
+test	set4/sha1.py	/^  def test(self):$/;"	m	class:sha1
+test	set5/c28.py	/^  def test(self):$/;"	m	class:sha1
+test1char	set4/c32c.py	/^def test1char(sig,idx,tries,url,fn):$/;"	f
+test1char	set4/timing_attack_on_hmac.py	/^def test1char(sig,idx,tries,url,fn):$/;"	f
+test4extream	set4/c32c.py	/^def test4extream(value, mean, stddev):$/;"	f
+test4extream	set4/timing_attack_on_hmac.py	/^def test4extream(value, mean, stddev):$/;"	f
+testsSRP	set5/c38.py	/^def testsSRP(N):$/;"	f
+token	set3/c24b.py	/^token = pwdrst.gen(userid)$/;"	v
+tries	set4/c32c.py	/^  tries = 1 # initial value this will be auto adjusted later$/;"	v
+tries	set4/timing_attack_on_hmac.py	/^  tries = 1 # initial value this will be auto adjusted later$/;"	v
+trigrams	set3/c19.py	/^def trigrams(cts,key):$/;"	f
+trigrams	set3/ctr_fixed_nonce.py	/^def trigrams(cts,key):$/;"	f
+ts	set3/c22.py	/^ts = int(time.time())$/;"	v
+ts	set3/c24b.py	/^ts = int(time.time())$/;"	v
+ts	set3/mt19937_finding_the_seed.py	/^ts = int(time.time())$/;"	v
+ts1	set3/c22.py	/^    ts1 = ts1 - i$/;"	v
+ts1	set3/c22.py	/^ts1 = int(time.time())$/;"	v
+ts1	set3/mt19937_finding_the_seed.py	/^    ts1 = ts1 - i$/;"	v
+ts1	set3/mt19937_finding_the_seed.py	/^ts1 = int(time.time())$/;"	v
+tworker1	set5/c38.py	/^def tworker1(A,start,step,g,N,q):$/;"	f
+tworker2	set5/c38.py	/^def tworker2(hpass,a,words,start,step,g,N,q):$/;"	f
+tworker3	set5/c38.py	/^def tworker3(hpass,a,start,step,g,N,q):$/;"	f
+txt	set1/c2.py	/^txt = xorss("1c0111001f010100061a024b53535009181c".decode('hex'),"686974207468652062756c6c277320657965".decode('hex'))$/;"	v
+txt	set1/c4.py	/^  txt = c3.fcxor(l.rstrip().decode('hex'))$/;"	v
+txt	set1/c5.py	/^  txt = "Burning 'em, if you ain't quick and nimble\\nI go crazy when I hear a cymbal"$/;"	v
+txt	set1/c6.py	/^      txt = c3.fcxor("".join(sxor[i]))$/;"	v
+txt	set2/c10.py	/^    txt = base64.b64decode(data)$/;"	v
+txt	set2/c10.py	/^    txt = base64.b64decode(open("c10.txt").read())$/;"	v
+txt	set2/cbc_mode.py	/^    txt = base64.b64decode(data)$/;"	v
+txt	set2/cbc_mode.py	/^    txt = base64.b64decode(open("c10.txt").read())$/;"	v
+txt	set3/c10.py	/^    txt = base64.b64decode(data)$/;"	v
+txt	set3/c10.py	/^    txt = base64.b64decode(open("c10.txt").read())$/;"	v
+txt	set3/c17.py	/^  txt = padding_oracle_attack(c17.fun2,iv,ct[:blksize])$/;"	v
+txt	set3/c18.py	/^  txt = base64.b64decode("L77na\/nrFsKvynd6HzOoG7GHTLXsTVu9qvY\/2syLXzhPweyyMTJULu\/6\/kXX0KSvoOLSFQ==")$/;"	v
+txt	set3/cbc_padding_oracle.py	/^  txt = padding_oracle_attack(c17.fun2,iv,ct[:blksize])$/;"	v
+txt	set3/ctr_mode.py	/^  txt = base64.b64decode("L77na\/nrFsKvynd6HzOoG7GHTLXsTVu9qvY\/2syLXzhPweyyMTJULu\/6\/kXX0KSvoOLSFQ==")$/;"	v
+txt	set4/c18.py	/^  txt = base64.b64decode("L77na\/nrFsKvynd6HzOoG7GHTLXsTVu9qvY\/2syLXzhPweyyMTJULu\/6\/kXX0KSvoOLSFQ==")$/;"	v
+txt	set4/c27.py	/^  txt = c16.cbcdecrypt("".join(enc),"".join(key),"".join(key))$/;"	v	class:c27
+txt	set4/cbc_key_eq_iv.py	/^  txt = c16.cbcdecrypt("".join(enc),"".join(key),"".join(key))$/;"	v	class:c27
+txt	set5/c10.py	/^    txt = base64.b64decode(data)$/;"	v
+txt	set5/c10.py	/^    txt = base64.b64decode(open("c10.txt").read())$/;"	v
+unpad	set6/c42.py	/^  def unpad(self,msg):$/;"	m	class:PKCS15
+userid	set3/c24b.py	/^userid = "forgetfuluser@somedomain.com"$/;"	v
+v	set3/c22.py	/^v = rng.extract_number()$/;"	v
+v	set3/mt19937_finding_the_seed.py	/^v = rng.extract_number()$/;"	v
+verify	set6/c42.py	/^  def verify(self,msg,sign,key):$/;"	m	class:RSAsign
+webserver	set4/c31s.py	/^def webserver(sleeptime=0):$/;"	f
+webserver	set4/hmac.py	/^def webserver(sleeptime=0):$/;"	f
+webserver	set5/c31s.py	/^def webserver(sleeptime=0):$/;"	f
+xors	set3/c19.py	/^def xors(s1,s2):$/;"	f
+xors	set3/c20.py	/^def xors(s1,s2):$/;"	f
+xors	set3/ctr_fixed_nonce.py	/^def xors(s1,s2):$/;"	f
+xors	set3/ctr_fixed_nonce2.py	/^def xors(s1,s2):$/;"	f
+xorss	set1/c2.py	/^def xorss(s1,s2): # xor for strings - non repetitive$/;"	f
