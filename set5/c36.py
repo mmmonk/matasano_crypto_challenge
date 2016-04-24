@@ -10,7 +10,7 @@ def i2s(i):
   return x.decode('hex')
 
 def s2i(s):
-  return int(s.encode('hex'),16)
+  return long(s.encode('hex'),16)
 
 class SRP_server :
 
