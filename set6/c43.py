@@ -107,21 +107,13 @@ if __name__ == "__main__":
   msg_check_hash = "d2d0714f014a9784047eaeccf956520045c45265"
   assert (hashlib.sha1(m).hexdigest() == msg_check_hash), "hash doesn't match"
 
+  h_expected = "0954edd5e0afe5542a4adf012611a91912a3ec16"
   # broken implementation k is between 0 and 2^16
   for k in range(0, 2**16):
     x = d.x_recovery(m, r, s, k)
-    if y == d.y_gen(x):
+    if hashlib.sha1(i2s(x).encode('hex')).hexdigest() == h_expected:
       (r1, s1) = d.sign(m, x)
       d.verify(m, r1, s1, y)
       print "k : %s" % (k)
       print "x : %s" % (x)
-      print "he: 0954edd5e0afe5542a4adf012611a91912a3ec16"
-      h = hashlib.sha1(hex(x)).hexdigest()
-      print "h1: %s" % (h)
-      h = hashlib.sha1(i2s(x)).hexdigest()
-      print "h2: %s" % (h)
-      h = hashlib.sha1(str(x)).hexdigest()
-      print "h3: %s" % (h)
-      h = hashlib.sha1(hex(x).replace("0x","")).hexdigest()
-      print "h4: %s" % (h)
       break
