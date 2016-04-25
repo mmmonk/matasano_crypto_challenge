@@ -47,9 +47,10 @@ class DSA:
     # m - message
     # x - private key
     # https://en.wikipedia.org/wiki/Digital_Signature_Algorithm#Signing
-    k = random.randint(0, self.q)
     r = 0
+    k = 0
     while r == 0:
+      k = random.randint(0, self.q)
       r = modexp(self.g, k, self.p) % self.q
     s = (invmod(k, self.q) * (s2i(dgst(m).digest())+(x*r))) % self.q
 
