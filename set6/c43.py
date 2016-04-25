@@ -8,7 +8,7 @@ from c39 import invmod
 from c36 import i2s, s2i
 from c33 import modexp
 
-import random # <- this is probably not good
+from random import randint
 
 class DSA:
 
@@ -30,7 +30,7 @@ class DSA:
 
   def genuserkey(self):
     # https://en.wikipedia.org/wiki/Digital_Signature_Algorithm#Per-user_keys
-    x = random.randint(0, self.q)
+    x = randint(0, self.q)
     return (x, self.y_gen(x))
 
   def y_gen(self, x):
@@ -50,7 +50,7 @@ class DSA:
     r = 0
     k = 0
     while r == 0:
-      k = random.randint(0, self.q)
+      k = randint(0, self.q)
       r = modexp(self.g, k, self.p) % self.q
     s = (invmod(k, self.q) * (s2i(dgst(m).digest())+(x*r))) % self.q
 
