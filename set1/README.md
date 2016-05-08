@@ -14,7 +14,7 @@ simple rule of thumb:
   Always operate on raw bytes, never on encoded strings. Only use hex
   and base64 for pretty-printing.
 
-## 2. Fixed XOR
+## [2. Fixed XOR](c2.py)
 
 Write a function that takes two equal-length buffers and produces
 their XOR sum.
@@ -32,7 +32,7 @@ The string:
      746865206b696420646f6e277420706c6179
 
 
-## 3. Single-character XOR Cipher
+## [3. Single-character XOR Cipher](c3.py)
 
 The hex encoded string:
 
@@ -48,7 +48,7 @@ Evaluate each output and choose the one with the best score.
 Tune your algorithm until this works.
 
 
-## 4. Detect single-character XOR
+## [4. Detect single-character XOR](c4.py)
 
 One of the 60-character strings at:
 
@@ -58,7 +58,7 @@ has been encrypted by single-character XOR. Find it. (Your code from
 \#3 should help.)
 
 
-## 5. Repeating-key XOR Cipher
+## [5. Repeating-key XOR Cipher](c5.py)
 
 Write the code to encrypt the string:
 
@@ -73,7 +73,7 @@ Encrypt a bunch of stuff using your repeating-key XOR function. Get a
 feel for it.
 
 
-## 6. Break repeating-key XOR
+## [6. Break repeating-key XOR](c6.py)
 
 The buffer at the following location:
 
@@ -121,7 +121,7 @@ e. For each block, the single-byte XOR key that produces the best
 looking histogram is the repeating-key XOR key byte for that
 block. Put them together and you have the key.
 
-## 7. AES in ECB Mode
+## [7. AES in ECB Mode](c7.py)
 
 The Base64-encoded content at the following location:
 
