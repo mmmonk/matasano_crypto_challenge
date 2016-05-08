@@ -1,4 +1,4 @@
-  1. Convert hex to base64 and back.
+#1. Convert hex to base64 and back.
 
     The string:
 
@@ -14,22 +14,22 @@
       Always operate on raw bytes, never on encoded strings. Only use hex
       and base64 for pretty-printing.
 
-  2. Fixed XOR
+#2. Fixed XOR
 
     Write a function that takes two equal-length buffers and produces
     their XOR sum.
 
     The string:
 
-       1c0111001f010100061a024b53535009181c
+         1c0111001f010100061a024b53535009181c
 
     ... after hex decoding, when xor'd against:
 
-       686974207468652062756c6c277320657965
+         686974207468652062756c6c277320657965
 
     ... should produce:
 
-       746865206b696420646f6e277420706c6179
+         746865206b696420646f6e277420706c6179
 
 // ------------------------------------------------------------
 
