@@ -35,9 +35,9 @@ This turns out to be trivially breakable:
 * Submit C', which appears totally different from C, to the server,
   recovering P', which appears totally different from P
 
-         P'
-    P = -----  mod N
-         S
+           P'
+      P = -----  mod N
+           S
 
 Oops!
 
@@ -181,9 +181,7 @@ Its SHA-1 fingerprint (after being converted to hex) is:
 
 Obviously, it also generates the same signature for that string.
 
-// ------------------------------------------------------------
-
-44. DSA Nonce Recovery From Repeated Nonce
+## [44. DSA Nonce Recovery From Repeated Nonce](c44.py)
 
 At the following URL, find a collection of DSA-signed messages:
 
