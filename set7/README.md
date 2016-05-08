@@ -82,7 +82,7 @@ Let's try a simple exercise.
 
 Hash functions are often used for code verification. This snippet of JavaScript (with newline):
 
-		alert('MZA who was that?');
+    alert('MZA who was that?');
 
 Hashes to 296b8d7cb78a243dda4d0a61d33bbdd1 under CBC-MAC with a key of "YELLOW SUBMARINE" and a 0 IV.
 
@@ -99,9 +99,9 @@ Why does that matter?
 
 Well, if you're an attacker with:
 
-	1. Partial plaintext knowledge and
-	2. Partial plaintext control and
-	3. Access to a compression oracle
+1. Partial plaintext knowledge and
+2. Partial plaintext control and
+3. Access to a compression oracle
 
 You've got a pretty good chance to recover any additional unknown plaintext.
 
@@ -113,15 +113,15 @@ Scenario: you are running a MITM attack with an eye towards stealing secure sess
 
 So! Write this oracle:
 
-		oracle(P) -> length(encrypt(compress(format_request(P))))
+    oracle(P) -> length(encrypt(compress(format_request(P))))
 
 Format the request like this:
 
-		POST / HTTP/1.1
-		Host: hapless.com
-		Cookie: sessionid=TmV2ZXIgcmV2ZWFsIHRoZSBXdS1UYW5nIFNlY3JldCE=
-		Content-Length: ((len(P)))
-		((P))
+    POST / HTTP/1.1
+    Host: hapless.com
+    Cookie: sessionid=TmV2ZXIgcmV2ZWFsIHRoZSBXdS1UYW5nIFNlY3JldCE=
+    Content-Length: ((len(P)))
+    ((P))
 
 (Pretend you can't see that session id. You're the attacker.)
 
@@ -157,10 +157,10 @@ Iterated hash functions have a problem: the effort to generate lots of collision
 
 What's an iterated hash function? For all intents and purposes, we're talking about the Merkle-Damgard construction. It looks like this:
 
-		function MD(M, H, C):
-			for M[i] in pad(M):
-				H := C(M[i], H)
-			return H
+    function MD(M, H, C):
+      for M[i] in pad(M):
+        H := C(M[i], H)
+      return H
 
 For message M, initial state H, and compression function C.
 
@@ -174,16 +174,16 @@ This means that if finding two colliding messages takes 2^(b/2) work (where b is
 
 Let's test it. First, build your own MD hash function. We're going to be generating a LOT of collisions, so don't knock yourself out. In fact, go out of your way to make it bad. Here's one way:
 
-	1. Take a fast block cipher and use it as C.
-	2. Make H pretty small. I won't look down on you if it's only 16 bits. Pick some initial H.
-	3. H is going to be the input key and the output block from C. That means you'll need to pad it on the way in and drop bits on the way out.
+1. Take a fast block cipher and use it as C.
+2. Make H pretty small. I won't look down on you if it's only 16 bits. Pick some initial H.
+3. H is going to be the input key and the output block from C. That means you'll need to pad it on the way in and drop bits on the way out.
 
 Now write the function f(n) that will generate 2^n collisions in this hash function.
 
 Why does this matter? Well, one reason is that people have tried to strengthen hash functions by cascading them together. Here's what I mean:
 
-	1. Take hash functions f and g.
-	2. Build h such that h(x) = f(x) || g(x).
+1. Take hash functions f and g.
+2. Build h such that h(x) = f(x) || g(x).
 
 The idea is that if collisions in f cost 2^(b1/2) and collisions in g cost 2^(b2/2), collisions in h should come to the princely sum of 2^((b1+b2)/2).
 
@@ -191,10 +191,10 @@ But now we know that's not true!
 
 Here's the idea:
 
-	1. Pick the "cheaper" hash function. Suppose it's f.
-	2. Generate 2^(b2/2) colliding messages in f.
-	3. There's a good chance your message pool has a collision in g.
-	4. Find it.
+1. Pick the "cheaper" hash function. Suppose it's f.
+2. Generate 2^(b2/2) colliding messages in f.
+3. There's a good chance your message pool has a collision in g.
+4. Find it.
 
 And if it doesn't, keep generating cheap collisions until you find it.
 
@@ -220,18 +220,151 @@ In the last problem we used multicollisions to produce 2^n colliding messages fo
 
 Here's how:
 
-	- Starting from the hash function's initial state, find a collision between a single-block message and a message of 2^(k-1)+1 blocks. DO NOT hash the entire long message each time. Choose 2^(k-1) dummy blocks, hash those, then focus on the last block.
-	- Take the output state from the first step. Use this as your new initial state and find another collision between a single-block message and a message of 2^(k-2)+1 blocks.
-	- Repeat this process k total times. Your last collision should be between a single-block message and a message of 2^0+1 = 2 blocks.
+  - Starting from the hash function's initial state, find a collision between a single-block message and a message of 2^(k-1)+1 blocks. DO NOT hash the entire long message each time. Choose 2^(k-1) dummy blocks, hash those, then focus on the last block.
+  - Take the output state from the first step. Use this as your new initial state and find another collision between a single-block message and a message of 2^(k-2)+1 blocks.
+  - Repeat this process k total times. Your last collision should be between a single-block message and a message of 2^0+1 = 2 blocks.
 
 Now you can make a message of any length in (k, k + 2^k - 1) blocks by choosing the appropriate message (short or long) from each pair.
 
 Now we're ready to attack a long message M of 2^k blocks.
 
-	1. Generate an expandable message of length (k, k + 2^k - 1) using the strategy outlined above.
-	2. Hash M and generate a map of intermediate hash states to the block indices that they correspond to.
-	3. From your expandable message's final state, find a single-block "bridge" to intermediate state in your map. Note the index i it maps to.
-	4. Use your expandable message to generate a prefix of the right length such that len(prefix || bridge || M[i..]) = len(M).
+  1. Generate an expandable message of length (k, k + 2^k - 1) using the strategy outlined above.
+  2. Hash M and generate a map of intermediate hash states to the block indices that they correspond to.
+  3. From your expandable message's final state, find a single-block "bridge" to intermediate state in your map. Note the index i it maps to.
+  4. Use your expandable message to generate a prefix of the right length such that len(prefix || bridge || M[i..]) = len(M).
 
 The padding in the final block should now be correct, and your forgery should hash to the same value as M.
+
+## [54. Kelsey and Kohno's Nostradamus Attack](c54.py)
+
+Hash functions are sometimes used as proof of a secret prediction.
+
+For example, suppose you wanted to predict the score of every Major League Baseball game in a season. (2,430 in all.) You might be concerned that publishing your predictions would affect the outcomes.
+
+So instead you write down all the scores, hash the document, and publish the hash. Once the season is over, you publish the document. Everyone can then hash the document to verify your soothsaying prowess.
+
+But what if you can't accurately predict the scores of 2.4k baseball games? Have no fear - forging a prediction under this scheme reduces to another second preimage attack.
+
+We could apply the long message attack from the previous problem, but it would look pretty shady. Would you trust someone whose predicted message turned out to be 2^50 bytes long?
+
+It turns out we can run a successful attack with a much shorter suffix. Check the method:
+
+1. Generate a large number of initial hash states. Say, 2^k.
+2. Pair them up and generate single-block collisions. Now you have 2^k hash states that collide into 2^(k-1) states.
+3. Repeat the process. Pair up the 2^(k-1) states and generate collisions. Now you have 2^(k-2) states.
+4. Keep doing this until you have one state. This is your prediction.
+5. Well, sort of. You need to commit to some length to encode in the padding. Make sure it's long enough to accommodate your actual message, this suffix, and a little bit of glue to join them up. Hash this padding block using the state from step 4 - THIS is your prediction.
+
+What did you just build? It's basically a funnel mapping many initial states into a common final state. What's critical is we now have a big field of 2^k states we can try to collide into, but the actual suffix will only be k+1 blocks long.
+
+The rest is trivial:
+
+1. Wait for the end of the baseball season. (This may take some time.)
+2. Write down the game results. Or, you know, anything else. I'm not too particular.
+3. Generate enough glue blocks to get your message length right. The last block should collide into one of the leaves in your tree.
+4. Follow the path from the leaf all the way up to the root node and build your suffix using the message blocks along the way.
+
+The difficulty here will be around 2^(b-k). By increasing or decreasing k in the tree generation phase, you can tune the difficulty of this step. It probably makes sense to do more work up-front, since people will be waiting on you to supply your message once the event passes. Happy prognosticating!
+
+## [55. MD4 Collisions](c55.py)
+
+MD4 is a 128-bit cryptographic hash function, meaning it should take a work factor of roughly 2^64 to find collisions.
+
+It turns out we can do much better.
+
+The paper ["Cryptanalysis of the Hash Functions MD4 and RIPEMD"](https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=1&ved=0CCAQFjAA&url=http%3A%2F%2Fwww.infosec.sdu.edu.cn%2Fuploadfile%2Fpapers%2FCryptanalysis%2520of%2520the%2520Hash%2520Functions%2520MD4%2520and%2520RIPEMD.pdf&ei=kb8IVPGQNajksATw1YLoCA&usg=AFQjCNHSIOZ1uUKTO3N5Hi33D3ZeoOyTUg&sig2=-C-5Woy1HJtk7KJJwLLp-A&bvm=bv.74649129,d.cWc) by Wang et al details a cryptanalytic attack that lets us find collisions in 2^8 or less.
+
+Given a message block M, Wang outlines a strategy for finding a sister message block M', differing only in a few bits, that will collide with it. Just so long as a short set of conditions holds true for M.
+
+What sort of conditions? Simple bitwise equalities within the intermediate hash function state, e.g. a\[1][6] = b\[0][6]. This should be read as: "the sixth bit (zero-indexed) of a\[1] (i.e. the first update to 'a') should equal the sixth bit of b\[0] (i.e. the initial value of 'b')".
+
+It turns out that a lot of these conditions are trivial to enforce. To see why, take a look at the first (of three) rounds in the MD4 compression function. In this round, we iterate over each word in the message block sequentially and mix it into the state. So we can make sure all our first-round conditions hold by doing this:
+
+		# calculate the new value for a[1] in the normal fashion
+		a[1] = (a[0] + f(b[0], c[0], d[0]) + m[0]).lrot(3)
+
+		# correct the erroneous bit
+		a[1] ^= ((a[1][6] ^ b[0][6]) << 6)
+
+		# use algebra to correct the first message block
+		m[0] = a[1].rrot(3) - a[0] - f(b[0], c[0], d[0])
+
+Simply ensuring all the first round conditions puts us well within the range to generate collisions, but we can do better by correcting some additional conditions in the second round. This is a bit trickier, as we need to take care not to stomp on any of the first-round conditions.
+
+Once you've adequately massaged M, you can simply generate M' by flipping a few bits and test for a collision. A collision is not guaranteed as we didn't ensure every condition. But hopefully we got enough that we can find a suitable (M, M') pair without too much effort.
+
+Implement Wang's attack.
+
+## [56. RC4 Single-Byte Biases](c56.py)
+
+RC4 is popular stream cipher notable for its usage in protocols like TLS, WPA, RDP, &c.
+
+It's also susceptible to significant single-byte biases, especially early in the keystream. What does this mean?
+
+Simply: for a given position in the keystream, certain bytes are more (or less) likely to pop up than others. Given enough encryptions of a given plaintext, an attacker can use these biases to recover the entire plaintext.
+
+Now, search online for "On the Security of RC4 in TLS and WPA". This site is your one-stop shop for RC4 information.
+
+Click through to "RC4 biases" on the right.
+
+These are graphs of each single-byte bias (one per page). Notice in particular the monster spikes on z16, z32, z48, etc. (Note: these are one-indexed, so z16 = keystream[15].)
+
+How useful are these biases?
+
+Click through to the research paper and scroll down to the simulation results. (Incidentally, the whole paper is a good read if you have some spare time.) We start out with clear spikes at 2^26 iterations, but our chances for recovering each of the first 256 bytes approaches 1 as we get up towards 2^32.
+
+There are two ways to take advantage of these biases. The first method is really simple:
+
+1. Gain exhaustive knowledge of the keystream biases.
+2. Encrypt the unknown plaintext 2^30+ times under different keys.
+3. Compare the ciphertext biases against the keystream biases.
+
+Doing this requires deep knowledge of the biases for each byte of the keystream. But it turns out we can do pretty well with just a few useful biases - if we have some control over the plaintext.
+
+How? By using knowledge of a single bias as a peephole into the plaintext.
+
+Decode this secret:
+
+		QkUgU1VSRSBUTyBEUklOSyBZT1VSIE9WQUxUSU5F
+
+And call it a cookie. No peeking!
+
+Now use it to build this encryption oracle:
+
+		RC4(your-request || cookie, random-key)
+
+Use a fresh 128-bit key on every invocation.
+
+Picture this scenario: you want to steal a user's secure cookie. You can spawn arbitrary requests (from a malicious plugin or somesuch) and monitor network traffic. (Ok, this is unrealistic - the cookie wouldn't be right at the beginning of the request like that - this is just an example!)
+
+You can control the position of the cookie by requesting "/", "/A", "/AA", and so on.
+
+Build bias maps for a couple chosen indices (z16 and z32 are good) and decrypt the cookie.
+
+MD4 is a 128-bit cryptographic hash function, meaning it should take a work factor of roughly 2^64 to find collisions.
+
+It turns out we can do much better.
+
+The paper ["Cryptanalysis of the Hash Functions MD4 and RIPEMD"](https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=1&ved=0CCAQFjAA&url=http%3A%2F%2Fwww.infosec.sdu.edu.cn%2Fuploadfile%2Fpapers%2FCryptanalysis%2520of%2520the%2520Hash%2520Functions%2520MD4%2520and%2520RIPEMD.pdf&ei=kb8IVPGQNajksATw1YLoCA&usg=AFQjCNHSIOZ1uUKTO3N5Hi33D3ZeoOyTUg&sig2=-C-5Woy1HJtk7KJJwLLp-A&bvm=bv.74649129,d.cWc) by Wang et al details a cryptanalytic attack that lets us find collisions in 2^8 or less.
+
+Given a message block M, Wang outlines a strategy for finding a sister message block M', differing only in a few bits, that will collide with it. Just so long as a short set of conditions holds true for M.
+
+What sort of conditions? Simple bitwise equalities within the intermediate hash function state, e.g. a\[1][6] = b\[0][6]. This should be read as: "the sixth bit (zero-indexed) of a\[1] (i.e. the first update to 'a') should equal the sixth bit of b\[0] (i.e. the initial value of 'b')".
+
+It turns out that a lot of these conditions are trivial to enforce. To see why, take a look at the first (of three) rounds in the MD4 compression function. In this round, we iterate over each word in the message block sequentially and mix it into the state. So we can make sure all our first-round conditions hold by doing this:
+
+		# calculate the new value for a[1] in the normal fashion
+		a[1] = (a[0] + f(b[0], c[0], d[0]) + m[0]).lrot(3)
+
+		# correct the erroneous bit
+		a[1] ^= ((a[1][6] ^ b[0][6]) << 6)
+
+		# use algebra to correct the first message block
+		m[0] = a[1].rrot(3) - a[0] - f(b[0], c[0], d[0])
+
+Simply ensuring all the first round conditions puts us well within the range to generate collisions, but we can do better by correcting some additional conditions in the second round. This is a bit trickier, as we need to take care not to stomp on any of the first-round conditions.
+
+Once you've adequately massaged M, you can simply generate M' by flipping a few bits and test for a collision. A collision is not guaranteed as we didn't ensure every condition. But hopefully we got enough that we can find a suitable (M, M') pair without too much effort.
+
+Implement Wang's attack.
 
