@@ -1,5 +1,3 @@
-// ------------------------------------------------------------
-
   1. Convert hex to base64 and back.
 
     The string:
@@ -15,8 +13,6 @@
 
       Always operate on raw bytes, never on encoded strings. Only use hex
       and base64 for pretty-printing.
-
-// ------------------------------------------------------------
 
   2. Fixed XOR
 
