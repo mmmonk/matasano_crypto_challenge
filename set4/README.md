@@ -2,7 +2,7 @@
 
 Back to CTR. Encrypt the recovered plaintext from
 
-     https://gist.github.com/3132853
+https://gist.github.com/3132853
 
 (the ECB exercise) under CTR with a random key (for this exercise the
 key should be unknown to you, but hold on to it).
@@ -92,7 +92,7 @@ SHA-1 is "padded" with the bit-length of the message; your forged
 message will need to include that padding. We call this "glue
 padding". The final message you actually forge will be:
 
-          SHA1(key || original-message || glue-padding || new-message)
+    SHA1(key || original-message || glue-padding || new-message)
 
 (where the final padding on the whole constructed message is implied)
 
