@@ -206,8 +206,11 @@ Combine your padding code and CBC code to write two functions.
 
 The first function should take an arbitrary input string, prepend the
 string:
+
     "comment1=cooking%20MCs;userdata="
+
 and append the string:
+
     ";comment2=%20like%20a%20pound%20of%20bacon"
 
 The function should quote out the ";" and "=" characters.
