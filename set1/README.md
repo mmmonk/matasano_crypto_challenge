@@ -94,7 +94,7 @@ differing bits. The distance between:
 
 and:
 
-    wokka wokka!!!
+> wokka wokka!!!
 
 is 37.
 
@@ -139,7 +139,7 @@ Easiest way:
 
 Use OpenSSL::Cipher and give it AES-128-ECB as the cipher.
 
-## 8. Detecting ECB
+## [8. Detecting ECB](c8.py)
 
 At the following URL are a bunch of hex-encoded ciphertexts:
 
