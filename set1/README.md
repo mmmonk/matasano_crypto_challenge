@@ -72,88 +72,81 @@ Under the key "ICE", using repeating-key XOR. It should come out to:
 Encrypt a bunch of stuff using your repeating-key XOR function. Get a
 feel for it.
 
-// ------------------------------------------------------------
 
-  6. Break repeating-key XOR
+## 6. Break repeating-key XOR
 
-    The buffer at the following location:
+The buffer at the following location:
 
-     https://gist.github.com/3132752
+https://gist.github.com/3132752
 
-    is base64-encoded repeating-key XOR. Break it.
+is base64-encoded repeating-key XOR. Break it.
 
-    Here's how:
+Here's how:
 
-    a. Let KEYSIZE be the guessed length of the key; try values from 2 to
-    (say) 40.
+a. Let KEYSIZE be the guessed length of the key; try values from 2 to
+(say) 40.
 
-    b. Write a function to compute the edit distance/Hamming distance
-    between two strings. The Hamming distance is just the number of
-    differing bits. The distance between:
+b. Write a function to compute the edit distance/Hamming distance
+between two strings. The Hamming distance is just the number of
+differing bits. The distance between:
 
-      this is a test
+    this is a test
 
-    and:
+and:
 
-      wokka wokka!!!
+    wokka wokka!!!
 
-    is 37.
+is 37.
 
-    c. For each KEYSIZE, take the FIRST KEYSIZE worth of bytes, and the
-    SECOND KEYSIZE worth of bytes, and find the edit distance between
-    them. Normalize this result by dividing by KEYSIZE.
+c. For each KEYSIZE, take the FIRST KEYSIZE worth of bytes, and the
+SECOND KEYSIZE worth of bytes, and find the edit distance between
+them. Normalize this result by dividing by KEYSIZE.
 
-    d. The KEYSIZE with the smallest normalized edit distance is probably
-    the key. You could proceed perhaps with the smallest 2-3 KEYSIZE
-    values. Or take 4 KEYSIZE blocks instead of 2 and average the
-    distances.
+d. The KEYSIZE with the smallest normalized edit distance is probably
+the key. You could proceed perhaps with the smallest 2-3 KEYSIZE
+values. Or take 4 KEYSIZE blocks instead of 2 and average the
+distances.
 
-    e. Now that you probably know the KEYSIZE: break the ciphertext into
-    blocks of KEYSIZE length.
+e. Now that you probably know the KEYSIZE: break the ciphertext into
+blocks of KEYSIZE length.
 
-    f. Now transpose the blocks: make a block that is the first byte of
-    every block, and a block that is the second byte of every block, and
-    so on.
+f. Now transpose the blocks: make a block that is the first byte of
+every block, and a block that is the second byte of every block, and
+so on.
 
-    g. Solve each block as if it was single-character XOR. You already
-    have code to do this.
+g. Solve each block as if it was single-character XOR. You already
+have code to do this.
 
-    e. For each block, the single-byte XOR key that produces the best
-    looking histogram is the repeating-key XOR key byte for that
-    block. Put them together and you have the key.
+e. For each block, the single-byte XOR key that produces the best
+looking histogram is the repeating-key XOR key byte for that
+block. Put them together and you have the key.
 
-// ------------------------------------------------------------
+## 7. AES in ECB Mode
 
-  7. AES in ECB Mode
+The Base64-encoded content at the following location:
 
-    The Base64-encoded content at the following location:
+https://gist.github.com/3132853
 
-        https://gist.github.com/3132853
+Has been encrypted via AES-128 in ECB mode under the key
 
-    Has been encrypted via AES-128 in ECB mode under the key
+    "YELLOW SUBMARINE".
 
-        "YELLOW SUBMARINE".
+(I like "YELLOW SUBMARINE" because it's exactly 16 bytes long).
 
-    (I like "YELLOW SUBMARINE" because it's exactly 16 bytes long).
+Decrypt it.
 
-    Decrypt it.
+Easiest way:
 
-    Easiest way:
+Use OpenSSL::Cipher and give it AES-128-ECB as the cipher.
 
-    Use OpenSSL::Cipher and give it AES-128-ECB as the cipher.
+## 8. Detecting ECB
 
-// ------------------------------------------------------------
+At the following URL are a bunch of hex-encoded ciphertexts:
 
-  8. Detecting ECB
+https://gist.github.com/3132928
 
-    At the following URL are a bunch of hex-encoded ciphertexts:
+One of them is ECB encrypted. Detect it.
 
-       https://gist.github.com/3132928
-
-    One of them is ECB encrypted. Detect it.
-
-    Remember that the problem with ECB is that it is stateless and
-    deterministic; the same 16 byte plaintext block will always produce
-    the same 16 byte ciphertext.
-
-// ------------------------------------------------------------
+Remember that the problem with ECB is that it is stateless and
+deterministic; the same 16 byte plaintext block will always produce
+the same 16 byte ciphertext.
