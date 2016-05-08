@@ -94,7 +94,7 @@ differing bits. The distance between:
 
 and:
 
-> wokka wokka!!!
+    wokka wokka!!!
 
 is 37.
 
