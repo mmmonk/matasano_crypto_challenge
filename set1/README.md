@@ -1,52 +1,51 @@
 #1. Convert hex to base64 and back.
 
-    The string:
+The string:
 
-        49276d206b696c6c696e6720796f757220627261696e206c696b65206120706f69736f6e6f7573206d757368726f6f6d
+    49276d206b696c6c696e6720796f757220627261696e206c696b65206120706f69736f6e6f7573206d757368726f6f6d
 
-    should produce:
+should produce:
 
-        SSdtIGtpbGxpbmcgeW91ciBicmFpbiBsaWtlIGEgcG9pc29ub3VzIG11c2hyb29t
+    SSdtIGtpbGxpbmcgeW91ciBicmFpbiBsaWtlIGEgcG9pc29ub3VzIG11c2hyb29t
 
-    Now use this code everywhere for the rest of the exercises. Here's a
-    simple rule of thumb:
+Now use this code everywhere for the rest of the exercises. Here's a
+simple rule of thumb:
 
-      Always operate on raw bytes, never on encoded strings. Only use hex
-      and base64 for pretty-printing.
+  Always operate on raw bytes, never on encoded strings. Only use hex
+  and base64 for pretty-printing.
 
 #2. Fixed XOR
 
-    Write a function that takes two equal-length buffers and produces
-    their XOR sum.
+Write a function that takes two equal-length buffers and produces
+their XOR sum.
 
-    The string:
+The string:
 
-         1c0111001f010100061a024b53535009181c
+     1c0111001f010100061a024b53535009181c
 
-    ... after hex decoding, when xor'd against:
+... after hex decoding, when xor'd against:
 
-         686974207468652062756c6c277320657965
+     686974207468652062756c6c277320657965
 
-    ... should produce:
+... should produce:
 
-         746865206b696420646f6e277420706c6179
+     746865206b696420646f6e277420706c6179
 
-// ------------------------------------------------------------
 
-  3. Single-character XOR Cipher
+#3. Single-character XOR Cipher
 
-    The hex encoded string:
+The hex encoded string:
 
-          1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736
+    1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736
 
-    ... has been XOR'd against a single character. Find the key, decrypt
-    the message.
+... has been XOR'd against a single character. Find the key, decrypt
+the message.
 
-    Write code to do this for you. How? Devise some method for "scoring" a
-    piece of English plaintext. (Character frequency is a good metric.)
-    Evaluate each output and choose the one with the best score.
+Write code to do this for you. How? Devise some method for "scoring" a
+piece of English plaintext. (Character frequency is a good metric.)
+Evaluate each output and choose the one with the best score.
 
-    Tune your algorithm until this works.
+Tune your algorithm until this works.
 
 // ------------------------------------------------------------
 
