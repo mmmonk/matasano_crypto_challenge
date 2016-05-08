@@ -1,6 +1,6 @@
 // ------------------------------------------------------------
 
-    1. Convert hex to base64 and back.
+  1. Convert hex to base64 and back.
 
     The string:
 
@@ -18,7 +18,7 @@
 
 // ------------------------------------------------------------
 
-    2. Fixed XOR
+  2. Fixed XOR
 
     Write a function that takes two equal-length buffers and produces
     their XOR sum.
@@ -37,7 +37,7 @@
 
 // ------------------------------------------------------------
 
-    3. Single-character XOR Cipher
+  3. Single-character XOR Cipher
 
     The hex encoded string:
 
@@ -54,7 +54,7 @@
 
 // ------------------------------------------------------------
 
-    4. Detect single-character XOR
+  4. Detect single-character XOR
 
     One of the 60-character strings at:
 
@@ -65,7 +65,7 @@
 
 // ------------------------------------------------------------
 
-    5. Repeating-key XOR Cipher
+  5. Repeating-key XOR Cipher
 
     Write the code to encrypt the string:
 
@@ -81,7 +81,7 @@
 
 // ------------------------------------------------------------
 
-    6. Break repeating-key XOR
+  6. Break repeating-key XOR
 
     The buffer at the following location:
 
@@ -131,7 +131,7 @@
 
 // ------------------------------------------------------------
 
-    7. AES in ECB Mode
+  7. AES in ECB Mode
 
     The Base64-encoded content at the following location:
 
@@ -151,7 +151,7 @@
 
 // ------------------------------------------------------------
 
-    8. Detecting ECB
+  8. Detecting ECB
 
     At the following URL are a bunch of hex-encoded ciphertexts:
 
