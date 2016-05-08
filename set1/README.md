@@ -1,4 +1,4 @@
-#1. Convert hex to base64 and back.
+## 1. Convert hex to base64 and back.
 
 The string:
 
@@ -14,7 +14,7 @@ simple rule of thumb:
   Always operate on raw bytes, never on encoded strings. Only use hex
   and base64 for pretty-printing.
 
-#2. Fixed XOR
+## 2. Fixed XOR
 
 Write a function that takes two equal-length buffers and produces
 their XOR sum.
@@ -32,7 +32,7 @@ The string:
      746865206b696420646f6e277420706c6179
 
 
-#3. Single-character XOR Cipher
+## 3. Single-character XOR Cipher
 
 The hex encoded string:
 
@@ -47,32 +47,30 @@ Evaluate each output and choose the one with the best score.
 
 Tune your algorithm until this works.
 
-// ------------------------------------------------------------
 
-  4. Detect single-character XOR
+## 4. Detect single-character XOR
 
-    One of the 60-character strings at:
+One of the 60-character strings at:
 
-      https://gist.github.com/3132713
+https://gist.github.com/3132713
 
-    has been encrypted by single-character XOR. Find it. (Your code from
-    #3 should help.)
+has been encrypted by single-character XOR. Find it. (Your code from
+\#3 should help.)
 
-// ------------------------------------------------------------
 
-  5. Repeating-key XOR Cipher
+## 5. Repeating-key XOR Cipher
 
-    Write the code to encrypt the string:
+Write the code to encrypt the string:
 
-      Burning 'em, if you ain't quick and nimble
-      I go crazy when I hear a cymbal
+    Burning 'em, if you ain't quick and nimble
+    I go crazy when I hear a cymbal
 
-    Under the key "ICE", using repeating-key XOR. It should come out to:
+Under the key "ICE", using repeating-key XOR. It should come out to:
 
-      0b3637272a2b2e63622c2e69692a23693a2a3c6324202d623d63343c2a26226324272765272a282b2f20430a652e2c652a3124333a653e2b2027630c692b20283165286326302e27282f
+    0b3637272a2b2e63622c2e69692a23693a2a3c6324202d623d63343c2a26226324272765272a282b2f20430a652e2c652a3124333a653e2b2027630c692b20283165286326302e27282f
 
-    Encrypt a bunch of stuff using your repeating-key XOR function. Get a
-    feel for it.
+Encrypt a bunch of stuff using your repeating-key XOR function. Get a
+feel for it.
 
 // ------------------------------------------------------------
 
