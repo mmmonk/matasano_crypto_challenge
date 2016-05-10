@@ -305,7 +305,7 @@ Google for:
 
     "Chosen ciphertext attacks against protocols based on the RSA encryption standard"
 
-This is Bleichenbacher from CRYPTO '98; I get a bunch of .ps versions
+[This is Bleichenbacher from CRYPTO '98](http://archiv.infsec.ethz.ch/education/fs08/secsem/Bleichenbacher98.pdf); I get a bunch of .ps versions
 on the first search page.
 
 Read the paper. It describes a padding oracle attack on
