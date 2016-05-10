@@ -15,7 +15,7 @@ class PKCS15:
   '''
 
   def pad(self,msg,k):
-    fflen = k - 20 - 13
+    fflen = k - 20 - 13 # <- this is probably wrong
     return "\x00\x01%s\x00%s" % ("\xff" * fflen, msg)
 
   def unpad(self,msg):
