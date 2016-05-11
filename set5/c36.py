@@ -4,10 +4,11 @@ import hashlib
 import hmac
 
 def i2s(i):
-  x = hex(i).replace("0x","").replace("L","")
-  if len(x) % 2 == 1:
-    x = "0" + x
-  return x.decode('hex')
+  x = hex(i).replace("0x", "", 1).rstrip("L ")
+  try:
+    return x.decode('hex')
+  except TypeError:
+    return ("0"+x).decode('hex')
 
 def s2i(s):
   return long(s.encode('hex'),16)
